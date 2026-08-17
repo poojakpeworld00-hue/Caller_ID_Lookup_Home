@@ -67,9 +67,11 @@ Legend:
 | D3 | API hash key | `services/ServiceCredentials.kt` | (28 chars) | **[KEPT]** |
 | D4 | API bearer token | `services/ServiceCredentials.kt` | (132-char JWT) | **[KEPT]** |
 | D5 | LightHouse API key | `local.properties` | `sk_a7u94m4mu6gcsvey7ydz2` | **[SET]** new key, distinct from the source app |
-| D6 | LightHouse base URL | `local.properties` | `https://api.falconpush.com` | **[SET]** same endpoint as source |
+| D6 | LightHouse base URL | `local.properties` | `https://api.falconpush.com/` | **[SET]** endpoint per the dashboard config |
 | D7 | `google-services.json` | `app/` | project `caller-id-home` (`752107855402`), package matches A1 | **[SET]** |
-| D8 | Remote Config template | `docs/remote-config.json` | not published to `caller-id-home` yet; line 326 `PrivacyPolicy` still points at `identifycaller.phonelookup.contacts.calllog` | **[NEEDS YOU]** |
+| D8 | Remote Config value | `docs/remote-config.json` | content correct; **not published** to `caller-id-home` | **[NEEDS YOU]** |
+| D8a | LightHouse dashboard | server-side | app entry needs the `caller-id-home` **service-account JSON** so its backend can send FCM v1 | **[NEEDS YOU]** |
+| D8b | Policy / terms URLs | `strings.xml:474-475`, `docs/remote-config.json`, LightHouse disclosure | all three aligned on `sites.google.com/view/calleridphonelookup/{privacy,terms}` — the **original** app's site | **[SET]**, but see note |
 | D9 | AdMob app id | `AndroidManifest.xml:405` | `ca-app-pub-3940256099942544~3347511713` — Google's **test** id | **[NEEDS YOU]** |
 | D10 | Ad unit ids | `docs/remote-config.json` | every unit is a Google **test** unit | **[NEEDS YOU]** |
 | D11 | Signing keystore | `certificate/calleridnumber.jks` | byte-identical to the source app's key; no `signingConfigs` block in Gradle, release signing is done from the IDE | **[NEEDS YOU]** own key for a separate listing |
@@ -78,6 +80,16 @@ Legend:
 > clone, so the SDK was initialising with an empty key
 > (`app/build.gradle.kts:16-17` default to `""`, then XOR-scramble into
 > `BuildConfig.LH_API_KEY`, read at `LookupShellApp.kt:70`). Push was silently dead.
+>
+> D8: `docs/remote-config.json` is not a Firebase template export — it is the
+> *value* of one string parameter. `ADDashboardActivity.setResponceInPref` reads
+> `GET_DATA_LIST` (release) / `DEBUG_GET_DATA_LIST` (debug) and picks the
+> `marketing` or `organic` root by install referrer. `permission_engine`
+> (`AccessSource.kt:96`) and `launcher_ads` are nested inside that blob, so no
+> separate parameters are needed — just those two, both set to the same JSON.
+>
+> D8b: a policy page naming a different app is a common Play rejection trigger
+> for a separate listing.
 >
 > D1–D4 are your own backend, so the clone keeps using them. The
 > `ServiceCredentials.isConfigured` guard stays in place; it exists so a build with
@@ -97,7 +109,8 @@ Legend:
 ## Still outstanding
 
 1. **Brand visuals** (section C) — icon, palette, splash. Largest remaining item.
-2. **Publish Remote Config** to `caller-id-home` from `docs/remote-config.json`, after fixing the stale `PrivacyPolicy` URL (D8). Without it, the ads and permission engines get no config.
-3. **Real AdMob app id + ad units** (D9, D10).
+2. **Publish Remote Config** — `GET_DATA_LIST` + `DEBUG_GET_DATA_LIST` on `caller-id-home` (D8). Without it the ads and permission engines get no config at all.
+3. **Real AdMob app id + ad units** (D9, D10) — and the `980.mark.qureka.com` `DirectLink`/`MarketLink`/`fallback_link` values inside the blob, inherited from the source app.
 4. **Own signing keystore** (D11).
-5. Optional: **class/file-level rename pass** (E3) if the two apps should not share a code fingerprint.
+5. **Service-account JSON to LightHouse** (D8a) — without it push delivers nothing, whatever the API key says.
+6. Optional: **class/file-level rename pass** (E3) if the two apps should not share a code fingerprint.
