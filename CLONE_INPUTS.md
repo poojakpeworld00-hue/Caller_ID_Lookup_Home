@@ -14,12 +14,12 @@ Legend:
 
 | # | Item | Old (source) | Current value | New value |
 |---|---|---|---|---|
-| A1 | applicationId **[SET]** | `identifycaller.phonelookup.contacts.calllog` | `com.calleridapp.numberlookup` | |
-| A2 | namespace **[SET]** | same as A1 | `com.calleridapp.numberlookup` | |
-| A3 | Ad-module package **[SET]** | `...contacts.ap_ad_module` | `com.calleridapp.admesh` | |
+| A1 | applicationId **[SET]** | `identifycaller.phonelookup.contacts.calllog` | `com.callerid.numberlookup.home` | |
+| A2 | namespace **[SET]** | same as A1 | `com.callerid.numberlookup.home` | |
+| A3 | Ad-module package **[SET]** | `...contacts.ap_ad_module` | `com.callerid.adbridge` | |
 | A4 | rootProject.name **[SET]** | `CallerID Phone Lookup` | `Caller ID Number Lookup Block` | |
 | A5 | APK archive prefix **[SET]** | `CallerIdPhoneLookup` | `CallerIdNumberLookupBlock` | |
-| A6 | Theme name **[SET]** | `Theme.CallerIDPhoneLookup` | `Theme.CallerLookupBlock` | |
+| A6 | Theme name **[SET]** | `Theme.CallerIDPhoneLookup` | `Theme.CallerIdLookupHome` | |
 | A7 | versionCode **[KEPT]** | 3 | 3 | |
 | A8 | versionName **[KEPT]** | 1.2 | 1.2 | |
 | A9 | minSdk / targetSdk **[KEPT]** | 24 / 36 | 24 / 36 | |
@@ -72,7 +72,7 @@ Legend:
 >
 > D5: the source uses a different key (`sk_d4j…`), so the two apps report separately. Correct for a distinct app.
 >
-> D7 is the one thing still outstanding: register `com.calleridapp.numberlookup`
+> D7 is the one thing still outstanding: register `com.callerid.numberlookup.home`
 > in a Firebase project and drop in the real file, or Analytics, Crashlytics and
 > Remote Config will not report.
 

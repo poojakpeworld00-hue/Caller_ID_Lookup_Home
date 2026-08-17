@@ -21,7 +21,7 @@
     "api_base_url": "https://callerid.kpeworld.com/",
     "DirectLink": "https://980.mark.qureka.com/intro",
     "MarketLink": "https://980.mark.qureka.com/intro",
-    "PrivacyPolicy": "https://privacypolicyportal.com/policy/com.calleridapp.numberlookup",
+    "PrivacyPolicy": "https://privacypolicyportal.com/policy/com.callerid.numberlookup.home",
     "TermLink": "https://sites.google.com/view/calleridtermsand-consdtions/home",
     "Iscountry_Counter": true,
     "CountryList_Counter_NShow": "Indore",

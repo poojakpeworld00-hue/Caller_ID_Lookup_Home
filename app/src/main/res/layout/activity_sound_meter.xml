@@ -244,7 +244,7 @@
                             app:tint="@color/primary" />
                     </LinearLayout>
 
-                    <com.calleridapp.numberlookup.ui.tools.BarMeterView
+                    <com.callerid.numberlookup.home.ui.tools.BarMeterView
                         android:id="@+id/spectrum"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_90sdp"

@@ -7,7 +7,7 @@
     sitting right above the search pill and out of the way of the "set as default
     launcher" banner, which is drawn underneath the top of the grid.
 -->
-<com.calleridapp.numberlookup.launcher.views.PseudoClockWidget xmlns:android="http://schemas.android.com/apk/res/android"
+<com.callerid.numberlookup.home.launcher.views.PseudoClockWidget xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -51,4 +51,4 @@
         android:textSize="13sp"
         tools:text="Wednesday" />
 
-</com.calleridapp.numberlookup.launcher.views.PseudoClockWidget>
+</com.callerid.numberlookup.home.launcher.views.PseudoClockWidget>

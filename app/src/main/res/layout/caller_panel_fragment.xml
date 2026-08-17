@@ -9,7 +9,7 @@
      CallerPanelFragment on first open (the launcher is not a HostActivity, so nothing loads
      it automatically here).
 -->
-<com.calleridapp.numberlookup.launcher.fragments.CallerPanelFragment
+<com.callerid.numberlookup.home.launcher.fragments.CallerPanelFragment
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/caller_panel_holder"
     android:layout_width="match_parent"
@@ -38,4 +38,4 @@
         android:layout_height="match_parent"
         android:layout_above="@id/callerAdBannerDivider" />
 
-</com.calleridapp.numberlookup.launcher.fragments.CallerPanelFragment>
+</com.callerid.numberlookup.home.launcher.fragments.CallerPanelFragment>
