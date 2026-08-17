@@ -4,7 +4,7 @@
     <!-- Application label with a leading space so the app sorts to the TOP of
          system lists like "Display over other apps" / "Default apps". The
          launcher icon keeps the clean name via the launcher activity's label. -->
-    <string name="app_label">&#160;&#160;Caller ID: Number Lookup &amp; Block</string>
+    <string name="app_label">&#160;&#160;Caller ID Home</string>
     <string name="dash">&#8211;</string>
 
     <!-- Splash -->

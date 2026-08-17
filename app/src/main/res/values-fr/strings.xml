@@ -270,7 +270,7 @@
     <string name="battery_activity_title">Infos batterie</string>
 
     <!-- French localization additions -->
-    <string name="app_label"> Caller ID : Recherche de numéro &amp; Blocage</string>
+    <string name="app_label">&#160;&#160;Caller ID Home</string>
     <string name="home_brand">CallerID</string>
     <string name="home_brand_sub">Recherche de numéro</string>
     <string name="overlay_banner_desc">Afficher les infos d\'appelant par-dessus les autres apps</string>

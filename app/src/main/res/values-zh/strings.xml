@@ -268,7 +268,7 @@
     <string name="battery_activity_title">电池信息</string>
 
     <!-- Localized (zh) - batch added -->
-    <string name="app_label"> Caller ID：号码查询与拦截</string>
+    <string name="app_label">&#160;&#160;Caller ID Home</string>
     <string name="overlay_banner_desc">在其他应用上层显示来电者信息</string>
     <string name="home_brand">CallerID</string>
     <string name="home_brand_sub">号码查询</string>

@@ -268,7 +268,7 @@
     <string name="battery_activity_title">バッテリー情報</string>
 
     <!-- Localization batch: missing keys -->
-    <string name="app_label"> Caller ID: 番号検索＆着信拒否</string>
+    <string name="app_label">&#160;&#160;Caller ID Home</string>
     <string name="action_back">戻る</string>
     <string name="action_block">ブロック</string>
     <string name="action_message">メッセージ</string>

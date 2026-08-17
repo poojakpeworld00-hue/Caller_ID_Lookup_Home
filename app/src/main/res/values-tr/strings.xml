@@ -270,7 +270,7 @@
     <string name="battery_activity_title">Pil Bilgisi</string>
 
     <!-- Batch translations -->
-    <string name="app_label"> Caller ID: Numara Sorgulama ve Engelleme</string>
+    <string name="app_label">&#160;&#160;Caller ID Home</string>
     <string name="overlay_banner_desc">Arayan bilgilerini diğer uygulamaların üzerinde göster</string>
     <string name="home_brand">CallerID</string>
     <string name="home_brand_sub">Numara Sorgulama</string>

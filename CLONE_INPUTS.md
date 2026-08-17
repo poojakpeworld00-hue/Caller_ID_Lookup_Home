@@ -1,93 +1,103 @@
 # Clone inputs — edit the "New value" column and tell me to apply
 
-Source: `Old_Live_Apps/CallerID_Phone_Lookup` @ branch **v1.2** (versionCode 3)
-Clone:  this folder, branch **v12**
+Source: `../CallerIDNumberLookupBlock` @ `d4c3ed1` (`com.calleridapp.numberlookup`, versionCode 4 / 1.0.3)
+Clone:  this folder, branch **master**
 
 Legend:
 - **[SET]** — already applied. Change it only if you want something different.
-- **[NEEDS YOU]** — a placeholder. The app builds, but this must be real before release.
+- **[NEEDS YOU]** — still the source app's value, or a placeholder. The app builds, but this must be real before release.
 - **[KEPT]** — deliberately unchanged. Reason given.
 
 ---
 
-## A. Identity
+## A. Identity — done in Stage 2 (`d3adc1f`)
 
-| # | Item | Old (source) | Current value | New value |
+| # | Item | Source | Current value | New value |
 |---|---|---|---|---|
-| A1 | applicationId **[SET]** | `identifycaller.phonelookup.contacts.calllog` | `com.callerid.numberlookup.home` | |
+| A1 | applicationId **[SET]** | `com.calleridapp.numberlookup` | `com.callerid.numberlookup.home` | |
 | A2 | namespace **[SET]** | same as A1 | `com.callerid.numberlookup.home` | |
-| A3 | Ad-module package **[SET]** | `...contacts.ap_ad_module` | `com.callerid.adbridge` | |
-| A4 | rootProject.name **[SET]** | `CallerID Phone Lookup` | `Caller ID Number Lookup Block` | |
-| A5 | APK archive prefix **[SET]** | `CallerIdPhoneLookup` | `CallerIdNumberLookupBlock` | |
-| A6 | Theme name **[SET]** | `Theme.CallerIDPhoneLookup` | `Theme.CallerIdLookupHome` | |
-| A7 | versionCode **[KEPT]** | 3 | 3 | |
-| A8 | versionName **[KEPT]** | 1.2 | 1.2 | |
-| A9 | minSdk / targetSdk **[KEPT]** | 24 / 36 | 24 / 36 | |
+| A3 | Ad-module package **[SET]** | `com.calleridapp.admesh` | `com.callerid.adbridge` | |
+| A4 | rootProject.name **[SET]** | `Caller ID Number Lookup Block` | `Caller ID Lookup Home` | |
+| A5 | APK archive prefix **[SET]** | `CallerIdNumberLookupBlock` | `CallerIdLookupHome` | |
+| A6 | Theme name **[SET]** | `Theme.CallerLookupBlock` | `Theme.CallerIdLookupHome` | |
+| A7 | versionCode **[SET]** | 4 | 1 | |
+| A8 | versionName **[SET]** | 1.0.3 | 1.0.0 | |
+| A9 | minSdk / targetSdk **[KEPT]** | 26 / 36 | 26 / 36 | |
 
-> A7/A8: kept so the clone matches the source feature set. For a **new Play listing** you almost certainly want versionCode 1 / versionName 1.0 — say the word.
+> A9: minSdk is 26, not 24 — the launcher module needs `LauncherApps` shortcut APIs.
 
 ## B. Names shown to users
 
-| # | Item | Old | Current value | New value |
+| # | Item | Source | Current value | New value |
 |---|---|---|---|---|
-| B1 | `app_name` **[SET]** | `CallerID Phone Lookup` | `Caller ID: Number Lookup & Block` | |
-| B2 | `app_label` (launcher) **[SET]** | `␣␣CallerID Phone Lookup` | `␣␣Caller ID: Number Lookup & Block` | |
-| B3 | `app_name_overlay` **[SET]** | `CallerID Phone Lookup` | `Caller ID Lookup & Block` | |
-| B4 | Localised `app_name` ×11 **[SET]** | localised old brand | localised new brand (ar es fr hi ja pt ru th tr vi zh) | |
+| B1 | `app_name` **[SET]** | `Caller ID: Number Lookup & Block` | `Caller ID Home` | |
+| B2 | `app_label` (launcher) **[SET]** | localised `Caller ID: …` per locale | `␣␣Caller ID Home` | |
+| B3 | `app_name_overlay` **[SET]** | `Caller ID Lookup & Block` | `Caller ID Lookup Home` | |
+| B4 | Locale coverage **[SET]** | — | B1/B2 applied to all 12 `values*/strings.xml` (default + ar es fr hi ja pt ru th tr vi zh) | |
 
-> B2 keeps the source's two leading non-breaking spaces — they exist to sort the app to the top of system lists. Removing them changes that sort position.
+> The manifest labels the application with `app_label`, not `app_name` — Stage 2
+> updated only `app_name`, so the launcher icon still read the source app's brand
+> in all 12 locales until this pass.
+>
+> B2 keeps the two leading non-breaking spaces (`&#160;&#160;`) that sort the app to
+> the top of system lists, and now applies them in every locale — the localised
+> labels used a plain leading space, which AAPT trims, so the trick only worked in
+> English. The brand itself is no longer translated, matching how `app_name` is
+> handled.
 
-## C. Brand colours
+## C. Brand visuals — **[NEEDS YOU]**, nothing changed yet
 
-| # | Item | Old | Current value | New value |
-|---|---|---|---|---|
-| C1 | `primary` **[SET]** | `#2B5CE6` sapphire | `#00897B` teal | |
-| C2 | `primary_dark` **[SET]** | `#1A46C4` | `#00695C` | |
-| C3 | `primary_container` **[SET]** | `#E4EAFD` | `#D3EEEA` | |
-| C4 | Splash gradient **[SET]** | `#2B5CE6 → #6C3DF4` | `#00897B → #0FBFA4` | |
-| C5 | `teal` (tools accent) **[SET]** | `#0D9488` | `#5B54D6` indigo | |
-| C6 | Verdict colours **[KEPT]** | green/red/amber | unchanged | |
-| C7 | `accent_purple` **[KEPT]** | `#6C3DD9` | unchanged | |
-| C8 | Launcher icon **[SET]** | blue handset + person bubble | new teal handset + block badge, 5 densities + adaptive | |
+| # | Item | Where | State |
+|---|---|---|---|
+| C1 | `values/colors.xml` | whole palette | **byte-identical to the source app** — `primary` `#2C6547`, `primary_dark` `#1C4730` |
+| C2 | Splash gradient | `splash_grad_start/center/end` | identical — `#047439 → #15A73D → #37C747` |
+| C3 | Launcher icon | `mipmap-xhdpi/ic_launcher.png`, `drawable/ic_launcher_foreground.xml`, `…_background.xml` | all three byte-identical to the source app |
+| C4 | Layouts | `res/layout/*` | only differ from the source by the package/theme rename |
+| C5 | Verdict colours **[KEPT]** | `values/colors.xml` | green/red/amber are pinned to meaning ("identified"/"spam"/"suspicious"), not to the brand |
 
-> C5: the source's `teal` would now clash with the teal primary, so the tools accent moved to indigo.
-> C6: the design system pins these to meaning ("identified"/"spam"/"suspicious"), not to the brand — recolouring them would break that.
+> Two apps on Play with the same icon, palette and splash read as one app
+> submitted twice. This is the main body of work left.
 
 ## D. Keys and endpoints
 
 | # | Item | Where | Value | Status |
 |---|---|---|---|---|
-| D1 | Backend base URL | `services/RetrofitClient.kt` | `https://callerid.kpeworld.com/` | **[SET]** restored from source |
-| D2 | API account id | `services/ServiceCredentials.kt` | `1433` | **[SET]** restored from source |
-| D3 | API hash key | `services/ServiceCredentials.kt` | (28 chars) | **[SET]** restored from source |
-| D4 | API bearer token | `services/ServiceCredentials.kt` | (132-char JWT) | **[SET]** restored from source |
-| D5 | LightHouse API key | `local.properties` | `sk_wmylvq…` | **[SET]** new key you supplied |
-| D6 | LightHouse base URL | `local.properties` | same endpoint as source | **[SET]** |
-| D7 | `google-services.json` | `app/` | package_name rewritten; still project `callerid-phone-lookup` (`621456667679`) | **[NEEDS YOU]** |
+| D1 | Backend base URL | `services/RetrofitClient.kt:25` | `https://callerid.kpeworld.com/` (Remote Config can override) | **[KEPT]** your own backend |
+| D2 | API account id | `services/ServiceCredentials.kt` | `1433` | **[KEPT]** |
+| D3 | API hash key | `services/ServiceCredentials.kt` | (28 chars) | **[KEPT]** |
+| D4 | API bearer token | `services/ServiceCredentials.kt` | (132-char JWT) | **[KEPT]** |
+| D5 | LightHouse API key | `local.properties` | `sk_a7u94m4mu6gcsvey7ydz2` | **[SET]** new key, distinct from the source app |
+| D6 | LightHouse base URL | `local.properties` | `https://api.falconpush.com` | **[SET]** same endpoint as source |
+| D7 | `google-services.json` | `app/` | project `caller-id-home` (`752107855402`), package matches A1 | **[SET]** |
+| D8 | Remote Config template | `docs/remote-config.json` | not published to `caller-id-home` yet; line 326 `PrivacyPolicy` still points at `identifycaller.phonelookup.contacts.calllog` | **[NEEDS YOU]** |
+| D9 | AdMob app id | `AndroidManifest.xml:405` | `ca-app-pub-3940256099942544~3347511713` — Google's **test** id | **[NEEDS YOU]** |
+| D10 | Ad unit ids | `docs/remote-config.json` | every unit is a Google **test** unit | **[NEEDS YOU]** |
+| D11 | Signing keystore | `certificate/calleridnumber.jks` | byte-identical to the source app's key; no `signingConfigs` block in Gradle, release signing is done from the IDE | **[NEEDS YOU]** own key for a separate listing |
 
-> D1–D4 are your own backend (`kpeworld.com`), so the clone keeps using it. The
-> `ServiceCredentials.isConfigured` guard stays in place and now returns true;
-> it only exists so a build with placeholders can never fire those calls —
-> notably `PersonUploader`, which uploads the user's contacts.
+> D5: `local.properties` is gitignored and had lost both LightHouse lines in the
+> clone, so the SDK was initialising with an empty key
+> (`app/build.gradle.kts:16-17` default to `""`, then XOR-scramble into
+> `BuildConfig.LH_API_KEY`, read at `LookupShellApp.kt:70`). Push was silently dead.
 >
-> D5: the source uses a different key (`sk_d4j…`), so the two apps report separately. Correct for a distinct app.
->
-> D7 is the one thing still outstanding: register `com.callerid.numberlookup.home`
-> in a Firebase project and drop in the real file, or Analytics, Crashlytics and
-> Remote Config will not report.
+> D1–D4 are your own backend, so the clone keeps using them. The
+> `ServiceCredentials.isConfigured` guard stays in place; it exists so a build with
+> placeholders can never fire those calls — notably `PersonUploader`, which uploads
+> the user's contacts.
 
 ## E. Deliberately left alone — **[KEPT]**
 
 | # | Item | Where | Why |
 |---|---|---|---|
-| E1 | AdMob `APPLICATION_ID` | `AndroidManifest.xml` | Already Google's official **test** id in the source. Swap for your own before release. |
-| E2 | `conduit.user` / `conduit.password` | `gradle.properties` | Private-maven read credentials — the build cannot resolve the LightHouse SDK without them. |
-| E3 | Signing keystore | `certificate/calleridphonelookup` | The source app's key. Use your own for a separate Play listing. |
-| E4 | Ad-SDK native layouts (9) | `res/layout/google*native*.xml`, `fb*native*.xml` | AdMob/FAN bind these views by reference; renaming their ids breaks ad rendering. |
+| E1 | `conduit.user` / `conduit.password` | `gradle.properties` | Private-maven read credentials — the build cannot resolve the LightHouse SDK without them. |
+| E2 | Ad-SDK native layouts (9) | `res/layout/google*native*.xml`, `fb*native*.xml` | AdMob/FAN bind these views by reference; renaming their ids breaks ad rendering. |
+| E3 | Kotlin class/file names (213) | `app/src/main/java/…` | Stage 2 renamed packages only. Identical to the source app file-for-file. |
 
 ---
 
-## Two decisions worth making now
+## Still outstanding
 
-1. **versionCode / versionName** (A7/A8) — keep 3 / 1.2, or reset to 1 / 1.0 for a fresh listing?
-2. **Remote Config activity names** — the permission engine matches Activity *simple names* sent from Firebase. I renamed the activities and added a 28-entry legacy alias table so your existing Remote Config keeps working. Alternative: skip the aliases and update Remote Config server-side instead.
+1. **Brand visuals** (section C) — icon, palette, splash. Largest remaining item.
+2. **Publish Remote Config** to `caller-id-home` from `docs/remote-config.json`, after fixing the stale `PrivacyPolicy` URL (D8). Without it, the ads and permission engines get no config.
+3. **Real AdMob app id + ad units** (D9, D10).
+4. **Own signing keystore** (D11).
+5. Optional: **class/file-level rename pass** (E3) if the two apps should not share a code fingerprint.

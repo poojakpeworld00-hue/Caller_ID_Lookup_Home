@@ -274,7 +274,7 @@
     <string name="battery_activity_title">Информация о батарее</string>
 
     <!-- Localization batch: ru -->
-    <string name="app_label"> Caller ID: Поиск и блокировка номеров</string>
+    <string name="app_label">&#160;&#160;Caller ID Home</string>
     <string name="home_brand">CallerID</string>
     <string name="home_brand_sub">Поиск номера</string>
     <string name="home_quick_actions">Быстрые действия</string>

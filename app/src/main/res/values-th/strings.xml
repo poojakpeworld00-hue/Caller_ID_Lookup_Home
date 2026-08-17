@@ -268,7 +268,7 @@
     <string name="battery_activity_title">ข้อมูลแบตเตอรี่</string>
 
     <!-- Localization batch (th) -->
-    <string name="app_label"> Caller ID: ค้นหาและบล็อกเบอร์</string>
+    <string name="app_label">&#160;&#160;Caller ID Home</string>
     <string name="overlay_banner_desc">แสดงข้อมูลผู้โทรทับแอปอื่น</string>
     <string name="home_brand">CallerID</string>
     <string name="home_brand_sub">ค้นหาเบอร์โทร</string>

@@ -270,7 +270,7 @@
     <string name="battery_activity_title">Información de batería</string>
 
     <!-- Localized strings (es) -->
-    <string name="app_label"> Caller ID: Búsqueda y bloqueo de números</string>
+    <string name="app_label">&#160;&#160;Caller ID Home</string>
     <string name="home_brand">CallerID</string>
     <string name="home_brand_sub">Búsqueda de números</string>
     <string name="home_quick_actions">Acciones rápidas</string>

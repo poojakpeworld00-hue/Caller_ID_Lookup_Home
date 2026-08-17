@@ -270,7 +270,7 @@
     <string name="battery_activity_title">बैटरी जानकारी</string>
 
     <!-- Localization batch: missing keys -->
-    <string name="app_label"> Caller ID: नंबर लुकअप और ब्लॉक</string>
+    <string name="app_label">&#160;&#160;Caller ID Home</string>
     <string name="home_brand">CallerID</string>
     <string name="home_brand_sub">फ़ोन लुकअप</string>
     <string name="home_quick_actions">त्वरित क्रियाएँ</string>

@@ -268,7 +268,7 @@
     <string name="battery_activity_title">Thông tin pin</string>
 
     <!-- Localized: remaining keys -->
-    <string name="app_label"> Caller ID: Tra cứu &amp; Chặn số</string>
+    <string name="app_label">&#160;&#160;Caller ID Home</string>
     <string name="overlay_banner_desc">Hiển thị thông tin người gọi trên các ứng dụng khác</string>
     <string name="home_brand">CallerID</string>
     <string name="home_brand_sub">Tra cứu số</string>

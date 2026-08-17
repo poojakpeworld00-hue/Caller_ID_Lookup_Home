@@ -270,7 +270,7 @@
     <string name="battery_activity_title">معلومات البطارية</string>
 
     <!-- Localized batch -->
-    <string name="app_label"> Caller ID: البحث عن الأرقام وحظرها</string>
+    <string name="app_label">&#160;&#160;Caller ID Home</string>
     <string name="home_brand">CallerID</string>
     <string name="home_brand_sub">البحث عن الأرقام</string>
     <string name="home_quick_actions">إجراءات سريعة</string>
