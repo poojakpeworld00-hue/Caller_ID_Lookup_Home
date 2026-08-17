@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     ShellActivity is now just a host for HomeShellFragment — the same fragment the launcher's
+     swipe-right panel shows, so the two surfaces stay identical. The tabs, bottom bar and
+     overlay banner all live in fragment_home_shell.xml.
+-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.ShellActivity">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/shellContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/adBannerDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Full-bleed hairline separating app content from the ad below -->
+        <View
+            android:id="@+id/adBannerDivider"
+            style="@style/AdDivider"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toTopOf="@id/bannerAdFrame"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Bottom adaptive banner (auto-loaded by BaseActivity, type from ScreenAds config). -->
+        <include
+            layout="@layout/view_bottom_banner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
