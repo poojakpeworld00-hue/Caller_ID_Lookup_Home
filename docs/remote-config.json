@@ -79,16 +79,16 @@
     "NativeTheme": {
       "default": {
         "NativeLight": {
-          "btnColor": "#2E7D32",
+          "btnColor": "#0B5ED7",
           "btnText": "#FFFFFF",
           "bgColor": "#FFFFFF",
-          "textColor": "#000000"
+          "textColor": "#0A2647"
         },
         "NativeDark": {
-          "btnColor": "#2E7D32",
-          "btnText": "#FFFFFF",
-          "bgColor": "#121212",
-          "textColor": "#FFFFFF"
+          "btnColor": "#7FB2EE",
+          "btnText": "#08111D",
+          "bgColor": "#10161D",
+          "textColor": "#DCEBFF"
         }
       }
     },
@@ -271,7 +271,7 @@
         "welcome": {
           "inter_enabled": false,
           "ads_counter": 0,
-          "skip_enabled": true,
+          "skip_enabled": false,
           "slot": {
             "enabled": true,
             "ad_type": "banner",
