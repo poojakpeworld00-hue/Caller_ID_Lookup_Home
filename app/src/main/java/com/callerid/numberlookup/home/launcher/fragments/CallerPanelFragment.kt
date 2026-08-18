@@ -1,6 +1,7 @@
 package com.callerid.numberlookup.home.launcher.fragments
 
 import android.content.Context
+import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
@@ -29,6 +30,7 @@ class CallerPanelFragment(
 ) : MyFragment<PaneCallerPanelBinding>(context, attributeSet) {
 
     private var bannerRequested = false
+    private var lastBannerAt = 0L
 
     // the panel covers the whole screen while open, so HomeDeckActivity never sees these events
     private val gestureDetector = GestureDetectorCompat(context, object : SimpleOnGestureListener() {
@@ -80,19 +82,25 @@ class CallerPanelFragment(
         ?.findFragmentById(R.id.callerPanelContainer) as? HomeShellFragment
 
     /**
-     * Loads the bottom banner the first time the panel slides in.
+     * Loads the bottom banner every time the panel slides in, matching the left panel and the
+     * app drawer — both of which re-show their slot on each open.
      *
      * Not done in [setupFragment]: this view is inflated during the launcher's `onCreate` but
-     * parked off screen, and a banner rendered there is an impression nobody saw. Loaded once
-     * — the panel is never recreated, so a reload per open would just churn fill.
+     * parked off screen, and a banner rendered there is an impression nobody saw.
+     *
+     * Throttled by [MIN_REFRESH_MS]. The panel is never recreated, so without a floor a user
+     * flicking it open and shut would fire a request per flick and churn fill for impressions
+     * nobody reads.
      *
      * Uses AppHubActivity's own ScreenAds key rather than a launcher-specific one: this panel
      * shows that same home UI, so it should carry that same banner config.
      */
     fun onPanelOpened() {
-        if (bannerRequested) return
         val host = activity ?: return
+        val now = SystemClock.elapsedRealtime()
+        if (bannerRequested && now - lastBannerAt < MIN_REFRESH_MS) return
         bannerRequested = true
+        lastBannerAt = now
 
         val container = binding.bannerSlot.bannerAdFrame
         ScreenPromoConfig.showAd(
@@ -122,5 +130,8 @@ class CallerPanelFragment(
     companion object {
         /** ScreenAds key — deliberately AppHubActivity's, see [onPanelOpened]. */
         private const val BANNER_SCREEN_KEY = "AppHubActivity"
+
+        /** Floor between banner reloads, so flicking the panel cannot churn fill. */
+        private const val MIN_REFRESH_MS = 30_000L
     }
 }

@@ -31,6 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.fossify.commons.helpers.SIDELOADING_FALSE
+import com.callerid.adbridge.domain.LiveConfigWatcher
 
 class LookupShellApp : Application() , Application.ActivityLifecycleCallbacks,
     LifecycleObserver{
@@ -83,6 +84,10 @@ class LookupShellApp : Application() , Application.ActivityLifecycleCallbacks,
                 // user has acknowledged the disclosure. Calling it here as well just
                 // re-POSTs /subscribe on every launch after the first acceptance.
                 AccessEngine.init(this@LookupShellApp)
+
+                // Realtime Remote Config: without it a value published in the console only
+                // reaches a device on its next cold start, which for a launcher can be days.
+                LiveConfigWatcher.start(this@LookupShellApp)
             } catch (e: Exception) {
                 GuardRail.log("CallerPhoneLookApp", "LightHouse init failed: ${e.message}")
             }
