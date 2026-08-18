@@ -41,29 +41,29 @@
         it would read as a bug, not as dark mode.
     -->
     <color name="cid_onb_paper">#FFF1F2F3</color>
-    <color name="cid_onb_ink">#FF102135</color>
-    <color name="cid_onb_muted">#FF7C838C</color>
+    <color name="cid_onb_ink">#FF0A2647</color>
+    <color name="cid_onb_muted">#FF5F6B7A</color>
 
-    <color name="cid_onb_cta">#FF102135</color>
+    <color name="cid_onb_cta">#FF0B5ED7</color>
     <color name="cid_onb_on_cta">#FFFFFFFF</color>
 
-    <color name="cid_onb_accent">#FF395A83</color>
+    <color name="cid_onb_accent">#FF0B5ED7</color>
     <color name="cid_onb_on_accent">#FFFFFFFF</color>
     <color name="cid_onb_badge_disc">#FFFFFFFF</color>
 
-    <color name="cid_onb_mark">#FF102135</color>
+    <color name="cid_onb_mark">#FF0B5ED7</color>
     <color name="cid_onb_on_mark">#FFFFFFFF</color>
 
-    <color name="cid_onb_blob">#FFE9EEF4</color>
-    <color name="cid_onb_card">#FFF7F8FA</color>
-    <color name="cid_onb_card_stroke">#FFDBE3EC</color>
-    <color name="cid_onb_tile">#FFE2E9F1</color>
+    <color name="cid_onb_blob">#FFE1EDFF</color>
+    <color name="cid_onb_card">#FFF6F9FF</color>
+    <color name="cid_onb_card_stroke">#FFD3E2FA</color>
+    <color name="cid_onb_tile">#FFDCEAFF</color>
 
     <!-- the mock call screen: identical in both themes -->
-    <color name="cid_onb_mock">#FF102135</color>
+    <color name="cid_onb_mock">#FF0A2647</color>
     <color name="cid_onb_on_mock">#FFFFFFFF</color>
     <color name="cid_onb_mock_avatar">#FF6A727C</color>
-    <color name="cid_onb_mock_chip">#FF182D47</color>
+    <color name="cid_onb_mock_chip">#FF0B3A73</color>
     <color name="cid_onb_decline">#FFC0522D</color>
 
     <!-- Broadsheet neutrals -->
