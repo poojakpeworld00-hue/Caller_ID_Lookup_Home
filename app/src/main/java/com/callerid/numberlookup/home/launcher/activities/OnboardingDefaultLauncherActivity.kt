@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.OnBackPressedCallback
 import com.callerid.adbridge.domain.LauncherAdsConfig
+import com.callerid.adbridge.presentation.OverlayGuideActivity
 import com.callerid.numberlookup.home.databinding.ActivityOnboardingDefaultLauncherBinding
 import com.callerid.numberlookup.home.launcher.extensions.excludeAppFromRecents
 import com.callerid.numberlookup.home.launcher.extensions.isDefaultLauncher
@@ -112,6 +113,15 @@ class OnboardingDefaultLauncherActivity : SimpleActivity() {
                     Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS),
                     REQ_HOME_SETTINGS
                 )
+
+        // Same coach mark the overlay permission uses, worded for the home-app list.
+        // Started immediately after, from this task, so it lands on top of the page
+        // rather than under it; it polls isDefaultLauncher() and clears itself once
+        // the selection is made. Stage 2's role dialog gets no guide — it is already
+        // a one-tap prompt with nothing to hunt for in a list.
+        if (opened) {
+            OverlayGuideActivity.show(this, OverlayGuideActivity.MODE_HOME)
+        }
 
         // A ROM with neither page would otherwise dead-end the CTA, so skip to stage 2.
         if (!opened) {

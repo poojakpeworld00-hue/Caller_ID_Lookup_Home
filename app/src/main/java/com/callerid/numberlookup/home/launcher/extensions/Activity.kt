@@ -41,6 +41,7 @@ import com.callerid.numberlookup.home.launcher.helpers.REQUEST_SET_DEFAULT
 import com.callerid.numberlookup.home.launcher.helpers.UNINSTALL_APP_REQUEST_CODE
 import com.callerid.numberlookup.home.launcher.interfaces.ItemMenuListener
 import com.callerid.numberlookup.home.launcher.models.HomeScreenGridItem
+import com.callerid.adbridge.presentation.OverlayGuideActivity
 
 fun Activity.launchApp(packageName: String, activityName: String) {
     try {
@@ -74,18 +75,24 @@ fun Activity.launchAppInfo(packageName: String) {
  * Settings. Used by the long-press "Set as default" menu item and by onboarding.
  */
 fun Activity.requestSetAsDefaultLauncher() {
+    // second = whether the page is a list the user has to find this app in, and so
+    // whether the coach mark helps. The Q+ role request is a one-tap confirmation
+    // with nothing to hunt for, and a card over it would just cover the buttons.
     val intents = buildList {
-        add(Intent(Settings.ACTION_HOME_SETTINGS))
+        add(Intent(Settings.ACTION_HOME_SETTINGS) to true)
         if (isQPlus()) {
-            add(roleManager.createRequestRoleIntent(RoleManager.ROLE_HOME))
+            add(roleManager.createRequestRoleIntent(RoleManager.ROLE_HOME) to false)
         }
-        add(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS))
-        add(Intent(Settings.ACTION_SETTINGS))
+        add(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS) to true)
+        add(Intent(Settings.ACTION_SETTINGS) to true)
     }
 
-    for (intent in intents) {
+    for ((intent, isListPage) in intents) {
         try {
             startActivityForResult(intent, REQUEST_SET_DEFAULT)
+            if (isListPage) {
+                OverlayGuideActivity.show(this, OverlayGuideActivity.MODE_HOME)
+            }
             return
         } catch (_: ActivityNotFoundException) {
         }

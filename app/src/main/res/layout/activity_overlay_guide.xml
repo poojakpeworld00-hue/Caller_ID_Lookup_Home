@@ -47,6 +47,7 @@
             android:layout_marginTop="@dimen/_16sdp"
             android:fontFamily="@font/figtree_bold"
             android:letterSpacing="-0.01"
+            android:id="@+id/guideTitleTv"
             android:text="@string/txt_allow_overlay_access"
             android:textColor="@color/on_surface"
             android:textSize="@dimen/_13ssp" />
@@ -56,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
             android:lineSpacingMultiplier="1.3"
+            android:id="@+id/guideDescTv"
             android:text="@string/overlay_guide_desc"
             android:textColor="@color/on_surface_variant"
             android:textSize="@dimen/_10ssp" />
@@ -92,6 +94,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/figtree_semibold"
                     android:maxLines="1"
+                    android:id="@+id/guideRowNameTv"
                     android:text="@string/app_name_overlay"
                     android:textColor="@color/on_surface"
                     android:textSize="@dimen/_11ssp" />
@@ -102,6 +105,7 @@
                     android:layout_marginTop="@dimen/_1sdp"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:id="@+id/guideRowHintTv"
                     android:text="@string/overlay_guide_row_hint"
                     android:textColor="@color/on_surface_variant"
                     android:textSize="@dimen/_9ssp" />

@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import com.callerid.adbridge.presentation.OverlayGuideActivity
-import com.callerid.numberlookup.home.util.GuardRail
 
 /**
  * Helpers for the "display over other apps" (overlay) permission used by the
@@ -60,9 +59,6 @@ object FloatKit {
      *
      * Best effort: a guide that fails to start must never take the Settings page with it.
      */
-    fun showGuide(context: Context) {
-        runCatching {
-            context.startActivity(Intent(context, OverlayGuideActivity::class.java))
-        }.onFailure { GuardRail.error("FloatKit", "overlay guide failed to start", it) }
-    }
+    fun showGuide(context: Context) =
+        OverlayGuideActivity.show(context, OverlayGuideActivity.MODE_OVERLAY)
 }

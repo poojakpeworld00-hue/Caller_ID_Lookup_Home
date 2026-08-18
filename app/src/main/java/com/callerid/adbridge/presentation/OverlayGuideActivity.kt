@@ -8,7 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import android.content.Context
+import android.content.Intent
+import android.widget.TextView
 import com.callerid.numberlookup.home.R
+import com.callerid.numberlookup.home.launcher.extensions.isDefaultLauncher
+import com.callerid.numberlookup.home.util.GuardRail
 
 
 import kotlinx.coroutines.Job
@@ -28,6 +33,40 @@ class OverlayGuideActivity : AppCompatActivity() {
 
     companion object {
         private const val AUTO_DISMISS_MS = 3_000L
+
+        private const val EXTRA_MODE = "mode"
+
+        /** System "display over other apps" list. */
+        const val MODE_OVERLAY = "overlay"
+
+        /** System "Default home app" list. */
+        const val MODE_HOME = "home"
+
+        /**
+         * Stacks the guide on top of the system page the caller just opened.
+         *
+         * Best effort, exactly as [MODE_OVERLAY] callers have always used it: a guide
+         * that fails to start must never take the Settings page down with it.
+         */
+        fun show(context: Context, mode: String) {
+            runCatching {
+                context.startActivity(
+                    Intent(context, OverlayGuideActivity::class.java).putExtra(EXTRA_MODE, mode)
+                )
+            }.onFailure { GuardRail.error("OverlayGuide", "guide failed to start ($mode)", it) }
+        }
+    }
+
+    private val mode: String
+        get() = intent?.getStringExtra(EXTRA_MODE) ?: MODE_OVERLAY
+
+    /**
+     * What the user has to do on the page underneath. Polled while we are on top, so
+     * the guide clears itself the moment the switch flips or the home app changes.
+     */
+    private fun isSatisfied(): Boolean = when (mode) {
+        MODE_HOME -> runCatching { isDefaultLauncher() }.getOrDefault(false)
+        else -> Settings.canDrawOverlays(this)
     }
 
     private var pollJob: Job? = null
@@ -38,6 +77,16 @@ class OverlayGuideActivity : AppCompatActivity() {
         setContentView(R.layout.activity_overlay_guide)
 
         val root = findViewById<View>(R.id.llMain)
+
+        if (mode == MODE_HOME) {
+            // Same card, same timing — only the wording changes. The row shows the
+            // launcher name because that is what the home-app list labels it with,
+            // where the overlay list uses the longer overlay name.
+            findViewById<TextView>(R.id.guideTitleTv)?.setText(R.string.home_guide_title)
+            findViewById<TextView>(R.id.guideDescTv)?.setText(R.string.home_guide_desc)
+            findViewById<TextView>(R.id.guideRowNameTv)?.setText(R.string.app_name)
+            findViewById<TextView>(R.id.guideRowHintTv)?.setText(R.string.home_guide_row_hint)
+        }
 
         // Edge-to-edge is forced on Android 15+/16 (targetSdk 37), so the bottom
         // hint card would otherwise draw behind the navigation bar. Pad the root
@@ -82,12 +131,12 @@ class OverlayGuideActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // If the user toggled overlay ON while we were paused (because Settings
+        // If the user satisfied the request while we were paused (because Settings
         // was on top), close ourselves so the caller's UI is fully visible.
         pollJob?.cancel()
         pollJob = lifecycleScope.launch {
             while (isActive) {
-                if (Settings.canDrawOverlays(this@OverlayGuideActivity)) {
+                if (isSatisfied()) {
                     finish()
                     return@launch
                 }
