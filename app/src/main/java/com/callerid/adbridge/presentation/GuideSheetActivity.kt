@@ -49,11 +49,37 @@ class GuideSheetActivity : AppCompatActivity() {
          * that fails to start must never take the Settings page down with it.
          */
         fun show(context: Context, mode: String) {
+            // Prefer a real overlay window. ACTION_MANAGE_OVERLAY_PERMISSION stays in the
+            // caller's task, so an activity started right after it lands on top — but
+            // ACTION_HOME_SETTINGS is normally hoisted into the Settings app's own task,
+            // and an activity of ours then sits behind it, invisible. A window drawn with
+            // TYPE_APPLICATION_OVERLAY floats above whatever task is in front.
+            if (GuideSheetWindow.show(context, mode)) return
+
             runCatching {
                 context.startActivity(
                     Intent(context, GuideSheetActivity::class.java).putExtra(EXTRA_MODE, mode)
                 )
             }.onFailure { GuardRail.error("OverlayGuide", "guide failed to start ($mode)", it) }
+        }
+
+        /** What the user has to do on the page underneath. */
+        fun satisfied(context: Context, mode: String): Boolean = when (mode) {
+            MODE_HOME -> runCatching { context.isDefaultLauncher() }.getOrDefault(false)
+            else -> Settings.canDrawOverlays(context)
+        }
+
+        /**
+         * Applies [mode]'s wording to an inflated card. The row shows the launcher name
+         * in home mode because that is what the home-app list labels it with, where the
+         * overlay list uses the longer overlay name.
+         */
+        fun applyMode(root: View, mode: String) {
+            if (mode != MODE_HOME) return
+            root.findViewById<TextView>(R.id.guideTitleTv)?.setText(R.string.home_guide_title)
+            root.findViewById<TextView>(R.id.guideDescTv)?.setText(R.string.home_guide_desc)
+            root.findViewById<TextView>(R.id.guideRowNameTv)?.setText(R.string.app_name)
+            root.findViewById<TextView>(R.id.guideRowHintTv)?.setText(R.string.home_guide_row_hint)
         }
     }
 
@@ -61,13 +87,10 @@ class GuideSheetActivity : AppCompatActivity() {
         get() = intent?.getStringExtra(EXTRA_MODE) ?: MODE_OVERLAY
 
     /**
-     * What the user has to do on the page underneath. Polled while we are on top, so
-     * the guide clears itself the moment the switch flips or the home app changes.
+     * Polled while we are on top, so the guide clears itself the moment the switch
+     * flips or the home app changes.
      */
-    private fun isSatisfied(): Boolean = when (mode) {
-        MODE_HOME -> runCatching { isDefaultLauncher() }.getOrDefault(false)
-        else -> Settings.canDrawOverlays(this)
-    }
+    private fun isSatisfied(): Boolean = satisfied(this, mode)
 
     private var pollJob: Job? = null
     private var autoDismissJob: Job? = null
@@ -78,15 +101,7 @@ class GuideSheetActivity : AppCompatActivity() {
 
         val root = findViewById<View>(R.id.llMain)
 
-        if (mode == MODE_HOME) {
-            // Same card, same timing — only the wording changes. The row shows the
-            // launcher name because that is what the home-app list labels it with,
-            // where the overlay list uses the longer overlay name.
-            findViewById<TextView>(R.id.guideTitleTv)?.setText(R.string.home_guide_title)
-            findViewById<TextView>(R.id.guideDescTv)?.setText(R.string.home_guide_desc)
-            findViewById<TextView>(R.id.guideRowNameTv)?.setText(R.string.app_name)
-            findViewById<TextView>(R.id.guideRowHintTv)?.setText(R.string.home_guide_row_hint)
-        }
+        applyMode(root, mode)
 
         // Edge-to-edge is forced on Android 15+/16 (targetSdk 37), so the bottom
         // hint card would otherwise draw behind the navigation bar. Pad the root
