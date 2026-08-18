@@ -54,6 +54,7 @@ import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.data.VaultRegistry
 import com.callerid.numberlookup.home.permission.AccessEngine
 import com.callerid.numberlookup.home.permission.AccessSource
+import com.callerid.numberlookup.home.permission.ScreenMatcher
 import com.callerid.numberlookup.home.util.AppVault
 import com.callerid.numberlookup.home.util.AppVault.THEME_DARK
 import com.callerid.numberlookup.home.util.AppVault.THEME_LIGHT
@@ -723,7 +724,7 @@ open class ADDashboardActivity : AppCompatActivity() {
      */
     private fun targetsScreen(key: String, screen: String): Boolean {
         val rule = AccessSource.rules().firstOrNull { it.key == key } ?: return true
-        val targets = rule.activities.any { it.equals(screen, ignoreCase = true) }
+        val targets = rule.activities.any { ScreenMatcher.matches(it, screen) }
         if (!targets) Log.d("AccessEngine", "'$key' not configured for $screen — skipped on splash")
         return targets
     }

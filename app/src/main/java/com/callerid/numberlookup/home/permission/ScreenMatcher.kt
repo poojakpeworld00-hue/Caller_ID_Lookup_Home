@@ -45,6 +45,31 @@ object ScreenMatcher {
     )
 
     /**
+     * True when a Remote Config screen name refers to [activitySimpleName], directly
+     * or through [LEGACY_NAMES].
+     *
+     * Every name-keyed lookup in the app goes through here, so a class rename only
+     * has to be recorded in [LEGACY_NAMES] once instead of being chased across the
+     * permission engine, the splash primer and the per-screen ad config.
+     */
+    fun matches(configuredName: String, activitySimpleName: String): Boolean =
+        configuredName.equals(activitySimpleName, ignoreCase = true) ||
+            LEGACY_NAMES[configuredName]?.equals(activitySimpleName, ignoreCase = true) == true
+
+    /**
+     * The key in [keys] that refers to [activitySimpleName], or null. For config
+     * objects keyed by screen name (`ScreenAds`), where the key on the server may be
+     * a name from an earlier build.
+     */
+    fun keyFor(keys: Iterator<String>, activitySimpleName: String): String? {
+        while (keys.hasNext()) {
+            val key = keys.next()
+            if (matches(key, activitySimpleName)) return key
+        }
+        return null
+    }
+
+    /**
      * Returns the enabled rules that target [activitySimpleName], preserving
      * the caller's ordering (the queue applies priority afterwards).
      */
@@ -52,9 +77,6 @@ object ScreenMatcher {
         activitySimpleName: String,
         allRules: List<AccessRule>,
     ): List<AccessRule> = allRules.filter { rule ->
-        rule.enabled && rule.activities.any { named ->
-            named.equals(activitySimpleName, ignoreCase = true) ||
-                LEGACY_NAMES[named]?.equals(activitySimpleName, ignoreCase = true) == true
-        }
+        rule.enabled && rule.activities.any { named -> matches(named, activitySimpleName) }
     }
 }

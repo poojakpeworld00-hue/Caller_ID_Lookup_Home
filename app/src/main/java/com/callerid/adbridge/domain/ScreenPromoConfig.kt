@@ -13,6 +13,7 @@ import com.callerid.adbridge.presentation.BannerKind
 import com.callerid.adbridge.presentation.NativePromoBanner
 import com.callerid.numberlookup.home.BuildConfig
 import org.json.JSONObject
+import com.callerid.numberlookup.home.permission.ScreenMatcher
 
 /**
  * Per-screen on-load ad configuration, driven by Remote Config.
@@ -58,12 +59,12 @@ object ScreenPromoConfig {
             !screenWise -> null
             root == null -> null
             useDefault -> root.optJSONObject("default")
-            else -> root.optJSONObject(screenName) ?: root.optJSONObject("default")
+            else -> root.screenEntry(screenName) ?: root.optJSONObject("default")
         }
 
         // `show` is resolved per-screen regardless of screen_wise_ad: the screen's
         // own ScreenAds entry (else `default`) wins; absent → true (visible).
-        val showEntry = root?.let { it.optJSONObject(screenName) ?: it.optJSONObject("default") }
+        val showEntry = root?.let { it.screenEntry(screenName) ?: it.optJSONObject("default") }
         val globalShow = showEntry?.optBoolean("show", true) ?: true
 
         val result: ScreenAd
@@ -210,3 +211,13 @@ object ScreenPromoConfig {
         )
     }
 }
+
+/**
+ * The `ScreenAds` entry for [screenName], honouring [ScreenMatcher]'s legacy-name
+ * table so a key written against an earlier build still resolves. A plain
+ * `optJSONObject(screenName)` silently fell through to `default` after a class
+ * rename — which is what a server-side "LanguageActivity" key has been doing since
+ * that screen became LocaleActivity.
+ */
+private fun JSONObject.screenEntry(screenName: String): JSONObject? =
+    ScreenMatcher.keyFor(keys(), screenName)?.let { optJSONObject(it) }
