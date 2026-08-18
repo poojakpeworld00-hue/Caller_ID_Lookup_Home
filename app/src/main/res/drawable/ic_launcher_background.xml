@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Adaptive-icon background: the source artwork's own diagonal sweep, sampled
+    from ICON_3.png — cyan at the top-left corner through to deep blue at the
+    bottom-right. The foreground art is white, so nothing here needs to change
+    between light and dark.
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
@@ -10,21 +16,20 @@
         <aapt:attr name="android:fillColor">
             <gradient
                 android:type="linear"
-                android:startX="4"
-                android:startY="4"
-                android:endX="104"
-                android:endY="104">
-                <item android:color="#FF26A69A" android:offset="0.0" />
-                <item android:color="#FF00897B" android:offset="0.55" />
-                <item android:color="#FF00655A" android:offset="1.0" />
+                android:startX="0"
+                android:startY="0"
+                android:endX="108"
+                android:endY="108">
+                <item
+                    android:color="#FF0BD1FF"
+                    android:offset="0" />
+                <item
+                    android:color="#FF0A95FF"
+                    android:offset="0.5" />
+                <item
+                    android:color="#FF046DFF"
+                    android:offset="1" />
             </gradient>
         </aapt:attr>
     </path>
-
-    <path
-        android:fillColor="#16FFFFFF"
-        android:pathData="M54,54m-39,0a39,39 0,1 1,78 0a39,39 0,1 1,-78 0" />
-    <path
-        android:fillColor="#12FFFFFF"
-        android:pathData="M54,54m-29,0a29,29 0,1 1,58 0a29,29 0,1 1,-58 0" />
 </vector>

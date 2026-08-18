@@ -8,8 +8,8 @@
          g-ramp (see colors_cid.xml). Verdict colors are fixed and never take
          a "brand" role, so they are NOT part of this rebrand. Light values
          here; dark overrides in values-night. -->
-    <color name="primary">#2C6547</color>            <!-- Claude Design g-700 · seed -->
-    <color name="primary_dark">#1C4730</color>       <!-- Claude Design g-800 · pressed / status scrim -->
+    <color name="primary">#0B5ED7</color>            <!-- Claude Design g-700 · seed -->
+    <color name="primary_dark">#0842A0</color>       <!-- Claude Design g-800 · pressed / status scrim -->
     <color name="on_primary">#FFFFFFFF</color>
     <color name="primary_container">@color/cid_g_100</color>
     <color name="on_primary_container">@color/cid_g_800</color>
@@ -65,27 +65,27 @@
          The greens are sampled straight out of mipmap/ic_launcher.png so the splash
          and the app icon are the same brand colour: #047439 (icon's darkest, bottom
          right) → #15A73D (mid) → #37C747 (lightest, top right). ===== -->
-    <color name="splash_grad_start">#047439</color>
-    <color name="splash_grad_center">#15A73D</color>
-    <color name="splash_grad_end">#37C747</color>
-    <color name="splash_accent">#0E9A3C</color>
-    <color name="splash_accent_2">#37C747</color>
+    <color name="splash_grad_start">#046DFF</color>
+    <color name="splash_grad_center">#0A95FF</color>
+    <color name="splash_grad_end">#0BD1FF</color>
+    <color name="splash_accent">#0A7CFF</color>
+    <color name="splash_accent_2">#0BD1FF</color>
     <color name="splash_ring">#47FFFFFF</color>
-    <color name="splash_field_bg">#F0F7F1</color>
-    <color name="splash_field_text">#0F1917</color>
+    <color name="splash_field_bg">#EFF3F8</color>
+    <color name="splash_field_text">#0E171A</color>
     <color name="splash_card_bg">#FFFFFF</color>
-    <color name="splash_card_name">#0F1917</color>
-    <color name="splash_card_sub">#5F7365</color>
-    <color name="splash_chip_bg">#E9F2EA</color>
-    <color name="splash_chip_fg">#47605C</color>
+    <color name="splash_card_name">#0E171A</color>
+    <color name="splash_card_sub">#5E6874</color>
+    <color name="splash_chip_bg">#E8EDF3</color>
+    <color name="splash_chip_fg">#455C62</color>
     <color name="splash_verdict_container">#DDF2E7</color>
     <color name="splash_verdict_on">#14663F</color>
     <color name="splash_verified">#1E8E5A</color>
     <!-- Phone illustration -->
     <color name="splash_phone_bg">#FFFFFF</color>
-    <color name="splash_phone_stroke">#DCEEDF</color>
-    <color name="splash_content_line">#D3E9D8</color>
-    <color name="splash_notch">#C4DCC8</color>
+    <color name="splash_phone_stroke">#DBE4EF</color>
+    <color name="splash_content_line">#D1DDEB</color>
+    <color name="splash_notch">#C2CFDE</color>
 
     <!-- ===== Splash "Caller Information" redesign (2026) — white-on-gradient
          tokens shared by light & dark (both hero gradients are deep blue/purple,
@@ -97,9 +97,9 @@
     <color name="splash_scan">#F2FFFFFF</color>          <!-- bright AI-scan arc -->
     <color name="splash_scan_faint">#40FFFFFF</color>    <!-- faint scan ring track -->
     <color name="splash_icon_tile_top">#FFFFFF</color>   <!-- app-icon tile gradient -->
-    <color name="splash_icon_tile_bottom">#E4F5E7</color>
+    <color name="splash_icon_tile_bottom">#E3ECF6</color>
     <color name="splash_pill_bg">#F7FFFFFF</color>       <!-- white verdict pills -->
-    <color name="splash_pill_fg">#0F1917</color>
+    <color name="splash_pill_fg">#0E171A</color>
     <color name="splash_incoming_dot">#D6EFDA</color>    <!-- dot behind incoming glyph -->
     <color name="splash_incoming_icon">#046B32</color>
     <color name="splash_fraud_fg">#A32626</color>        <!-- "Fraud blocked" text -->
@@ -112,32 +112,32 @@
     <!-- ===== FSI intro Activity (design: All Screen Light+Dark). Own palette
          (#00897B / #0F172A / greens); theme-aware via values-night. The floating
          caller-ID card itself stays white in both themes. ===== -->
-    <color name="fsi_bg_center">#E4F4F1</color>          <!-- radial bg, top-center -->
-    <color name="fsi_bg_edge">#F4F8F7</color>            <!-- radial bg, edge -->
-    <color name="fsi_blue">#00897B</color>              <!-- FSI accent (both themes) -->
-    <color name="fsi_blue_2">#4DBFB2</color>            <!-- avatar gradient end -->
-    <color name="fsi_title">#0F1917</color>
-    <color name="fsi_subtitle">#47605C</color>
+    <color name="fsi_bg_center">#E3F2F5</color>          <!-- radial bg, top-center -->
+    <color name="fsi_bg_edge">#F4F7F8</color>            <!-- radial bg, edge -->
+    <color name="fsi_blue">#0A7CFF</color>              <!-- FSI accent (both themes) -->
+    <color name="fsi_blue_2">#4DA8F0</color>            <!-- avatar gradient end -->
+    <color name="fsi_title">#0E171A</color>
+    <color name="fsi_subtitle">#455C62</color>
     <color name="fsi_benefit_card">#FFFFFF</color>
-    <color name="fsi_benefit_border">#E9F1EF</color>
-    <color name="fsi_benefit_text">#0F1917</color>
-    <color name="fsi_benefit_divider">#E9F1EF</color>
-    <color name="fsi_not_now">#5F7370</color>
-    <color name="fsi_orbit_ring">#3800897B</color>      <!-- expanding orbit rings -->
-    <color name="fsi_glow">#2900897B</color>            <!-- ambient glow behind card -->
-    <color name="fsi_tile_blue">#D3EEEA</color>
+    <color name="fsi_benefit_border">#E8F0F2</color>
+    <color name="fsi_benefit_text">#0E171A</color>
+    <color name="fsi_benefit_divider">#E8F0F2</color>
+    <color name="fsi_not_now">#5E7074</color>
+    <color name="fsi_orbit_ring">#38006E89</color>      <!-- expanding orbit rings -->
+    <color name="fsi_glow">#29006E89</color>            <!-- ambient glow behind card -->
+    <color name="fsi_tile_blue">#D1EAF0</color>
     <color name="fsi_tile_red">#FCEEEE</color>
     <color name="fsi_tile_green">#DDF2E7</color>
-    <color name="fsi_icon_blue">#00897B</color>
+    <color name="fsi_icon_blue">#006E89</color>
     <color name="fsi_icon_red">#D93B3B</color>
     <color name="fsi_icon_green">#1E8E5A</color>
 
     <!-- ===== Enable-Caller-ID bottom-sheet dialog (design: Enable Caller ID
          Dialog). Reuses the FSI blue; only these extras are dialog-specific.
          Dark overrides in values-night. ===== -->
-    <color name="cid_hint_bg">#E9F5F3</color>            <!-- "next step" hint strip -->
+    <color name="cid_hint_bg">#E8F3F6</color>            <!-- "next step" hint strip -->
     <color name="cid_shield_check">#FFFFFF</color>       <!-- checkmark stroke on the shield -->
-    <color name="cid_toggle_off">#C2D5D1</color>        <!-- demo toggle track, off state -->
+    <color name="cid_toggle_off">#C1D2D6</color>        <!-- demo toggle track, off state -->
 
     <!-- ===== Home-screen launcher ===== -->
 

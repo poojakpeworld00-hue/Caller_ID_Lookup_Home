@@ -45,18 +45,25 @@ Legend:
 > English. The brand itself is no longer translated, matching how `app_name` is
 > handled.
 
-## C. Brand visuals — **[NEEDS YOU]**, nothing changed yet
+## C. Brand visuals — **[SET]** in Stage 3, from `ICON_3.png`
 
 | # | Item | Where | State |
 |---|---|---|---|
-| C1 | `values/colors.xml` | whole palette | **byte-identical to the source app** — `primary` `#2C6547`, `primary_dark` `#1C4730` |
-| C2 | Splash gradient | `splash_grad_start/center/end` | identical — `#047439 → #15A73D → #37C747` |
-| C3 | Launcher icon | `mipmap-xhdpi/ic_launcher.png`, `drawable/ic_launcher_foreground.xml`, `…_background.xml` | all three byte-identical to the source app |
-| C4 | Layouts | `res/layout/*` | only differ from the source by the package/theme rename |
-| C5 | Verdict colours **[KEPT]** | `values/colors.xml` | green/red/amber are pinned to meaning ("identified"/"spam"/"suspicious"), not to the brand |
+| C1 | Brand ramp | `values/colors_cid.xml`, `values-night/colors_cid.xml` | rebuilt on the icon's blue: `cid_g_700` `#0B5ED7`, ink `#0A2647`, container `#E1EDFF` |
+| C2 | `primary` / `primary_dark` | `values/colors.xml` | `#0B5ED7` / `#0842A0` (night `#7FB2EE` / `#5E8CC4`) |
+| C3 | Splash gradient | `splash_grad_start/center/end` | `#046DFF → #0A95FF → #0BD1FF`, sampled from the icon; dark→light direction kept from the source so white splash text keeps the darker end |
+| C4 | Launcher icon | `mipmap-{m,h,x,xx,xxx}dpi/ic_launcher.png` + `mipmap-anydpi-v26/ic_launcher.xml` | new art at 5 densities, plus a real adaptive icon (gradient background vector + white art foreground in the 66/108 safe zone) |
+| C5 | Layouts | `res/layout/*` | still differ from the source only by the package/theme rename |
+| C6 | Verdict colours **[KEPT]** | `values/colors.xml` | green/red/amber are pinned to meaning ("identified"/"spam"/"suspicious"); `online_green` / `whatsapp_green` name real products |
 
-> Two apps on Play with the same icon, palette and splash read as one app
-> submitted twice. This is the main body of work left.
+> 113 tokens were rotated off the green ramp. Lightness and alpha were preserved
+> per token, so the design system's existing contrast relationships survive:
+> white on `primary` 5.84, `on_primary_container` on `primary_container` 9.51,
+> body ink on background 13.61 — all above the 4.5 AA floor.
+>
+> The token names still read `cid_g_*` ("g" for the old green ramp). Renaming
+> them would touch every layout that references them; the values are blue, the
+> names are historical.
 
 ## D. Keys and endpoints
 
@@ -108,9 +115,8 @@ Legend:
 
 ## Still outstanding
 
-1. **Brand visuals** (section C) — icon, palette, splash. Largest remaining item.
-2. **Publish Remote Config** — `GET_DATA_LIST` + `DEBUG_GET_DATA_LIST` on `caller-id-home` (D8). Without it the ads and permission engines get no config at all.
-3. **Real AdMob app id + ad units** (D9, D10) — and the `980.mark.qureka.com` `DirectLink`/`MarketLink`/`fallback_link` values inside the blob, inherited from the source app.
-4. **Own signing keystore** (D11).
-5. **Service-account JSON to LightHouse** (D8a) — without it push delivers nothing, whatever the API key says.
-6. Optional: **class/file-level rename pass** (E3) if the two apps should not share a code fingerprint.
+1. **Publish Remote Config** — `GET_DATA_LIST` + `DEBUG_GET_DATA_LIST` on `caller-id-home` (D8). Without it the ads and permission engines get no config at all.
+2. **Real AdMob app id + ad units** (D9, D10) — and the `980.mark.qureka.com` `DirectLink`/`MarketLink`/`fallback_link` values inside the blob, inherited from the source app.
+3. **Own signing keystore** (D11).
+4. **Service-account JSON to LightHouse** (D8a) — without it push delivers nothing, whatever the API key says.
+5. Optional: **class/file-level rename pass** (E3) if the two apps should not share a code fingerprint.
