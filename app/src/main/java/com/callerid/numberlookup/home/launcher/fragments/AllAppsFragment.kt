@@ -85,7 +85,27 @@ class AllAppsFragment(
     /** Called every time the drawer is flung open. */
     fun onDrawerShown() {
         val activity = activity ?: return
+        refreshSlot(activity)
         LauncherAdsConfig.showSlot(activity, adSlot, binding.adNativeFrame, binding.adShimmer)
+    }
+
+    /**
+     * Re-reads `app_drawer.bottom_native` before showing.
+     *
+     * The slot used to be resolved once in [setupFragment], which runs in the launcher's
+     * onCreate — and a home-screen activity is effectively never recreated, so a Remote Config
+     * change to the row position, ad type or enabled flag never reached a running device no
+     * matter how promptly the blob itself was updated.
+     *
+     * Only the row hand-off is guarded, since [LaunchersAdapter.setAdSlot] rebuilds the grid.
+     */
+    private fun refreshSlot(activity: HomeDeckActivity) {
+        val fresh = LauncherAdsConfig.appDrawerSlot(activity)
+        if (fresh == adSlot) return
+
+        adSlot = fresh
+        if (adSlot.needsNativePreload) nativePromo.loadNativeADs(activity)
+        (binding.allAppsGrid.adapter as? LaunchersAdapter)?.setAdSlot(adHeaderView(), adSlot.position)
     }
 
     override fun onAttachedToWindow() {

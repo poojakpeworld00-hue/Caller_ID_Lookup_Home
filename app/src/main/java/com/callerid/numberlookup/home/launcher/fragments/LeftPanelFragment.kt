@@ -138,6 +138,19 @@ class LeftPanelFragment(
      */
     fun onPanelShown() {
         val activity = activity ?: return
+
+        // Re-read both slots first: resolving them once in setupFragment left a running
+        // launcher on whatever config was live when it started (see AllAppsFragment.refreshSlot).
+        val freshAd = LauncherAdsConfig.rightPanelSlot(activity)
+        val freshSuggested = LauncherAdsConfig.rightPanelSuggestedSlot(activity)
+        if (freshAd != adSlot || freshSuggested != suggestedSlot) {
+            adSlot = freshAd
+            suggestedSlot = freshSuggested
+            if (adSlot.needsNativePreload || suggestedSlot.needsNativePreload) {
+                nativePromo.loadNativeADs(activity)
+            }
+        }
+
         LauncherAdsConfig.showSlot(activity, adSlot, binding.adNativeFrame, binding.adShimmer)
         LauncherAdsConfig.showSlot(
             activity = activity,
