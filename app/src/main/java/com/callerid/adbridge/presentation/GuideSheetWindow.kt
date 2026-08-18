@@ -40,6 +40,9 @@ object GuideSheetWindow {
     private val main = Handler(Looper.getMainLooper())
     private var shown: View? = null
 
+    /** True when this app may draw the card over another app's UI. */
+    fun canDraw(context: Context): Boolean = Settings.canDrawOverlays(context.applicationContext)
+
     /** True when the card was added; false when the caller should fall back. */
     fun show(context: Context, mode: String): Boolean {
         val app = context.applicationContext

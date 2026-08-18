@@ -9,6 +9,8 @@ import android.provider.Settings
 import androidx.activity.OnBackPressedCallback
 import com.callerid.adbridge.domain.LauncherAdsConfig
 import com.callerid.adbridge.presentation.GuideSheetActivity
+import com.callerid.adbridge.presentation.GuideSheetWindow
+import com.callerid.adbridge.presentation.GuideSheetInline
 import com.callerid.numberlookup.home.databinding.ScreenOnboardingDefaultLauncherBinding
 import com.callerid.numberlookup.home.launcher.extensions.excludeAppFromRecents
 import com.callerid.numberlookup.home.launcher.extensions.isDefaultLauncher
@@ -19,6 +21,7 @@ import com.callerid.numberlookup.home.launcher.helpers.riseIn
 import com.callerid.numberlookup.home.launcher.helpers.stampIn
 import com.callerid.numberlookup.home.launcher.helpers.twinkle
 import com.callerid.numberlookup.home.util.followAdContainer
+import com.callerid.numberlookup.home.util.openActivity
 import org.fossify.commons.extensions.beVisibleIf
 import org.fossify.commons.extensions.viewBinding
 import org.fossify.commons.helpers.isQPlus
@@ -108,20 +111,28 @@ class DefaultHomeStepActivity : CoreDeckActivity() {
     private fun openHomeSettings() {
         if (leaving || requestInFlight) return
 
+        // The coach mark can only be drawn over the system list when this app holds
+        // "display over other apps". Without it, prime first: the card is shown here,
+        // over our own screen, and the list opens when it goes away. Firing both at
+        // once is what the screen recording caught — the list is hoisted into the
+        // Settings task, our card queues behind it, and it surfaces on the way back
+        // where there is nothing left to point at.
+        if (GuideSheetWindow.canDraw(this)) {
+            launchHomeSettings()
+            GuideSheetWindow.show(this, GuideSheetActivity.MODE_HOME)
+        } else {
+            GuideSheetInline.show(this, GuideSheetActivity.MODE_HOME) { launchHomeSettings() }
+        }
+    }
+
+    private fun launchHomeSettings() {
+        if (leaving) return
+
         val opened = launchForResult(Intent(Settings.ACTION_HOME_SETTINGS), REQ_HOME_SETTINGS) ||
                 launchForResult(
                     Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS),
                     REQ_HOME_SETTINGS
                 )
-
-        // Same coach mark the overlay permission uses, worded for the home-app list.
-        // Started immediately after, from this task, so it lands on top of the page
-        // rather than under it; it polls isDefaultLauncher() and clears itself once
-        // the selection is made. Stage 2's role dialog gets no guide — it is already
-        // a one-tap prompt with nothing to hunt for in a list.
-        if (opened) {
-            GuideSheetActivity.show(this, GuideSheetActivity.MODE_HOME)
-        }
 
         // A ROM with neither page would otherwise dead-end the CTA, so skip to stage 2.
         if (!opened) {
