@@ -21,7 +21,7 @@ import com.callerid.adbridge.presentation.my_main_counter.service.ShelllJobServi
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.data.BlockRosterRegistry
 import com.callerid.numberlookup.home.launcher.extensions.isDefaultLauncher
-import com.callerid.numberlookup.home.ui.incall.InboundCallActivity
+import com.callerid.numberlookup.home.ui.incall.RingScreenActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -33,7 +33,7 @@ import java.util.Date
  * Consolidates what used to be two duplicate receivers. It drives both:
  *
  *  - **Caller-ID card** — RINGING (+ number + overlay) → show [IdentFloatService];
- *    OFFHOOK / IDLE → dismiss it (stop the service, finish any [InboundCallActivity]).
+ *    OFFHOOK / IDLE → dismiss it (stop the service, finish any [RingScreenActivity]).
  *  - **Post-call summary** — on IDLE, determine the call type and show
  *    [My_Shell_Screen] (overlay/FGS path) or a full-screen notification fallback.
  *
@@ -267,7 +267,7 @@ class CallStateReceiver : BroadcastReceiver() {
         context: Context, phone: String, start: Date, end: Date, type: String
     ) {
         Log.e(TAG, "showFullScreenNotification: ")
-        if (My_Shell_Screen.isActive || InboundCallActivity.isActive) {
+        if (My_Shell_Screen.isActive || RingScreenActivity.isActive) {
             Log.d(TAG, "post-call screen in foreground — suppressing notification")
             return
         }

@@ -28,7 +28,7 @@ import com.callerid.adbridge.presentation.NativePromoBanner
 import com.callerid.numberlookup.home.base.HostFragment
 import com.callerid.numberlookup.home.util.openActivity
 import com.callerid.numberlookup.home.databinding.FragmentContactsBinding
-import com.callerid.numberlookup.home.ui.detail.CallInsightActivity
+import com.callerid.numberlookup.home.ui.detail.CallBriefActivity
 import com.callerid.numberlookup.home.util.followAdContainer
 import com.callerid.numberlookup.home.ui.home.homeShellController
 
@@ -241,6 +241,6 @@ class PeopleFragment : HostFragment<FragmentContactsBinding>() {
     private fun dialNumber(number: String) = placeCall(number)
 
     private fun openDetail(contact: com.callerid.numberlookup.home.data.PersonItem) {
-        requireActivity().openActivity(CallInsightActivity.newIntent(requireContext(), contact.detail, contact.name))
+        requireActivity().openActivity(CallBriefActivity.newIntent(requireContext(), contact.detail, contact.name))
     }
 }

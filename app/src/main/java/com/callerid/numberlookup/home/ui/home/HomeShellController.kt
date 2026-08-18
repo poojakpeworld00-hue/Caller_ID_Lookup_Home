@@ -100,7 +100,7 @@ class HomeShellController(private val host: HomeShellHost) {
     /**
      * The visible first-run prompts: FSI priming dialog first, then the permission sheet.
      *
-     * Call this when the shell is actually on screen. ShellActivity calls it from
+     * Call this when the shell is actually on screen. AppHubActivity calls it from
      * `initView`, where the shell *is* the screen; the launcher defers it until the panel
      * has finished sliding in, so the sheet lands over the caller-ID content it is asking
      * about rather than over the home grid.

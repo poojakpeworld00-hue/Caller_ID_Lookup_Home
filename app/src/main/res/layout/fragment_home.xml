@@ -3,7 +3,7 @@
     Home v2. Compact one-row header, a pill search with the +91 selector, the
     app's own Protection card in the hero slot, four single-language quick
     actions, the native ad demoted to a labelled card below them, then Recent
-    activity. Bottom nav + AdMob banner live in MainActivity (unchanged).
+    activity. Bottom nav + AdMob banner live in HomeDeckActivity (unchanged).
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

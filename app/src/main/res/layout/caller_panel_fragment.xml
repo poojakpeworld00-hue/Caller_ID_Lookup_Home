@@ -3,10 +3,10 @@
      The launcher's "−1" side panel. Parked at x = -screenWidth and slid in on a fling RIGHT
      over the home grid, Discover-style. Its whole content is the caller-ID app's own four-tab
      home UI, committed into callerPanelContainer as a HomeShellFragment — the same fragment
-     ShellActivity hosts, so the panel and the standalone home can never drift apart.
+     AppHubActivity hosts, so the panel and the standalone home can never drift apart.
 
-     The bottom banner mirrors ShellActivity's: same include, same ScreenAds key, loaded by
-     CallerPanelFragment on first open (the launcher is not a HostActivity, so nothing loads
+     The bottom banner mirrors AppHubActivity's: same include, same ScreenAds key, loaded by
+     CallerPanelFragment on first open (the launcher is not a ScreenBaseActivity, so nothing loads
      it automatically here).
 -->
 <com.callerid.numberlookup.home.launcher.fragments.CallerPanelFragment

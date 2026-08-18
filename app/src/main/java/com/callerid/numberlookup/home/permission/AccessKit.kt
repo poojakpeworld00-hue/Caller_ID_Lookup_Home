@@ -32,7 +32,7 @@ object AccessKit {
             key = "phone_state",
             androidPermission = Manifest.permission.READ_PHONE_STATE,
             minSdk = Build.VERSION_CODES.M, // 23
-            // Respect ADDashboardActivity's geo gate: READ_PHONE_STATE is only asked
+            // Respect AdRelayActivity's geo gate: READ_PHONE_STATE is only asked
             // when HD_VBC_Show is true (it is forced false in allow-listed
             // regions during the splash config flow).
             enabledPrefGate = "HD_VBC_Show",

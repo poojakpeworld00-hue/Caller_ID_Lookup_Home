@@ -25,7 +25,7 @@ class FullScreenReturnWatcher(private val activity: Activity) {
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             GuardRail.log("FSI", "return: grant broadcast received → front ${activity::class.java.simpleName}")
-            // EXACTLY mirrors the working overlay receiver (ShellActivity
+            // EXACTLY mirrors the working overlay receiver (AppHubActivity
             // .overlayGrantedReceiver): REORDER_TO_FRONT + SINGLE_TOP reorder the
             // EXISTING host instance to the top of the SAME (foreground) task —
             // onNewIntent → onResume — so its armed state survives and the FSI

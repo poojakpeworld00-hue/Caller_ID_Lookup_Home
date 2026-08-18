@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import com.callerid.adbridge.presentation.OverlayGuideActivity
+import com.callerid.adbridge.presentation.GuideSheetActivity
 
 /**
  * Helpers for the "display over other apps" (overlay) permission used by the
@@ -44,7 +44,7 @@ object FloatKit {
         )
 
     /**
-     * Stacks the [OverlayGuideActivity] coach-mark on top of the system page that
+     * Stacks the [GuideSheetActivity] coach-mark on top of the system page that
      * [buildOverlayIntent] just opened, so the user sees which row to find and which
      * switch to flip while they are actually looking at the list.
      *
@@ -60,5 +60,5 @@ object FloatKit {
      * Best effort: a guide that fails to start must never take the Settings page with it.
      */
     fun showGuide(context: Context) =
-        OverlayGuideActivity.show(context, OverlayGuideActivity.MODE_OVERLAY)
+        GuideSheetActivity.show(context, GuideSheetActivity.MODE_OVERLAY)
 }

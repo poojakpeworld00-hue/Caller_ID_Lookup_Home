@@ -21,7 +21,7 @@ private const val TAG = "NativeTheme"
  * a screen that renders natives without calling this shows them in whatever mode some earlier
  * screen left behind, or unset entirely on a cold boot (dark-on-dark, effectively invisible).
  *
- * Called by [com.callerid.numberlookup.home.base.HostActivity] for every normal screen, and
+ * Called by [com.callerid.numberlookup.home.base.ScreenBaseActivity] for every normal screen, and
  * separately by the launcher home — which does not extend it, yet is the device HOME and so is
  * often the first screen after a reboot.
  */

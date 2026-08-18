@@ -39,7 +39,7 @@
         android:visibility="gone" />
 
     <!-- one item_swipe_hint row per direction in `launcher_ads.home_hint.swipeHints`,
-         inflated by MainActivity.showSwipeHint -->
+         inflated by HomeDeckActivity.showSwipeHint -->
     <LinearLayout
         android:id="@+id/swipe_hint"
         android:layout_width="match_parent"

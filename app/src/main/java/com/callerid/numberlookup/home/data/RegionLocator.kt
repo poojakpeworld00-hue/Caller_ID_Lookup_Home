@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 /**
  * Single source of truth for the user's IP-resolved country.
  *
- * The country is detected **once** — ADDashboardActivity resolves it early via
+ * The country is detected **once** — AdRelayActivity resolves it early via
  * [getLocationFromIP] and stores it in [VaultRegistry.homeCountryIso]. Every other
  * caller (Language, Home, Lookup) goes through [detectCountry], which reuses that
  * cached value and only touches the network if nothing has resolved it yet — so
@@ -36,7 +36,7 @@ object RegionLocator {
 
     /**
      * The user's country, cache-first:
-     *  1. [VaultRegistry.homeCountryIso] — user pick or ADDashboardActivity's detection.
+     *  1. [VaultRegistry.homeCountryIso] — user pick or AdRelayActivity's detection.
      *  2. [VaultRegistry.geoCountryIso]  — our own previously-cached IP result.
      *  3. Only if both are empty, hit the network once and cache the result.
      *

@@ -34,17 +34,17 @@ import com.callerid.numberlookup.home.data.VaultRegistry
 import kotlinx.coroutines.launch
 import com.callerid.numberlookup.home.databinding.FragmentHomeBinding
 import com.callerid.numberlookup.home.databinding.ItemQuickActionBinding
-import com.callerid.numberlookup.home.ui.blocklist.BlockRosterActivity
+import com.callerid.numberlookup.home.ui.blocklist.BlockLedgerActivity
 import com.callerid.numberlookup.home.ui.common.CallRowAdapter
 import com.callerid.adbridge.presentation.NativePromoBanner
 import com.callerid.numberlookup.home.ui.common.CoachMarkFloat
 import com.callerid.numberlookup.home.ui.common.HomeMotion
 import com.callerid.numberlookup.home.util.openActivity
-import com.callerid.numberlookup.home.ui.dialer.KeypadActivity
+import com.callerid.numberlookup.home.ui.dialer.DialPadActivity
 import com.callerid.numberlookup.home.ui.lookup.Territories
-import com.callerid.numberlookup.home.ui.lookup.TerritoryPickerActivity
-import com.callerid.numberlookup.home.ui.settings.PreferencesActivity
-import com.callerid.numberlookup.home.ui.tools.UtilityActivity
+import com.callerid.numberlookup.home.ui.lookup.RegionPickerActivity
+import com.callerid.numberlookup.home.ui.settings.OptionsDeckActivity
+import com.callerid.numberlookup.home.ui.tools.ToolboxActivity
 import com.callerid.numberlookup.home.util.followAdContainer
 
 class DashboardFragment : HostFragment<FragmentHomeBinding>() {
@@ -93,8 +93,8 @@ class DashboardFragment : HostFragment<FragmentHomeBinding>() {
     ) { res ->
         if (res.resultCode == Activity.RESULT_OK) {
             val data = res.data ?: return@registerForActivityResult
-            val iso = data.getStringExtra(TerritoryPickerActivity.EXTRA_ISO) ?: return@registerForActivityResult
-            val dial = data.getStringExtra(TerritoryPickerActivity.EXTRA_DIAL).orEmpty()
+            val iso = data.getStringExtra(RegionPickerActivity.EXTRA_ISO) ?: return@registerForActivityResult
+            val dial = data.getStringExtra(RegionPickerActivity.EXTRA_DIAL).orEmpty()
             prefs.homeCountryIso = iso // remember the user's explicit choice
             applyHomeCountry(iso, dial)
         }
@@ -128,18 +128,18 @@ class DashboardFragment : HostFragment<FragmentHomeBinding>() {
         binding.adNativeDivider.followAdContainer(binding.adRecentBanner)
         binding.adNativeDivider1.followAdContainer(binding.adRecentBanner)
         binding.btnSettings.setOnClickListener {
-            requireActivity().openActivity<PreferencesActivity>()
+            requireActivity().openActivity<OptionsDeckActivity>()
         }
 
         binding.qaDialer.root.setOnClickListener {
-            withCorePermissions { requireActivity().openActivity<KeypadActivity>() }
+            withCorePermissions { requireActivity().openActivity<DialPadActivity>() }
         }
         binding.qaLookup.root.setOnClickListener {
             withCorePermissions { homeShell?.showLookup() }
         }
         setupHomeCountry()
         binding.llHomeCountry.setOnClickListener {
-            countryLauncher.launch(Intent(requireContext(), TerritoryPickerActivity::class.java))
+            countryLauncher.launch(Intent(requireContext(), RegionPickerActivity::class.java))
         }
         binding.btnHomeSearch.setOnClickListener { submitSearch() }
         binding.etHomeSearch.setOnEditorActionListener { _, actionId, _ ->
@@ -148,15 +148,15 @@ class DashboardFragment : HostFragment<FragmentHomeBinding>() {
             } else false
         }
         binding.qaBlocklist.root.setOnClickListener {
-            withCorePermissions { requireActivity().openActivity<BlockRosterActivity>() }
+            withCorePermissions { requireActivity().openActivity<BlockLedgerActivity>() }
         }
         binding.qaTools.root.setOnClickListener {
-            withCorePermissions { requireActivity().openActivity<UtilityActivity>() }
+            withCorePermissions { requireActivity().openActivity<ToolboxActivity>() }
         }
 
         // Protection card → Blocklist; Recent "See all" → Recents tab.
         binding.cardProtection.setOnClickListener {
-            requireActivity().openActivity<BlockRosterActivity>()
+            requireActivity().openActivity<BlockLedgerActivity>()
         }
         binding.tvSeeAll.setOnClickListener {
             homeShell?.showRecents()
@@ -203,10 +203,10 @@ class DashboardFragment : HostFragment<FragmentHomeBinding>() {
     }
 
     /**
-     * Surfaces the "Manage permissions" hint once the ShellActivity permission
+     * Surfaces the "Manage permissions" hint once the AppHubActivity permission
      * sheet has been dismissed with permissions still pending, and hides it again
      * as soon as everything is granted. Safe to call any time the fragment is
-     * attached — ShellActivity owns the actual condition.
+     * attached — AppHubActivity owns the actual condition.
      */
     fun refreshPermissionHint() {
         if (view == null) return
@@ -307,7 +307,7 @@ class DashboardFragment : HostFragment<FragmentHomeBinding>() {
         anchor.post {
             if (!isAdded || view == null || isHidden) return@post
             if (prefs.isSearchHintShown) return@post
-            // The shell root when there is one (launcher panel + ShellActivity both host the
+            // The shell root when there is one (launcher panel + AppHubActivity both host the
             // tab inside it); the window only for a host that has no shell at all.
             val host = homeShell?.view as? ViewGroup
             prefs.isSearchHintShown = true

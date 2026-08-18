@@ -18,7 +18,7 @@ import org.fossify.commons.extensions.showErrorToast
 import org.fossify.commons.extensions.toast
 import org.fossify.commons.helpers.ensureBackgroundThread
 import com.callerid.numberlookup.home.R
-import com.callerid.numberlookup.home.launcher.activities.MainActivity
+import com.callerid.numberlookup.home.launcher.activities.HomeDeckActivity
 import com.callerid.numberlookup.home.launcher.adapters.WidgetsAdapter
 import com.callerid.numberlookup.home.databinding.WidgetsFragmentBinding
 import com.callerid.numberlookup.home.launcher.extensions.config
@@ -44,7 +44,7 @@ class WidgetsFragment(context: Context, attributeSet: AttributeSet) :
     private var widgets = emptyList<AppWidget>()
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun setupFragment(activity: MainActivity) {
+    override fun setupFragment(activity: HomeDeckActivity) {
         this.activity = activity
         this.binding = WidgetsFragmentBinding.bind(this)
         getAppWidgets()

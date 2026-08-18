@@ -15,11 +15,11 @@ import com.callerid.numberlookup.home.util.GuardRail
  * [FullScreenReturnWatcher] can do an in-task REORDER_TO_FRONT, then stops.
  *
  * NOTE: the primary, reliable auto-return for the after-Language screen is the
- * in-activity grant poll inside [FullScreenAccessActivity] (a plain in-task
+ * in-activity grant poll inside [FsiGateActivity] (a plain in-task
  * `startActivity` — no notification, no background-activity-start needed, because
  * the Settings page is opened in-task so the app keeps a foreground task). This
  * service + broadcast is only a secondary path for hosts that stay resident (e.g.
- * the ShellActivity dialog); on Android 12+/16 a background Service often cannot be
+ * the AppHubActivity dialog); on Android 12+/16 a background Service often cannot be
  * started on the way to Settings, so it is best-effort and never shows any UI.
  *
  * Registered in the manifest as `.permission.fsi.FullScreenWatchService`.

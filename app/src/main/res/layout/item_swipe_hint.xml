@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
     One direction of the home-screen coach mark: a chevron trio that drifts the way the user
-    should swipe, with a caption under it. MainActivity inflates one of these per entry in
+    should swipe, with a caption under it. HomeDeckActivity inflates one of these per entry in
     `launcher_ads.home_hint.swipeHints`, rotating the chevrons to point the right way.
 -->
 <!-- clipChildren=false throughout: a row rotated to point up or down draws its chevrons

@@ -19,7 +19,7 @@ import org.fossify.commons.views.MyGridLayoutManager
 import com.callerid.adbridge.domain.LauncherAdsConfig
 import com.callerid.adbridge.presentation.NativePromo
 import com.callerid.numberlookup.home.R
-import com.callerid.numberlookup.home.launcher.activities.MainActivity
+import com.callerid.numberlookup.home.launcher.activities.HomeDeckActivity
 import com.callerid.numberlookup.home.launcher.adapters.LaunchersAdapter
 import com.callerid.numberlookup.home.databinding.AllAppsFragmentBinding
 import com.callerid.numberlookup.home.launcher.extensions.applyDrawerSkin
@@ -54,7 +54,7 @@ class AllAppsFragment(
     )
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun setupFragment(activity: MainActivity) {
+    override fun setupFragment(activity: HomeDeckActivity) {
         this.activity = activity
         this.binding = AllAppsFragmentBinding.bind(this)
 

@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/** Backs [KeypadActivity]: loads the top-used numbers and filters them by the typed query. */
+/** Backs [DialPadActivity]: loads the top-used numbers and filters them by the typed query. */
 class KeypadViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repository = CallLogSource(app)

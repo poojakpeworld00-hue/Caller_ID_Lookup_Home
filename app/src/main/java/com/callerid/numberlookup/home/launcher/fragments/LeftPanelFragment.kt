@@ -17,7 +17,7 @@ import org.fossify.commons.extensions.showKeyboard
 import com.callerid.adbridge.domain.LauncherAdsConfig
 import com.callerid.adbridge.presentation.NativePromo
 import com.callerid.numberlookup.home.R
-import com.callerid.numberlookup.home.launcher.activities.MainActivity
+import com.callerid.numberlookup.home.launcher.activities.HomeDeckActivity
 import com.callerid.numberlookup.home.launcher.adapters.PanelAppsAdapter
 import com.callerid.numberlookup.home.databinding.LeftPanelFragmentBinding
 import com.callerid.numberlookup.home.launcher.extensions.launchApp
@@ -60,7 +60,7 @@ class LeftPanelFragment(
     private lateinit var resultsAdapter: PanelAppsAdapter
     private lateinit var searchInAdapter: PanelAppsAdapter
 
-    // the panel covers the whole screen while open, so MainActivity never sees these events
+    // the panel covers the whole screen while open, so HomeDeckActivity never sees these events
     private val gestureDetector = GestureDetectorCompat(context, object : SimpleOnGestureListener() {
         override fun onFling(
             e1: MotionEvent?,
@@ -77,12 +77,12 @@ class LeftPanelFragment(
         }
     })
 
-    override fun setupFragment(activity: MainActivity) {
+    override fun setupFragment(activity: HomeDeckActivity) {
         this.activity = activity
         this.binding = LeftPanelFragmentBinding.bind(this)
 
         // Only warm the slot here. Showing it now would be too early: the native renderers
-        // draw whatever NativePromo has already preloaded, and at MainActivity.onCreate that
+        // draw whatever NativePromo has already preloaded, and at HomeDeckActivity.onCreate that
         // is still null — the frame would hide itself and, since the panel is never
         // re-created, never come back. The actual show happens in onPanelShown().
         adSlot = LauncherAdsConfig.rightPanelSlot(activity)

@@ -3,7 +3,7 @@
     Contacts v2 — compact header (title + count + Add), pill search, filter chips
     (All / Favorites / Recents / Groups), a native ad, then the contact list with
     the A–Z fast-scroll rail. Matches the Home v2 language; bottom nav + AdMob
-    banner live in MainActivity (unchanged).
+    banner live in HomeDeckActivity (unchanged).
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

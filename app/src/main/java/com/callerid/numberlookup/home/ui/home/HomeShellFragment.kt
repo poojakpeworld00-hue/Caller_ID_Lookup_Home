@@ -33,7 +33,7 @@ import com.google.android.material.snackbar.Snackbar
  * The app's home UI: four tabs behind a custom bottom bar, kept alive with show/hide so each
  * tab's state and scroll position survive switching.
  *
- * Hosted by [com.callerid.numberlookup.home.ui.ShellActivity] and by the launcher's
+ * Hosted by [com.callerid.numberlookup.home.ui.AppHubActivity] and by the launcher's
  * swipe-right side panel. Everything that needs an Activity — permission round-trips, the
  * FSI flow, the Play update check — is in [HomeShellController]; this class only draws.
  *
@@ -144,7 +144,7 @@ class HomeShellFragment : HostFragment<FragmentHomeShellBinding>() {
     /**
      * Called by the host as the shell comes on screen and goes off it again.
      *
-     * ShellActivity is always visible so it reports `true` once. The launcher fires it after
+     * AppHubActivity is always visible so it reports `true` once. The launcher fires it after
      * the panel's slide animation and `false` when the panel closes — the panel is committed
      * at the launcher's `onCreate` and then parked off-screen, so "attached" and "on screen"
      * are two different moments and anything the user should actually see waits for this.
@@ -225,7 +225,7 @@ class HomeShellFragment : HostFragment<FragmentHomeShellBinding>() {
      * at which point "back out of the shell" is the host's call.
      *
      * Deliberately **not** an `OnBackPressedCallback` registered from here. Both hosts already
-     * own back handling — HostActivity has its back-ad callback and the launcher's Fossify base
+     * own back handling — ScreenBaseActivity has its back-ad callback and the launcher's Fossify base
      * routes everything through `onBackPressedCompat()` — and which one the dispatcher runs
      * first depends on the order lifecycle owners reach STARTED, which is not something to bet
      * tab navigation on. Each host asks, exactly as the launcher already does for its drawer.

@@ -3,7 +3,7 @@
     Recents v2 — compact header, pill search, filter chips (All / Incoming /
     Outgoing / Missed), a labelled native ad, then verdict-card call rows with a
     Dialer FAB clear of the list. Matches the Home v2 language. Bottom nav +
-    AdMob banner live in MainActivity (unchanged).
+    AdMob banner live in HomeDeckActivity (unchanged).
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

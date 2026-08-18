@@ -48,7 +48,7 @@ object LocaleRegistry {
      *
      * Call it **before** `super.onCreate`, so the views inflate with the right resources.
      *
-     * Shared by [com.callerid.numberlookup.home.base.HostActivity] and the launcher home —
+     * Shared by [com.callerid.numberlookup.home.base.ScreenBaseActivity] and the launcher home —
      * which does not extend it, so without its own call a language chosen during onboarding
      * would not reach the launcher (or the caller panel's tabs inside it) until the Activity
      * was recreated for some other reason.

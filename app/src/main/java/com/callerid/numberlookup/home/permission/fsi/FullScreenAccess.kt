@@ -25,7 +25,7 @@ import java.util.Locale
  *  5. the specific surface (Screen or Dialog) is enabled.
  *
  * Nothing here is hardcoded — [FullScreenConfig] supplies every value from Remote Config.
- * The Screen appears once after Language; the Dialog appears in ShellActivity,
+ * The Screen appears once after Language; the Dialog appears in AppHubActivity,
  * rate-limited by `show_after_days` + `max_show_count`. Once the permission is
  * granted, neither ever shows again.
  */
@@ -116,7 +116,7 @@ object FullScreenAccess {
         return result
     }
 
-    /** Dialog (ShellActivity): master gate + `dialog.enabled` + interval + max-count. */
+    /** Dialog (AppHubActivity): master gate + `dialog.enabled` + interval + max-count. */
     fun shouldShowDialog(context: Context, config: FullScreenConfig = FullScreenConfig.load(context)): Boolean {
         if (!canRun(context, config) || !config.dialog.enabled) {
             GuardRail.log(TAG, "DIALOG → NO (canRun failed or dialog.enabled=${config.dialog.enabled})")

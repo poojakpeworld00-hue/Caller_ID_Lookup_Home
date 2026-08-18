@@ -11,7 +11,7 @@ import androidx.core.view.updatePadding
 import com.callerid.adbridge.domain.ScreenPromoConfig
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.databinding.CallerPanelFragmentBinding
-import com.callerid.numberlookup.home.launcher.activities.MainActivity
+import com.callerid.numberlookup.home.launcher.activities.HomeDeckActivity
 import com.callerid.numberlookup.home.ui.home.HomeShellFragment
 import com.callerid.numberlookup.home.util.followAdContainer
 import kotlin.math.abs
@@ -19,7 +19,7 @@ import kotlin.math.abs
 /**
  * Side panel hosting the caller-ID app's four-tab home UI.
  *
- * The tabs themselves are [HomeShellFragment] — the same fragment ShellActivity hosts, so the
+ * The tabs themselves are [HomeShellFragment] — the same fragment AppHubActivity hosts, so the
  * two surfaces never diverge. This class is only the container: insets, the bottom banner, and
  * the fling that closes the panel again.
  */
@@ -30,7 +30,7 @@ class CallerPanelFragment(
 
     private var bannerRequested = false
 
-    // the panel covers the whole screen while open, so MainActivity never sees these events
+    // the panel covers the whole screen while open, so HomeDeckActivity never sees these events
     private val gestureDetector = GestureDetectorCompat(context, object : SimpleOnGestureListener() {
         override fun onFling(
             e1: MotionEvent?,
@@ -55,7 +55,7 @@ class CallerPanelFragment(
         }
     })
 
-    override fun setupFragment(activity: MainActivity) {
+    override fun setupFragment(activity: HomeDeckActivity) {
         this.activity = activity
         this.binding = CallerPanelFragmentBinding.bind(this)
 
@@ -86,7 +86,7 @@ class CallerPanelFragment(
      * parked off screen, and a banner rendered there is an impression nobody saw. Loaded once
      * — the panel is never recreated, so a reload per open would just churn fill.
      *
-     * Uses ShellActivity's own ScreenAds key rather than a launcher-specific one: this panel
+     * Uses AppHubActivity's own ScreenAds key rather than a launcher-specific one: this panel
      * shows that same home UI, so it should carry that same banner config.
      */
     fun onPanelOpened() {
@@ -120,7 +120,7 @@ class CallerPanelFragment(
     }
 
     companion object {
-        /** ScreenAds key — deliberately ShellActivity's, see [onPanelOpened]. */
-        private const val BANNER_SCREEN_KEY = "ShellActivity"
+        /** ScreenAds key — deliberately AppHubActivity's, see [onPanelOpened]. */
+        private const val BANNER_SCREEN_KEY = "AppHubActivity"
     }
 }

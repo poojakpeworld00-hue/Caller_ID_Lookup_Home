@@ -40,7 +40,7 @@ import org.json.JSONObject
  * ```
  *
  * Stored as a JSON string in AdsVault and read back with [JSONObject], the same route
- * `intro_display` and `ScreenAds` take — see `ADDashboardActivity.ingestConfig`.
+ * `intro_display` and `ScreenAds` take — see `AdRelayActivity.ingestConfig`.
  *
  * ## Variants
  *

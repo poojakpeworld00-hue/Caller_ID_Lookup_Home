@@ -32,13 +32,13 @@ import com.callerid.numberlookup.home.ui.terms.FloatKit
 import com.callerid.numberlookup.home.util.GuardRail
 
 /**
- * Bottom-sheet replacement for ShellActivity's old sequential first-run
+ * Bottom-sheet replacement for AppHubActivity's old sequential first-run
  * permission chain. Lists every permission the app wants (notification,
  * phone state, call log, contacts, overlay) with a live grant status, lets the
  * user grant them individually, and offers a single **Continue** button that
  * requests everything still missing and then closes.
  *
- * Self-contained: it owns its own result launchers, so ShellActivity only has to
+ * Self-contained: it owns its own result launchers, so AppHubActivity only has to
  * `show()` it. Runtime permissions go through the OS dialog; the overlay
  * ("display over other apps") permission opens system Settings via
  * [FloatKit]. `phone_state` is only listed when `HD_VBC_Show` is on — the

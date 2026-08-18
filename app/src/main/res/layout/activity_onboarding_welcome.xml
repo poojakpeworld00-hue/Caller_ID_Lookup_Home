@@ -4,7 +4,7 @@
     feature tiles, and the ink CTA.
 
     No permission toggles here any more — the reference has none, so notifications and
-    phone state are requested straight off Continue instead (see OnboardingWelcomeActivity).
+    phone state are requested straight off Continue instead (see WelcomeStepActivity).
 -->
 <!-- fitsSystemWindows keeps Skip clear of the status bar and the CTA clear of the
      gesture bar; the theme draws both system bars transparent. -->

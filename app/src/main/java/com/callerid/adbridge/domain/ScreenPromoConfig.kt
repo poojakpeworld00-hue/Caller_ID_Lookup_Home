@@ -50,7 +50,7 @@ object ScreenPromoConfig {
 
         // ScreenAds is parsed whenever present — even with screen_wise_ad=false —
         // because the per-screen `show` flag is honored in GLOBAL id mode too, so a
-        // screen like ShellActivity (show:false) stays hidden while still using the
+        // screen like AppHubActivity (show:false) stays hidden while still using the
         // global banner/native ids.
         val root = runCatching { JSONObject(pref.getString("ScreenAds", "{}") ?: "{}") }.getOrNull()
 
@@ -217,7 +217,7 @@ object ScreenPromoConfig {
  * table so a key written against an earlier build still resolves. A plain
  * `optJSONObject(screenName)` silently fell through to `default` after a class
  * rename — which is what a server-side "LanguageActivity" key has been doing since
- * that screen became LocaleActivity.
+ * that screen became LanguagePickActivity.
  */
 private fun JSONObject.screenEntry(screenName: String): JSONObject? =
     ScreenMatcher.keyFor(keys(), screenName)?.let { optJSONObject(it) }

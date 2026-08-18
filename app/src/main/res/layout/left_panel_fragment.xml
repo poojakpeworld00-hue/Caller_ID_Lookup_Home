@@ -230,7 +230,7 @@
          The app list scrolls above it (panel_scroll is layout_above this frame), so the ad
          stays put rather than riding along with the results. showMidNative2 empties and hides
          the frame when ads are off, the network is down, or the counter says skip, and the
-         ScrollView then takes the space back. MainActivity pads this frame for the navigation
+         ScrollView then takes the space back. HomeDeckActivity pads this frame for the navigation
          bar via setupEdgeToEdge. -->
     <FrameLayout
         android:id="@+id/ad_native_frame"

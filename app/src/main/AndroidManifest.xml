@@ -85,7 +85,7 @@
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.splash.LaunchActivity"
+            android:name=".ui.splash.BootSplashActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -96,36 +96,36 @@
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.language.LocaleActivity"
+            android:name=".ui.language.LanguagePickActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.terms.ConsentActivity"
+            android:name=".ui.terms.AgreementActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.terms.FloatAccessActivity"
+            android:name=".ui.terms.OverlayGateActivity"
             android:exported="false"
             android:theme="@style/Theme.OverlayGuide" />
 
         <!-- Redesigned overlay-permission coach-mark (the sheet-style card). Same transparent
-             host as FloatAccessActivity above, which it is meant to replace. -->
+             host as OverlayGateActivity above, which it is meant to replace. -->
         <activity
             android:screenOrientation="portrait"
-            android:name="com.callerid.adbridge.presentation.OverlayGuideActivity"
+            android:name="com.callerid.adbridge.presentation.GuideSheetActivity"
             android:exported="false"
             android:theme="@style/Theme.OverlayGuide" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.onboarding.IntroActivity"
+            android:name=".ui.onboarding.TourActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.ShellActivity"
+            android:name=".ui.AppHubActivity"
             android:exported="false" />
 
         <!-- ══ Home-screen launcher ═══════════════════════════════════════════════
@@ -139,24 +139,24 @@
              them into it (dumpsys: rootOfTask=false). It is declared anyway so the flow
              still behaves if it is ever entered directly, but the attribute that actually
              does the work is the runtime AppTask.setExcludeFromRecents() call in
-             SimpleActivity.excludeAppFromRecents(), invoked by both screens.
+             CoreDeckActivity.excludeAppFromRecents(), invoked by both screens.
         -->
         <activity
-            android:name=".launcher.activities.OnboardingWelcomeActivity"
+            android:name=".launcher.activities.WelcomeStepActivity"
             android:excludeFromRecents="true"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/OnboardingTheme" />
 
         <activity
-            android:name=".launcher.activities.OnboardingDefaultLauncherActivity"
+            android:name=".launcher.activities.DefaultHomeStepActivity"
             android:excludeFromRecents="true"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/OnboardingTheme" />
 
         <activity
-            android:name=".launcher.activities.MainActivity"
+            android:name=".launcher.activities.HomeDeckActivity"
             android:clearTaskOnLaunch="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:excludeFromRecents="true"
@@ -177,25 +177,25 @@
         </activity>
 
         <activity
-            android:name=".launcher.activities.SettingsActivity"
+            android:name=".launcher.activities.DeckSettingsActivity"
             android:configChanges="orientation"
             android:exported="false"
             android:label="@string/launcher_settings"
-            android:parentActivityName=".launcher.activities.MainActivity"
+            android:parentActivityName=".launcher.activities.HomeDeckActivity"
             android:theme="@style/LauncherBaseTheme" />
 
         <activity
-            android:name=".launcher.activities.HiddenIconsActivity"
+            android:name=".launcher.activities.MaskedAppsActivity"
             android:exported="false"
             android:label="@string/hidden_icons"
-            android:parentActivityName=".launcher.activities.SettingsActivity"
+            android:parentActivityName=".launcher.activities.DeckSettingsActivity"
             android:theme="@style/LauncherBaseTheme" />
 
         <activity
             android:name="org.fossify.commons.activities.CustomizationActivity"
             android:exported="false"
             android:label="@string/customize_colors"
-            android:parentActivityName=".launcher.activities.SettingsActivity"
+            android:parentActivityName=".launcher.activities.DeckSettingsActivity"
             android:theme="@style/LauncherBaseTheme" />
 
         <!-- The long-press "lock screen" action needs a device-admin component to call
@@ -239,7 +239,7 @@
         <!-- Firebase-gated Full-Screen-Intent priming Screen (after Language). -->
         <activity
             android:screenOrientation="portrait"
-            android:name=".permission.fsi.FullScreenAccessActivity"
+            android:name=".permission.fsi.FsiGateActivity"
             android:exported="false" />
 
         <!-- Auto-return watcher: pulls the app back when the FSI toggle flips on. -->
@@ -249,27 +249,27 @@
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.blocklist.BlockRosterActivity"
+            android:name=".ui.blocklist.BlockLedgerActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.settings.PreferencesActivity"
+            android:name=".ui.settings.OptionsDeckActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.lookup.TerritoryPickerActivity"
+            android:name=".ui.lookup.RegionPickerActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.lookup.IdentifyInsightActivity"
+            android:name=".ui.lookup.LookupBriefActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.lookup.IdentifyTraceActivity"
+            android:name=".ui.lookup.LookupLogActivity"
             android:exported="false" />
 
         <!-- The keypad is the only input on this screen: never let the system
@@ -277,68 +277,68 @@
              it (adjustNothing). -->
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.dialer.KeypadActivity"
+            android:name=".ui.dialer.DialPadActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustNothing"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.detail.CallInsightActivity"
+            android:name=".ui.detail.CallBriefActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.tools.UtilityActivity"
+            android:name=".ui.tools.ToolboxActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.tools.BearingActivity"
+            android:name=".ui.tools.HeadingToolActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.tools.VelocityActivity"
+            android:name=".ui.tools.SpeedToolActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.tools.TorchActivity"
+            android:name=".ui.tools.FlashToolActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.tools.TiltActivity"
+            android:name=".ui.tools.LevelToolActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.tools.PowerGaugeActivity"
+            android:name=".ui.tools.BatteryToolActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.tools.DecibelActivity"
+            android:name=".ui.tools.NoiseToolActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.tools.SimCardActivity"
+            android:name=".ui.tools.SimDeckActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.tools.LuxMeterActivity"
+            android:name=".ui.tools.BrightToolActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.tools.ChronoActivity"
+            android:name=".ui.tools.StopClockActivity"
             android:exported="false" />
 
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.tools.CountdownActivity"
+            android:name=".ui.tools.EggTimerActivity"
             android:exported="false" />
 
         <!-- Caller-ID card shown over the keyguard when a call rings while the device is locked.
@@ -347,7 +347,7 @@
              Service with NEW_TASK, it would otherwise resolve into this package's home task
              once the app is the default launcher, and never appear. -->
         <activity
-            android:name=".ui.incall.InboundCallActivity"
+            android:name=".ui.incall.RingScreenActivity"
             android:exported="false"
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
@@ -413,7 +413,7 @@
             android:value="ca-app-pub-3940256099942544~3347511713" />
         <activity
             android:screenOrientation="portrait"
-            android:name="com.callerid.adbridge.presentation.ADDashboardActivity"
+            android:name="com.callerid.adbridge.presentation.AdRelayActivity"
             android:exported="false" />
 
         <!--

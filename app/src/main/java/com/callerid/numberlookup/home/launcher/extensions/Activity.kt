@@ -33,7 +33,7 @@ import org.fossify.commons.extensions.showErrorToast
 import org.fossify.commons.helpers.isQPlus
 import org.fossify.commons.helpers.isSPlus
 import com.callerid.numberlookup.home.R
-import com.callerid.numberlookup.home.launcher.activities.SettingsActivity
+import com.callerid.numberlookup.home.launcher.activities.DeckSettingsActivity
 import com.callerid.numberlookup.home.launcher.helpers.ITEM_TYPE_FOLDER
 import com.callerid.numberlookup.home.launcher.helpers.ITEM_TYPE_ICON
 import com.callerid.numberlookup.home.launcher.helpers.ITEM_TYPE_WIDGET
@@ -41,7 +41,7 @@ import com.callerid.numberlookup.home.launcher.helpers.REQUEST_SET_DEFAULT
 import com.callerid.numberlookup.home.launcher.helpers.UNINSTALL_APP_REQUEST_CODE
 import com.callerid.numberlookup.home.launcher.interfaces.ItemMenuListener
 import com.callerid.numberlookup.home.launcher.models.HomeScreenGridItem
-import com.callerid.adbridge.presentation.OverlayGuideActivity
+import com.callerid.adbridge.presentation.GuideSheetActivity
 
 fun Activity.launchApp(packageName: String, activityName: String) {
     try {
@@ -91,7 +91,7 @@ fun Activity.requestSetAsDefaultLauncher() {
         try {
             startActivityForResult(intent, REQUEST_SET_DEFAULT)
             if (isListPage) {
-                OverlayGuideActivity.show(this, OverlayGuideActivity.MODE_HOME)
+                GuideSheetActivity.show(this, GuideSheetActivity.MODE_HOME)
             }
             return
         } catch (_: ActivityNotFoundException) {

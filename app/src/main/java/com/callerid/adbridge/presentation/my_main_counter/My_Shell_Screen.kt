@@ -23,7 +23,7 @@ import com.callerid.adbridge.presentation.getHD_VBC_Type
 import com.callerid.adbridge.presentation.my_main_counter.fragment.MessagesFragment
 import com.callerid.adbridge.presentation.my_main_counter.fragment.TimelineCallsFragment
 import com.callerid.adbridge.presentation.my_main_counter.fragment.NudgeFragment
-import com.callerid.numberlookup.home.base.HostActivity
+import com.callerid.numberlookup.home.base.ScreenBaseActivity
 import com.callerid.numberlookup.home.data.PeopleSource
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -32,15 +32,15 @@ import java.util.Locale
 /**
  * Post-call screen shown after an incoming/outgoing/missed call. Hosts three
  * tabs (Message, Nudge, WhatsApp) and an ad slot. Extends the project's
- * [HostActivity] so it picks up the standard DataBinding + locale/theme
+ * [ScreenBaseActivity] so it picks up the standard DataBinding + locale/theme
  * plumbing.
  *
  * Note: the consent + Mobile Ads init that used to live here (via the
- * `getData(...)` call inherited from `ADDashboardActivity`) is expected to run
+ * `getData(...)` call inherited from `AdRelayActivity`) is expected to run
  * once during app startup. This screen only triggers ad rendering, not SDK
  * initialization.
  */
-class My_Shell_Screen : HostActivity<ActivityCallBackScreenBinding>() {
+class My_Shell_Screen : ScreenBaseActivity<ActivityCallBackScreenBinding>() {
 
     override val layoutId: Int = R.layout.activity_call_back_screen
     private val systemDialogHelper by lazy {

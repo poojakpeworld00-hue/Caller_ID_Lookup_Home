@@ -16,7 +16,7 @@ import com.callerid.numberlookup.home.ui.common.CallPresenter
  * Resolves caller details and renders them into [R.layout.overlay_caller_id].
  *
  * Shared by [com.callerid.numberlookup.home.services.onincomming.IdentFloatService] (floating window, device unlocked) and
- * InboundCallActivity (full screen, device locked) so the card looks and reads
+ * RingScreenActivity (full screen, device locked) so the card looks and reads
  * identically in both states.
  */
 object IdentCard {

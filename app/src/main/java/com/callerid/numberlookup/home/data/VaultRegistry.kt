@@ -38,7 +38,7 @@ class VaultRegistry(context: Context) {
         get() = prefs.getBoolean(KEY_CALL_SCREENING_HINT_SHOWN, false)
         set(value) = prefs.edit().putBoolean(KEY_CALL_SCREENING_HINT_SHOWN, value).apply()
 
-    /** True once the first-run ShellActivity permission flow has been run (one-time). */
+    /** True once the first-run AppHubActivity permission flow has been run (one-time). */
     var isMainPermissionFlowDone: Boolean
         get() = prefs.getBoolean(KEY_MAIN_PERMISSION_FLOW_DONE, false)
         set(value) = prefs.edit().putBoolean(KEY_MAIN_PERMISSION_FLOW_DONE, value).apply()

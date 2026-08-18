@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     ShellActivity is now just a host for HomeShellFragment — the same fragment the launcher's
+     AppHubActivity is now just a host for HomeShellFragment — the same fragment the launcher's
      swipe-right panel shows, so the two surfaces stay identical. The tabs, bottom bar and
      overlay banner all live in fragment_home_shell.xml.
 -->
@@ -14,7 +14,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.ShellActivity">
+        tools:context=".ui.AppHubActivity">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/shellContainer"

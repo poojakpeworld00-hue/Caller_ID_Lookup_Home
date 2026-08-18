@@ -68,7 +68,7 @@ abstract class HostFragment<VB : ViewBinding> : Fragment() {
     }
 
     // --- Screen-view analytics ---
-    // ShellActivity hosts tabs via add/show/hide, so log when a fragment is
+    // AppHubActivity hosts tabs via add/show/hide, so log when a fragment is
     // actually visible: on first resume and whenever it is un-hidden. Hidden
     // fragments still receive onResume on app-resume, hence the isHidden guard.
 

@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 /**
  * Implemented by whichever Activity is hosting [HomeShellFragment].
  *
- * There are two: [com.callerid.numberlookup.home.ui.ShellActivity], where the shell *is* the
+ * There are two: [com.callerid.numberlookup.home.ui.AppHubActivity], where the shell *is* the
  * screen, and the launcher's home screen, where the same shell rides in the swipe-right side
  * panel. Everything that differs between those two lives behind this interface, so the shell
  * itself never asks which one it is in.
@@ -29,7 +29,7 @@ interface HomeShellHost {
     /**
      * Back was pressed on Home with the visited-tab history already empty.
      *
-     * ShellActivity leaves for the launcher home screen; the launcher panel just closes.
+     * AppHubActivity leaves for the launcher home screen; the launcher panel just closes.
      */
     fun onShellBackExhausted()
 

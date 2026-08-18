@@ -20,7 +20,7 @@ import org.fossify.commons.extensions.beVisibleIf
 import org.fossify.commons.extensions.getColoredDrawableWithColor
 import org.fossify.commons.extensions.realScreenSize
 import com.callerid.numberlookup.home.R
-import com.callerid.numberlookup.home.launcher.activities.SimpleActivity
+import com.callerid.numberlookup.home.launcher.activities.CoreDeckActivity
 import com.callerid.numberlookup.home.databinding.ItemLauncherLabelBinding
 import com.callerid.numberlookup.home.launcher.extensions.animateScale
 import com.callerid.numberlookup.home.launcher.extensions.config
@@ -28,7 +28,7 @@ import com.callerid.numberlookup.home.launcher.interfaces.AllAppsListener
 import com.callerid.numberlookup.home.launcher.models.AppLauncher
 
 class LaunchersAdapter(
-    val activity: SimpleActivity,
+    val activity: CoreDeckActivity,
     val allAppsListener: AllAppsListener,
     val itemClick: (Any) -> Unit
 ) : ListAdapter<AppLauncher, RecyclerView.ViewHolder>(AppLauncherDiffCallback()),

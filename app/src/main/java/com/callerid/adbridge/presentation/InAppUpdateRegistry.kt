@@ -235,7 +235,7 @@ object InAppUpdateRegistry {
      * Cleans up references. Call in onDestroy().
      *
      * [owner] is the Activity tearing down. Two hosts register here — the app's own
-     * ShellActivity and the launcher home that shows the same shell in its side panel — and
+     * AppHubActivity and the launcher home that shows the same shell in its side panel — and
      * Android can deliver a backgrounded Activity's `onDestroy` *after* another one's
      * `onCreate`. Without this check that late teardown would silently wipe the live host's
      * registration, and its update flow would go quiet with nothing in the log. Pass null

@@ -23,8 +23,8 @@ import com.callerid.adbridge.presentation.NativePromoBanner
 import com.callerid.numberlookup.home.base.HostFragment
 import com.callerid.numberlookup.home.util.openActivity
 import com.callerid.numberlookup.home.databinding.FragmentRecentsBinding
-import com.callerid.numberlookup.home.ui.detail.CallInsightActivity
-import com.callerid.numberlookup.home.ui.dialer.KeypadActivity
+import com.callerid.numberlookup.home.ui.detail.CallBriefActivity
+import com.callerid.numberlookup.home.ui.dialer.DialPadActivity
 import com.callerid.numberlookup.home.util.followAdContainer
 import com.callerid.numberlookup.home.ui.home.homeShellController
 import com.callerid.numberlookup.home.ui.home.homeShell
@@ -50,7 +50,7 @@ class TimelineFragment : HostFragment<FragmentRecentsBinding>() {
             insets
         }
         binding.btnRecentsDial.setOnClickListener {
-            requireActivity().openActivity<KeypadActivity>()
+            requireActivity().openActivity<DialPadActivity>()
         }
         binding.btnRecentsFilter.setOnClickListener { showSortMenu(it) }
 
@@ -195,6 +195,6 @@ class TimelineFragment : HostFragment<FragmentRecentsBinding>() {
     private fun dialNumber(number: String) = placeCall(number)
 
     private fun openDetail(entry: com.callerid.numberlookup.home.data.CallRecord) {
-        requireActivity().openActivity(CallInsightActivity.newIntent(requireContext(), entry.number, entry.name))
+        requireActivity().openActivity(CallBriefActivity.newIntent(requireContext(), entry.number, entry.name))
     }
 }

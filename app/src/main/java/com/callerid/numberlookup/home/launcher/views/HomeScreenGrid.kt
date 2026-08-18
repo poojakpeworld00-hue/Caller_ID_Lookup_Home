@@ -55,7 +55,7 @@ import org.fossify.commons.helpers.FontHelper
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.commons.helpers.isSPlus
 import com.callerid.numberlookup.home.R
-import com.callerid.numberlookup.home.launcher.activities.MainActivity
+import com.callerid.numberlookup.home.launcher.activities.HomeDeckActivity
 import com.callerid.numberlookup.home.databinding.HomeScreenGridBinding
 import com.callerid.numberlookup.home.launcher.extensions.config
 import com.callerid.numberlookup.home.launcher.extensions.getDrawableForPackageName
@@ -757,7 +757,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                                 id = id!!
                             )
                         }
-                        (context as? MainActivity)?.runOnUiThread {
+                        (context as? HomeDeckActivity)?.runOnUiThread {
                             gridItems.add(parentItem)
                             addAppIconOrShortcut(draggedHomeGridItem, xIndex!!, yIndex!!, newId)
                         }
@@ -952,7 +952,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
                     finalizeFolderOrder(newHomeScreenGridItem)
                 }
             } else if (newHomeScreenGridItem.type == ITEM_TYPE_SHORTCUT) {
-                (context as? MainActivity)?.handleShorcutCreation(newHomeScreenGridItem.activityInfo!!) { shortcutId, label, icon ->
+                (context as? HomeDeckActivity)?.handleShorcutCreation(newHomeScreenGridItem.activityInfo!!) { shortcutId, label, icon ->
                     ensureBackgroundThread {
                         newHomeScreenGridItem.shortcutId = shortcutId
                         newHomeScreenGridItem.title = label
@@ -1107,7 +1107,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
             return
         }
 
-        val activity = context as MainActivity
+        val activity = context as HomeDeckActivity
         val appWidgetProviderInfo = item.providerInfo
             ?: appWidgetManager!!.installedProviders
                 .firstOrNull { it.provider.className == item.className }
@@ -1155,9 +1155,9 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
         val pseudoWidgetLayout = item.pseudoWidgetLayout()
         // we have to pass the base context here, else there will be errors with the themes
         val widgetView = if (pseudoWidgetLayout != null) {
-            MyAppWidgetHostView((context as MainActivity).baseContext).apply {
+            MyAppWidgetHostView((context as HomeDeckActivity).baseContext).apply {
                 View.inflate(context, pseudoWidgetLayout, this)
-                val activity = this@HomeScreenGrid.context as MainActivity
+                val activity = this@HomeScreenGrid.context as HomeDeckActivity
                 when (item.className) {
                     PSEUDO_WIDGET_SEARCH -> {
                         // The reference app opened its AI chat here; the search bar's natural
@@ -1178,7 +1178,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
             }
         } else {
             (appWidgetHost.createView(
-                (context as MainActivity).baseContext,
+                (context as HomeDeckActivity).baseContext,
                 item.widgetId,
                 appWidgetProviderInfo
             ) as MyAppWidgetHostView).apply {
@@ -1188,7 +1188,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
 
         widgetView.tag = item.widgetId
         widgetView.longPressListener = { x, y ->
-            val activity = context as? MainActivity
+            val activity = context as? HomeDeckActivity
             if (activity?.isAllAppsFragmentExpanded() == false) {
                 activity.showHomeIconMenu(x, widgetView.y, item, false)
                 performHapticFeedback()
@@ -1208,7 +1208,7 @@ class HomeScreenGrid(context: Context, attrs: AttributeSet, defStyle: Int) :
         // Delete existing widget if it has already been loaded to the list
         gridItems.removeIf { it.id == item.id }
         gridItems.add(item)
-        (context as MainActivity).clearWidgetsSearch()
+        (context as HomeDeckActivity).clearWidgetsSearch()
     }
 
     private fun updateWidgetPositionAndSize(

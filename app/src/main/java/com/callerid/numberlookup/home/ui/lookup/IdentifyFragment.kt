@@ -57,8 +57,8 @@ class IdentifyFragment : HostFragment<FragmentLookupBinding>() {
     ) { res ->
         if (res.resultCode == Activity.RESULT_OK) {
             val data = res.data ?: return@registerForActivityResult
-            val iso = data.getStringExtra(TerritoryPickerActivity.EXTRA_ISO) ?: return@registerForActivityResult
-            val dial = data.getStringExtra(TerritoryPickerActivity.EXTRA_DIAL).orEmpty()
+            val iso = data.getStringExtra(RegionPickerActivity.EXTRA_ISO) ?: return@registerForActivityResult
+            val dial = data.getStringExtra(RegionPickerActivity.EXTRA_DIAL).orEmpty()
             VaultRegistry(requireContext()).homeCountryIso = iso // keep Home + Lookup in sync
             applyCountry(iso, dial)
         }
@@ -69,7 +69,7 @@ class IdentifyFragment : HostFragment<FragmentLookupBinding>() {
         ActivityResultContracts.StartActivityForResult()
     ) { res ->
         if (res.resultCode == Activity.RESULT_OK) {
-            val number = res.data?.getStringExtra(IdentifyTraceActivity.EXTRA_NUMBER)
+            val number = res.data?.getStringExtra(LookupLogActivity.EXTRA_NUMBER)
                 ?.takeIf { it.isNotBlank() } ?: return@registerForActivityResult
             binding.etNumberInput.setText(number)
             binding.etNumberInput.setSelection(number.length)
@@ -94,11 +94,11 @@ class IdentifyFragment : HostFragment<FragmentLookupBinding>() {
         // Preload the rewarded ad so it's ready when the user reveals a result.
         RewardedPromo.preload(requireContext())
         binding.llCountryPickerSearch.setOnClickListener {
-            countryLauncher.launch(Intent(requireContext(), TerritoryPickerActivity::class.java))
+            countryLauncher.launch(Intent(requireContext(), RegionPickerActivity::class.java))
         }
 
         binding.btnLookupHistory.setOnClickListener {
-            historyLauncher.launch(IdentifyTraceActivity.newIntent(requireContext()))
+            historyLauncher.launch(LookupLogActivity.newIntent(requireContext()))
         }
 
         historyAdapter = IdentifyTraceAdapter(
@@ -178,7 +178,7 @@ class IdentifyFragment : HostFragment<FragmentLookupBinding>() {
         }
     }
 
-    /** Tab became visible again (ShellActivity uses show/hide, so onResume won't fire). */
+    /** Tab became visible again (AppHubActivity uses show/hide, so onResume won't fire). */
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden && view != null) {
@@ -292,7 +292,7 @@ class IdentifyFragment : HostFragment<FragmentLookupBinding>() {
 
     /**
      * Reveals the caller: shows a "watch ad" confirmation dialog → rewarded ad →
-     * un-blurs the card name and opens [IdentifyInsightActivity] (incl. nicknames).
+     * un-blurs the card name and opens [LookupBriefActivity] (incl. nicknames).
      * Goes straight through when ads are off.
      */
     private fun revealFullDetail(result: IdentifyResult, fullName: String) {
@@ -301,7 +301,7 @@ class IdentifyFragment : HostFragment<FragmentLookupBinding>() {
             if (view != null) {
                 binding.tvResName.text = fullName
                 binding.ivRevealName.visibility = View.GONE
-                requireActivity().openActivity(IdentifyInsightActivity.newIntent(requireContext(), result), false)
+                requireActivity().openActivity(LookupBriefActivity.newIntent(requireContext(), result), false)
             }
         }
 
@@ -376,7 +376,7 @@ class IdentifyFragment : HostFragment<FragmentLookupBinding>() {
     /**
      * Resolves the country from the user's IP via the shared, cache-first
      * [RegionLocator] and updates the chip (best-effort). The country is detected
-     * once app-wide (ADDashboardActivity) and reused here — no repeat network call.
+     * once app-wide (AdRelayActivity) and reused here — no repeat network call.
      * The resolved ISO maps to its dial code so the chip shows the flag 🇮🇳 and
      * "+91". Failures leave the fallback.
      */
