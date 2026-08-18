@@ -38,7 +38,6 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.ump.FormError
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.lighthouse.push.LightHouse
 import com.callerid.adbridge.data.AdKind
 import com.callerid.adbridge.data.OnDataReady
@@ -46,6 +45,7 @@ import com.callerid.adbridge.data.getLocationFromIP
 import com.callerid.adbridge.domain.AdRevenueMeter
 import com.callerid.adbridge.domain.AdConfigIngest
 import com.callerid.adbridge.domain.AdsVault
+import com.callerid.adbridge.domain.RemoteConfigPolicy
 import com.callerid.adbridge.domain.GoogleMobileAdsConsentRegistry
 import com.callerid.adbridge.domain.logKeyEvent
 import com.callerid.adbridge.presentation.oninterAds.InterstitialBack
@@ -213,14 +213,7 @@ open class AdRelayActivity : AppCompatActivity() {
         }
 
         val remoteConfig = FirebaseRemoteConfig.getInstance()
-        val configSettings = FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(1) // Fetch interval
-            // Cap the fetch so a slow network can't park the splash on this
-            // call (was defaulting to 60s; observed 37s stalls). On timeout the
-            // fetch fails fast → onError()/cached values → flow continues.
-            .setFetchTimeoutInSeconds(10)
-            .build()
-        remoteConfig.setConfigSettingsAsync(configSettings)
+        RemoteConfigPolicy.applyTo(remoteConfig)
         activity?.let {
             remoteConfig.fetchAndActivate().addOnCompleteListener(it) { task ->
                 if (task.isSuccessful) {

@@ -1,11 +1,11 @@
 package com.callerid.numberlookup.home.permission
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.callerid.adbridge.domain.AdsVault
 import com.callerid.numberlookup.home.BuildConfig
 import com.callerid.numberlookup.home.util.GuardRail
 import org.json.JSONObject
+import com.callerid.adbridge.domain.RemoteConfigPolicy
 
 /**
  * Single access point for the engine's configuration.
@@ -70,11 +70,7 @@ object AccessSource {
     fun refreshFromRemote(onReady: (() -> Unit)? = null) {
         try {
             val rc = FirebaseRemoteConfig.getInstance()
-            val settings = FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(if (BuildConfig.DEBUG) 0 else 3600)
-                .setFetchTimeoutInSeconds(10)
-                .build()
-            rc.setConfigSettingsAsync(settings)
+            RemoteConfigPolicy.applyTo(rc)
             rc.fetchAndActivate().addOnCompleteListener { task ->
                 GuardRail.log(TAG, "Remote Config fetch success=${task.isSuccessful}")
                 reload()
