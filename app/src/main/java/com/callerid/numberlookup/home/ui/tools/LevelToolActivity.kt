@@ -13,16 +13,16 @@ import androidx.core.view.WindowInsetsCompat
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.base.ScreenBaseActivity
 import com.callerid.adbridge.presentation.NativePromo
-import com.callerid.numberlookup.home.databinding.ActivityLevelBinding
+import com.callerid.numberlookup.home.databinding.ScreenLevelBinding
 import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
 /** A bubble (spirit) level driven by the accelerometer. */
-class LevelToolActivity : ScreenBaseActivity<ActivityLevelBinding>(), SensorEventListener {
+class LevelToolActivity : ScreenBaseActivity<ScreenLevelBinding>(), SensorEventListener {
 
-    override val layoutId: Int = R.layout.activity_level
+    override val layoutId: Int = R.layout.screen_level
 
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null

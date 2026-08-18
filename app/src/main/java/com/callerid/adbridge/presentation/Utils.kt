@@ -21,7 +21,7 @@ import androidx.viewbinding.ViewBinding
 import com.callerid.adbridge.domain.AdsVault
 import com.callerid.adbridge.presentation.oninterAds.InterstitialNormal
 import com.callerid.numberlookup.home.R
-import com.callerid.numberlookup.home.databinding.DialogAppRedirectBinding
+import com.callerid.numberlookup.home.databinding.SheetAppRedirectBinding
 import kotlin.apply
 import kotlin.let
 import kotlin.text.isNullOrEmpty
@@ -97,7 +97,7 @@ fun Activity.showAppRedirectPopup(onDismiss: (() -> Unit)? = null) {
     val appUrl = AdsVault(this).getString("In_App_Update_Link")
     if (appUrl.isNullOrEmpty()) return
 
-    val dialogBinding = DialogAppRedirectBinding.inflate(layoutInflater)
+    val dialogBinding = SheetAppRedirectBinding.inflate(layoutInflater)
 
     val dialog = showDialog(
         activity = this,

@@ -15,16 +15,16 @@ import androidx.core.view.WindowInsetsCompat
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.base.ScreenBaseActivity
 import com.callerid.adbridge.presentation.NativePromo
-import com.callerid.numberlookup.home.databinding.ActivitySoundMeterBinding
+import com.callerid.numberlookup.home.databinding.ScreenSoundMeterBinding
 import java.io.File
 import java.util.Locale
 import kotlin.math.log10
 import kotlin.math.roundToInt
 
 /** Approximate sound-level meter using [MediaRecorder.getMaxAmplitude]. */
-class NoiseToolActivity : ScreenBaseActivity<ActivitySoundMeterBinding>() {
+class NoiseToolActivity : ScreenBaseActivity<ScreenSoundMeterBinding>() {
 
-    override val layoutId: Int = R.layout.activity_sound_meter
+    override val layoutId: Int = R.layout.screen_sound_meter
 
     private var recorder: MediaRecorder? = null
     private val handler = Handler(Looper.getMainLooper())

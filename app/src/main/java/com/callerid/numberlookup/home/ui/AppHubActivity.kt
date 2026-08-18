@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.base.ScreenBaseActivity
-import com.callerid.numberlookup.home.databinding.ActivityMainBinding
+import com.callerid.numberlookup.home.databinding.ScreenMainBinding
 import com.callerid.numberlookup.home.launcher.activities.HomeDeckActivity as LauncherHomeActivity
 import com.callerid.numberlookup.home.ui.home.HomeShellController
 import com.callerid.numberlookup.home.ui.home.HomeShellFragment
@@ -20,9 +20,9 @@ import com.callerid.numberlookup.home.ui.home.HomeShellHost
  * Activity-bound flows are [HomeShellController], so the launcher's swipe-right panel can show
  * the exact same shell (see the launcher's `CallerPanelFragment`) instead of a second copy.
  */
-class AppHubActivity : ScreenBaseActivity<ActivityMainBinding>(), HomeShellHost {
+class AppHubActivity : ScreenBaseActivity<ScreenMainBinding>(), HomeShellHost {
 
-    override val layoutId: Int = R.layout.activity_main
+    override val layoutId: Int = R.layout.screen_main
 
     override val hostActivity: AppCompatActivity get() = this
 

@@ -13,13 +13,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.base.ScreenBaseActivity
 import com.callerid.adbridge.presentation.NativePromo
-import com.callerid.numberlookup.home.databinding.ActivityTimerBinding
+import com.callerid.numberlookup.home.databinding.ScreenTimerBinding
 import java.util.Locale
 
 /** Countdown timer with +1:00 / +0:10 / +0:01 presets. */
-class EggTimerActivity : ScreenBaseActivity<ActivityTimerBinding>() {
+class EggTimerActivity : ScreenBaseActivity<ScreenTimerBinding>() {
 
-    override val layoutId: Int = R.layout.activity_timer
+    override val layoutId: Int = R.layout.screen_timer
 
     private val handler = Handler(Looper.getMainLooper())
     private var running = false

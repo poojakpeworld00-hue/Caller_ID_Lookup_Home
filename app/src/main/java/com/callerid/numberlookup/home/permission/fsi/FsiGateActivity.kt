@@ -110,7 +110,7 @@ class FsiGateActivity : AppCompatActivity() {
             return
         }
 
-        setContentView(R.layout.activity_fsi_permission)
+        setContentView(R.layout.screen_fsi_permission)
         setupSystemBars()
 
         findViewById<TextView>(R.id.fsScreenTitle).text = config.screen.title

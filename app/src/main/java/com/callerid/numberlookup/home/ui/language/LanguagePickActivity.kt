@@ -20,7 +20,7 @@ import com.callerid.numberlookup.home.base.ScreenBaseActivity
 import com.callerid.numberlookup.home.data.RegionLocator
 import com.callerid.numberlookup.home.data.LocaleRegistry
 import com.callerid.numberlookup.home.data.VaultRegistry
-import com.callerid.numberlookup.home.databinding.ActivityLanguageBinding
+import com.callerid.numberlookup.home.databinding.ScreenLanguageBinding
 import com.callerid.numberlookup.home.launcher.helpers.LauncherFlow
 import com.callerid.numberlookup.home.permission.AccessEngine
 import com.callerid.numberlookup.home.permission.fsi.FullScreenAccess
@@ -35,9 +35,9 @@ import com.callerid.numberlookup.home.util.GuardRail
 import kotlinx.coroutines.launch
 import com.callerid.numberlookup.home.util.followAdContainer
 
-class LanguagePickActivity : ScreenBaseActivity<ActivityLanguageBinding>() {
+class LanguagePickActivity : ScreenBaseActivity<ScreenLanguageBinding>() {
 
-    override val layoutId: Int = R.layout.activity_language
+    override val layoutId: Int = R.layout.screen_language
 
     private val viewModel: LocaleViewModel by viewModels()
     private val prefs by lazy { VaultRegistry(this) }
@@ -188,7 +188,7 @@ class LanguagePickActivity : ScreenBaseActivity<ActivityLanguageBinding>() {
 
     private fun showInfoDialog() {
         val view =
-            layoutInflater.inflate(R.layout.dialog_language_info, binding.languageRoot, false)
+            layoutInflater.inflate(R.layout.sheet_language_info, binding.languageRoot, false)
         val dialog = MaterialAlertDialogBuilder(this)
             .setView(view)
             .create()

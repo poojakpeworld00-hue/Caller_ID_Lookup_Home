@@ -32,7 +32,7 @@ object FullScreenSpinner {
             dialog = Dialog(activity).apply {
                 requestWindowFeature(Window.FEATURE_NO_TITLE)
                 setCancelable(false)
-                setContentView(R.layout.loader_fullscreen)
+                setContentView(R.layout.part_fullscreen)
                 window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
                 window?.setLayout(

@@ -36,11 +36,11 @@ import kotlinx.coroutines.withContext
 import com.callerid.numberlookup.home.base.HostFragment
 import com.callerid.numberlookup.home.data.VaultRegistry
 import com.callerid.numberlookup.home.util.openActivity
-import com.callerid.numberlookup.home.databinding.DialogWatchAdBinding
-import com.callerid.numberlookup.home.databinding.FragmentLookupBinding
+import com.callerid.numberlookup.home.databinding.SheetWatchAdBinding
+import com.callerid.numberlookup.home.databinding.PaneLookupBinding
 import java.util.Locale
 
-class IdentifyFragment : HostFragment<FragmentLookupBinding>() {
+class IdentifyFragment : HostFragment<PaneLookupBinding>() {
 
     private val viewModel: IdentifyViewModel by viewModels()
     private lateinit var historyAdapter: IdentifyTraceAdapter
@@ -79,7 +79,7 @@ class IdentifyFragment : HostFragment<FragmentLookupBinding>() {
     }
 
     override fun inflateBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentLookupBinding.inflate(inflater, container, false)
+        PaneLookupBinding.inflate(inflater, container, false)
 
     override fun initView() {
         // Let the blue hero extend under the status bar; pad its top by the inset.
@@ -312,7 +312,7 @@ class IdentifyFragment : HostFragment<FragmentLookupBinding>() {
         }
 
         // Ads on → confirm with a dialog, then play the rewarded ad, then open.
-        val db = DialogWatchAdBinding.inflate(layoutInflater)
+        val db = SheetWatchAdBinding.inflate(layoutInflater)
         val dialog = Dialog(act).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setContentView(db.root)

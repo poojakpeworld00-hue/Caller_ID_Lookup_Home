@@ -9,7 +9,7 @@ import android.provider.Settings
 import androidx.activity.OnBackPressedCallback
 import com.callerid.adbridge.domain.LauncherAdsConfig
 import com.callerid.adbridge.presentation.GuideSheetActivity
-import com.callerid.numberlookup.home.databinding.ActivityOnboardingDefaultLauncherBinding
+import com.callerid.numberlookup.home.databinding.ScreenOnboardingDefaultLauncherBinding
 import com.callerid.numberlookup.home.launcher.extensions.excludeAppFromRecents
 import com.callerid.numberlookup.home.launcher.extensions.isDefaultLauncher
 import com.callerid.numberlookup.home.launcher.extensions.roleManager
@@ -54,7 +54,7 @@ class DefaultHomeStepActivity : CoreDeckActivity() {
         const val REQ_ROLE_HOME = 7012
     }
 
-    private val binding by viewBinding(ActivityOnboardingDefaultLauncherBinding::inflate)
+    private val binding by viewBinding(ScreenOnboardingDefaultLauncherBinding::inflate)
     private var shieldPulse: ValueAnimator? = null
     private var sparklePulses: List<ValueAnimator> = emptyList()
 

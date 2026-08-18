@@ -22,14 +22,14 @@ import com.callerid.numberlookup.home.R
 import com.callerid.adbridge.presentation.NativePromoBanner
 import com.callerid.numberlookup.home.base.HostFragment
 import com.callerid.numberlookup.home.util.openActivity
-import com.callerid.numberlookup.home.databinding.FragmentRecentsBinding
+import com.callerid.numberlookup.home.databinding.PaneRecentsBinding
 import com.callerid.numberlookup.home.ui.detail.CallBriefActivity
 import com.callerid.numberlookup.home.ui.dialer.DialPadActivity
 import com.callerid.numberlookup.home.util.followAdContainer
 import com.callerid.numberlookup.home.ui.home.homeShellController
 import com.callerid.numberlookup.home.ui.home.homeShell
 
-class TimelineFragment : HostFragment<FragmentRecentsBinding>() {
+class TimelineFragment : HostFragment<PaneRecentsBinding>() {
 
     private val viewModel: TimelineViewModel by viewModels()
     private val adapter = TimelineAdapter(
@@ -39,7 +39,7 @@ class TimelineFragment : HostFragment<FragmentRecentsBinding>() {
     )
 
     override fun inflateBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentRecentsBinding.inflate(inflater, container, false)
+        PaneRecentsBinding.inflate(inflater, container, false)
 
     override fun initView() {
         // Hero bleeds under the status bar; pad its content down by the inset.
@@ -151,7 +151,7 @@ class TimelineFragment : HostFragment<FragmentRecentsBinding>() {
         val current = viewModel.sort.value ?: CallOrder.NEWEST
 
         val inflater = LayoutInflater.from(requireContext())
-        val content = inflater.inflate(R.layout.popup_sort, null) as LinearLayout
+        val content = inflater.inflate(R.layout.menu_sort, null) as LinearLayout
         val container = content.findViewById<LinearLayout>(R.id.sortContainer)
 
         val popup = PopupWindow(
@@ -165,7 +165,7 @@ class TimelineFragment : HostFragment<FragmentRecentsBinding>() {
         }
 
         options.forEach { (titleRes, sort) ->
-            val row = inflater.inflate(R.layout.item_sort_option, container, false)
+            val row = inflater.inflate(R.layout.cell_sort_option, container, false)
             row.findViewById<TextView>(R.id.tvSortLabel).setText(titleRes)
             row.findViewById<ImageView>(R.id.ivSortCheck).visibility =
                 if (sort == current) View.VISIBLE else View.INVISIBLE

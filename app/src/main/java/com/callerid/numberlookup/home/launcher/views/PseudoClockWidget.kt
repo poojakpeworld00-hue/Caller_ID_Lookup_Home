@@ -15,7 +15,7 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * Root of [R.layout.pseudo_widget_digital_clock]: two plain TextViews showing the current
+ * Root of [R.layout.mock_widget_digital_clock]: two plain TextViews showing the current
  * time and weekday. The system ticks us once a minute while the home screen is up, which is
  * all the resolution the clock needs, so there is no timer of our own to leak.
  */

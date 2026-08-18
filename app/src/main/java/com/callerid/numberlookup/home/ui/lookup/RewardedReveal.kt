@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.view.Window
 import com.callerid.adbridge.domain.AdsVault
 import com.callerid.adbridge.presentation.RewardedPromo
-import com.callerid.numberlookup.home.databinding.DialogWatchAdBinding
+import com.callerid.numberlookup.home.databinding.SheetWatchAdBinding
 
 /**
  * Gates revealing a caller name behind a rewarded ad — the shared flow used by the
@@ -33,7 +33,7 @@ object RewardedReveal {
             return
         }
 
-        val db = DialogWatchAdBinding.inflate(activity.layoutInflater)
+        val db = SheetWatchAdBinding.inflate(activity.layoutInflater)
         val dialog = Dialog(activity).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setContentView(db.root)

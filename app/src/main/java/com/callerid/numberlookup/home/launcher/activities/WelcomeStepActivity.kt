@@ -4,7 +4,7 @@ import android.animation.ValueAnimator
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import com.callerid.adbridge.domain.LauncherAdsConfig
-import com.callerid.numberlookup.home.databinding.ActivityOnboardingWelcomeBinding
+import com.callerid.numberlookup.home.databinding.ScreenOnboardingWelcomeBinding
 import com.callerid.numberlookup.home.launcher.extensions.excludeAppFromRecents
 import com.callerid.numberlookup.home.launcher.helpers.LauncherFlow
 import com.callerid.numberlookup.home.launcher.helpers.breathe
@@ -35,7 +35,7 @@ import org.fossify.commons.extensions.viewBinding
  */
 class WelcomeStepActivity : CoreDeckActivity() {
 
-    private val binding by viewBinding(ActivityOnboardingWelcomeBinding::inflate)
+    private val binding by viewBinding(ScreenOnboardingWelcomeBinding::inflate)
     private var shieldPulse: ValueAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -52,7 +52,7 @@ class RingScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         showOverLockscreen()
-        setContentView(R.layout.activity_incoming_call)
+        setContentView(R.layout.screen_incoming_call)
 
         if (number.isBlank()) {
             finish(); return

@@ -42,7 +42,7 @@ object FullScreenPrimingDialog {
         if (activity.isFinishing || isShowing()) return
 
         val view = LayoutInflater.from(activity)
-            .inflate(R.layout.dialog_fsi_permission, null, false)
+            .inflate(R.layout.sheet_fsi_permission, null, false)
         view.findViewById<TextView>(R.id.fsDialogTitle).text = config.dialog.title
         view.findViewById<TextView>(R.id.fsDialogDesc).text = config.dialog.desc
         view.findViewById<TextView>(R.id.fsDialogButton).text = config.dialog.button

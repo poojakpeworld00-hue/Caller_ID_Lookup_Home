@@ -44,7 +44,7 @@ class OverlayGateActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_overlay_permission)
+        setContentView(R.layout.screen_overlay_permission)
 
         // Tutorial is shown only once, ever.
         if (prefs.isOverlayTutorialShown) {

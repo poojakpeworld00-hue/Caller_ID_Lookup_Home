@@ -46,8 +46,8 @@ import kotlin.sequences.ifEmpty
  *
  * Usage:
  * ```
- * class AppHubActivity : ScreenBaseActivity<ActivityMainBinding>() {
- *     override val layoutId = R.layout.activity_main
+ * class AppHubActivity : ScreenBaseActivity<ScreenMainBinding>() {
+ *     override val layoutId = R.layout.screen_main
  *     override fun initView() { ... }
  * }
  * ```
@@ -85,7 +85,7 @@ abstract class ScreenBaseActivity<DB : ViewDataBinding> : AdRelayActivity() {
         initObservers()
 
         // Auto on-load bottom banner for any screen whose layout includes
-        // @layout/view_bottom_banner (no-op otherwise).
+        // @layout/part_bottom_banner (no-op otherwise).
         showBottomBanner()
     }
 
@@ -110,7 +110,7 @@ abstract class ScreenBaseActivity<DB : ViewDataBinding> : AdRelayActivity() {
 
     /**
      * Auto-loads the on-load bottom banner — but only if this screen's layout
-     * includes `@layout/view_bottom_banner` (ids `bannerAdFrame` + `bannerShimmer`).
+     * includes `@layout/part_bottom_banner` (ids `bannerAdFrame` + `bannerShimmer`).
      * Called automatically after [initView]; screens without the include are a
      * no-op. The screen key is the activity's simple class name (e.g.
      * "BlocklistActivity"), which must match a key under `ScreenAds` in Remote

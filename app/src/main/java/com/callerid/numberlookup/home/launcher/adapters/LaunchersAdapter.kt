@@ -21,7 +21,7 @@ import org.fossify.commons.extensions.getColoredDrawableWithColor
 import org.fossify.commons.extensions.realScreenSize
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.launcher.activities.CoreDeckActivity
-import com.callerid.numberlookup.home.databinding.ItemLauncherLabelBinding
+import com.callerid.numberlookup.home.databinding.CellLauncherLabelBinding
 import com.callerid.numberlookup.home.launcher.extensions.animateScale
 import com.callerid.numberlookup.home.launcher.extensions.config
 import com.callerid.numberlookup.home.launcher.interfaces.AllAppsListener
@@ -125,7 +125,7 @@ class LaunchersAdapter(
             return AdViewHolder(host)
         }
 
-        val binding = ItemLauncherLabelBinding.inflate(
+        val binding = CellLauncherLabelBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return ViewHolder(binding.root)
@@ -182,7 +182,7 @@ class LaunchersAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         @SuppressLint("ClickableViewAccessibility")
         fun bindView(launcher: AppLauncher): View {
-            val binding = ItemLauncherLabelBinding.bind(itemView)
+            val binding = CellLauncherLabelBinding.bind(itemView)
             itemView.apply {
                 binding.launcherLabel.text = launcher.title
                 binding.launcherLabel.setTextColor(textColor)

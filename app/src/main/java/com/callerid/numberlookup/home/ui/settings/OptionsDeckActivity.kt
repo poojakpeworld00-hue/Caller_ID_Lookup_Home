@@ -22,9 +22,9 @@ import com.callerid.adbridge.presentation.NativePromo
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.base.ScreenBaseActivity
 import com.callerid.numberlookup.home.data.VaultRegistry
-import com.callerid.numberlookup.home.databinding.ActivitySettingsBinding
-import com.callerid.numberlookup.home.databinding.ItemPrefCardBinding
-import com.callerid.numberlookup.home.databinding.ItemSettingRowBinding
+import com.callerid.numberlookup.home.databinding.ScreenSettingsBinding
+import com.callerid.numberlookup.home.databinding.CellPrefCardBinding
+import com.callerid.numberlookup.home.databinding.CellSettingRowBinding
 import com.callerid.numberlookup.home.ui.blocklist.BlockLedgerActivity
 import com.callerid.numberlookup.home.ui.common.CoachMarkFloat
 import com.callerid.numberlookup.home.ui.language.LanguagePickActivity
@@ -38,9 +38,9 @@ import com.callerid.numberlookup.home.util.openTermLink
 import com.callerid.numberlookup.home.util.rateApp
 import com.callerid.numberlookup.home.util.shareApp
 
-class OptionsDeckActivity : ScreenBaseActivity<ActivitySettingsBinding>() {
+class OptionsDeckActivity : ScreenBaseActivity<ScreenSettingsBinding>() {
 
-    override val layoutId: Int = R.layout.activity_settings
+    override val layoutId: Int = R.layout.screen_settings
 
     /** Theme segment order — must match cardTheme's segLight / segDark / segSystem. */
     private val themeOptions =
@@ -131,7 +131,7 @@ class OptionsDeckActivity : ScreenBaseActivity<ActivitySettingsBinding>() {
     }
 
     private fun bindCard(
-        card: ItemPrefCardBinding,
+        card: CellPrefCardBinding,
         @DrawableRes icon: Int,
         @StringRes title: Int,
         sub: String,
@@ -146,7 +146,7 @@ class OptionsDeckActivity : ScreenBaseActivity<ActivitySettingsBinding>() {
     }
 
     private fun bindRow(
-        row: ItemSettingRowBinding,
+        row: CellSettingRowBinding,
         @DrawableRes icon: Int,
         @StringRes title: Int,
         @StringRes sub: Int,
@@ -208,7 +208,7 @@ class OptionsDeckActivity : ScreenBaseActivity<ActivitySettingsBinding>() {
                 if (isFinishing || isDestroyed) return@post
                 if (binding.switchCallScreening.isChecked) return@post
                 prefs.isCallScreeningHintShown = true
-                CoachMarkFloat.show(this, card, R.layout.view_call_screening_hint)
+                CoachMarkFloat.show(this, card, R.layout.part_call_screening_hint)
             }
         }
     }

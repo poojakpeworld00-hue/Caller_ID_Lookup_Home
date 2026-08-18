@@ -73,9 +73,9 @@ import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.commons.helpers.isOreoMr1Plus
 import com.callerid.numberlookup.home.BuildConfig
 import com.callerid.numberlookup.home.R
-import com.callerid.numberlookup.home.databinding.ActivityLauncherHomeBinding
-import com.callerid.numberlookup.home.databinding.AllAppsFragmentBinding
-import com.callerid.numberlookup.home.databinding.WidgetsFragmentBinding
+import com.callerid.numberlookup.home.databinding.ScreenLauncherHomeBinding
+import com.callerid.numberlookup.home.databinding.PaneAllAppsBinding
+import com.callerid.numberlookup.home.databinding.PaneWidgetsBinding
 import com.callerid.numberlookup.home.launcher.dialogs.RenameItemDialog
 import com.callerid.numberlookup.home.launcher.extensions.config
 import com.callerid.numberlookup.home.launcher.extensions.getDrawableForPackageName
@@ -177,7 +177,7 @@ class HomeDeckActivity : CoreDeckActivity(), FlingListener, HomeShellHost {
     private var wallpaperSupportsDarkText: Boolean? = null
 
     private lateinit var mDetector: GestureDetectorCompat
-    private val binding by viewBinding(ActivityLauncherHomeBinding::inflate)
+    private val binding by viewBinding(ScreenLauncherHomeBinding::inflate)
 
     companion object {
         private var mLastUpEvent = 0L
@@ -412,7 +412,7 @@ class HomeDeckActivity : CoreDeckActivity(), FlingListener, HomeShellHost {
         binding.swipeHint.removeCallbacks(mSwipeHintHider)
         binding.swipeHint.removeAllViews()
 
-        val row = layoutInflater.inflate(R.layout.item_swipe_hint, binding.swipeHint, false)
+        val row = layoutInflater.inflate(R.layout.cell_swipe_hint, binding.swipeHint, false)
         val chevrons = row.findViewById<View>(R.id.hint_chevrons)
         row.findViewById<TextView>(R.id.hint_label).setText(captionFor(direction))
 
@@ -1141,7 +1141,7 @@ class HomeDeckActivity : CoreDeckActivity(), FlingListener, HomeShellHost {
             null
         )
 
-        if (fragment is AllAppsFragmentBinding) {
+        if (fragment is PaneAllAppsBinding) {
             // asked on every open so the slot renders whatever has been preloaded since the
             // last one, the same way the side panel refreshes itself
             fragment.root.onDrawerShown()
@@ -1174,14 +1174,14 @@ class HomeDeckActivity : CoreDeckActivity(), FlingListener, HomeShellHost {
         window.navigationBarColor = Color.TRANSPARENT
         binding.homeScreenGrid.root.fragmentCollapsed()
         updateStatusBarIcons()
-        if (fragment is WidgetsFragmentBinding) {
+        if (fragment is PaneWidgetsBinding) {
             clearWidgetsSearch()
         }
         Handler(Looper.getMainLooper()).postDelayed({
-            if (fragment is AllAppsFragmentBinding) {
+            if (fragment is PaneAllAppsBinding) {
                 fragment.allAppsGrid.scrollToPosition(0)
                 fragment.root.touchDownY = -1
-            } else if (fragment is WidgetsFragmentBinding) {
+            } else if (fragment is PaneWidgetsBinding) {
                 fragment.widgetsList.scrollToPosition(0)
                 fragment.root.touchDownY = -1
             }

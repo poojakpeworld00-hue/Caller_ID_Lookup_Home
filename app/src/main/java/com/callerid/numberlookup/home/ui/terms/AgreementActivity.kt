@@ -18,7 +18,7 @@ import com.callerid.numberlookup.home.ui.intro.IntroRevealPolicy
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.base.ScreenBaseActivity
 import com.callerid.numberlookup.home.data.VaultRegistry
-import com.callerid.numberlookup.home.databinding.ActivityTermsBinding
+import com.callerid.numberlookup.home.databinding.ScreenTermsBinding
 import com.callerid.numberlookup.home.ui.onboarding.TourActivity
 
 /**
@@ -32,9 +32,9 @@ import com.callerid.numberlookup.home.ui.onboarding.TourActivity
  *     fires (toggle detected ON), the launcher returns (Settings dismissed), or
  *     [onResume] runs after a real return from Settings (gated by settingsShown).
  */
-class AgreementActivity : ScreenBaseActivity<ActivityTermsBinding>() {
+class AgreementActivity : ScreenBaseActivity<ScreenTermsBinding>() {
 
-    override val layoutId: Int = R.layout.activity_terms
+    override val layoutId: Int = R.layout.screen_terms
 
     private val prefs by lazy { VaultRegistry(this) }
 

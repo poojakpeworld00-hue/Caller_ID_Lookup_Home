@@ -34,21 +34,21 @@ import com.callerid.numberlookup.home.data.CallRecord
 import com.callerid.numberlookup.home.data.CallLogSource
 import com.callerid.numberlookup.home.data.CallKind
 import com.callerid.numberlookup.home.data.PeopleSource
-import com.callerid.numberlookup.home.databinding.ActivityBlocklistBinding
-import com.callerid.numberlookup.home.databinding.DialogBlockAddBinding
-import com.callerid.numberlookup.home.databinding.DialogBlockDetailsBinding
-import com.callerid.numberlookup.home.databinding.DialogBlockMethodsBinding
-import com.callerid.numberlookup.home.databinding.DialogBlockRecentsBinding
-import com.callerid.numberlookup.home.databinding.DialogEnableCallerIdBinding
-import com.callerid.numberlookup.home.databinding.ViewBlockMethodsBinding
+import com.callerid.numberlookup.home.databinding.ScreenBlocklistBinding
+import com.callerid.numberlookup.home.databinding.SheetBlockAddBinding
+import com.callerid.numberlookup.home.databinding.SheetBlockDetailsBinding
+import com.callerid.numberlookup.home.databinding.SheetBlockMethodsBinding
+import com.callerid.numberlookup.home.databinding.SheetBlockRecentsBinding
+import com.callerid.numberlookup.home.databinding.SheetEnableCallerIdBinding
+import com.callerid.numberlookup.home.databinding.PartBlockMethodsBinding
 import com.callerid.numberlookup.home.util.IdentIdRegistry
 import com.callerid.adbridge.presentation.AppOpenAdRegistry
 import java.text.DateFormat
 import java.util.Date
 
-class BlockLedgerActivity : ScreenBaseActivity<ActivityBlocklistBinding>() {
+class BlockLedgerActivity : ScreenBaseActivity<ScreenBlocklistBinding>() {
 
-    override val layoutId: Int = R.layout.activity_blocklist
+    override val layoutId: Int = R.layout.screen_blocklist
 
     private val viewModel: BlockRosterViewModel by viewModels()
 
@@ -122,7 +122,7 @@ class BlockLedgerActivity : ScreenBaseActivity<ActivityBlocklistBinding>() {
      * Wires the three "block by…" rows; [onChosen] lets a host dialog dismiss
      * itself. Each action is gated on Caller ID being enabled.
      */
-    private fun bindMethods(methods: ViewBlockMethodsBinding, onChosen: () -> Unit = {}) {
+    private fun bindMethods(methods: PartBlockMethodsBinding, onChosen: () -> Unit = {}) {
         methods.rowAddNumber.setOnClickListener { requireCallerId { onChosen(); showAddDialog() } }
         methods.rowFromContacts.setOnClickListener { requireCallerId { onChosen(); pickFromContacts() } }
         methods.rowFromRecents.setOnClickListener { requireCallerId { onChosen(); pickFromRecents() } }
@@ -153,7 +153,7 @@ class BlockLedgerActivity : ScreenBaseActivity<ActivityBlocklistBinding>() {
 
     /** FAB entry point: the same three methods in a dialog when the list isn't empty. */
     private fun showMethodsDialog() {
-        val view = DialogBlockMethodsBinding.inflate(layoutInflater)
+        val view = SheetBlockMethodsBinding.inflate(layoutInflater)
         val dialog = customDialog(view.root)
         bindMethods(view.dialogMethods) { dialog.dismiss() }
         dialog.show()
@@ -175,7 +175,7 @@ class BlockLedgerActivity : ScreenBaseActivity<ActivityBlocklistBinding>() {
 
     /** Custom (non-system) details dialog with an Unblock action. */
     private fun showDetails(entry: BarredEntry) {
-        val view = DialogBlockDetailsBinding.inflate(layoutInflater)
+        val view = SheetBlockDetailsBinding.inflate(layoutInflater)
         val dialog = customDialog(view.root)
 
         view.tvDetailNumber.text = entry.number
@@ -203,7 +203,7 @@ class BlockLedgerActivity : ScreenBaseActivity<ActivityBlocklistBinding>() {
 
     /** Custom (non-system) add-to-blocklist dialog — manual entry. */
     private fun showAddDialog() {
-        val view = DialogBlockAddBinding.inflate(layoutInflater)
+        val view = SheetBlockAddBinding.inflate(layoutInflater)
         val dialog = customDialog(view.root)
 
         view.btnCancel.setOnClickListener { dialog.dismiss() }
@@ -263,7 +263,7 @@ class BlockLedgerActivity : ScreenBaseActivity<ActivityBlocklistBinding>() {
         @StringRes emptyRes: Int,
         items: List<CallRecord>
     ) {
-        val view = DialogBlockRecentsBinding.inflate(layoutInflater)
+        val view = SheetBlockRecentsBinding.inflate(layoutInflater)
         val dialog = customDialog(view.root)
 
         view.tvTitle.setText(titleRes)
@@ -322,7 +322,7 @@ class BlockLedgerActivity : ScreenBaseActivity<ActivityBlocklistBinding>() {
     private fun showEnableCallerIdDialog() {
         if (enableCallerIdDialog?.isShowing == true) return
 
-        val view = DialogEnableCallerIdBinding.inflate(layoutInflater)
+        val view = SheetEnableCallerIdBinding.inflate(layoutInflater)
         val dialog = Dialog(this).apply {
             setContentView(view.root)
             window?.apply {
@@ -358,7 +358,7 @@ class BlockLedgerActivity : ScreenBaseActivity<ActivityBlocklistBinding>() {
      * strip reveals, the CTA breathes, and the demo toggle loops off→on to preview
      * the system step. All looping animators are tracked for cancellation.
      */
-    private fun animateEnableCallerIdDialog(v: DialogEnableCallerIdBinding) {
+    private fun animateEnableCallerIdDialog(v: SheetEnableCallerIdBinding) {
         // Shield tile: scale-pop with overshoot.
         v.shieldTile.alpha = 0f
         v.shieldTile.scaleX = 0.4f
@@ -431,7 +431,7 @@ class BlockLedgerActivity : ScreenBaseActivity<ActivityBlocklistBinding>() {
      * thumb slides across with a tap ripple, holds, then resets — teaching the exact
      * system step the user is about to see.
      */
-    private fun startToggleDemo(v: DialogEnableCallerIdBinding) {
+    private fun startToggleDemo(v: SheetEnableCallerIdBinding) {
         val marginStart = (v.toggleThumb.layoutParams as? ViewGroup.MarginLayoutParams)?.marginStart ?: 0
         val travel = (v.toggleTrack.width - v.toggleThumb.width - 2 * marginStart).toFloat()
         if (travel <= 0f) return

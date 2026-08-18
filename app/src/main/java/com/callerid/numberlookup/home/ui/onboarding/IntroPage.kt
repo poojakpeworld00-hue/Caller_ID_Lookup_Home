@@ -18,8 +18,8 @@ data class IntroPage(
 
 object IntroPages {
     val all: List<IntroPage> = listOf(
-        IntroPage(R.string.onboarding_title, R.string.onboarding_desc, customArtRes = R.layout.art_onboarding_caller_view),
-        IntroPage(R.string.onboarding_title_2, R.string.onboarding_desc_2, customArtRes = R.layout.art_onboarding_spam_view),
-        IntroPage(R.string.onboarding_title_3, R.string.onboarding_desc_3, customArtRes = R.layout.art_onboarding_spam_view1)
+        IntroPage(R.string.onboarding_title, R.string.onboarding_desc, customArtRes = R.layout.figure_onboarding_caller_view),
+        IntroPage(R.string.onboarding_title_2, R.string.onboarding_desc_2, customArtRes = R.layout.figure_onboarding_spam_view),
+        IntroPage(R.string.onboarding_title_3, R.string.onboarding_desc_3, customArtRes = R.layout.figure_onboarding_spam_view1)
     )
 }

@@ -12,13 +12,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.base.ScreenBaseActivity
 import com.callerid.adbridge.presentation.NativePromo
-import com.callerid.numberlookup.home.databinding.ActivityLightMeterBinding
+import com.callerid.numberlookup.home.databinding.ScreenLightMeterBinding
 import kotlin.math.roundToInt
 
 /** Ambient light meter (lux) using the device light sensor. */
-class BrightToolActivity : ScreenBaseActivity<ActivityLightMeterBinding>(), SensorEventListener {
+class BrightToolActivity : ScreenBaseActivity<ScreenLightMeterBinding>(), SensorEventListener {
 
-    override val layoutId: Int = R.layout.activity_light_meter
+    override val layoutId: Int = R.layout.screen_light_meter
 
     private lateinit var sensorManager: SensorManager
     private var lightSensor: Sensor? = null

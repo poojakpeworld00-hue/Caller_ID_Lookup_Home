@@ -27,9 +27,9 @@ import java.util.Locale
  *
  * Usage:
  * ```
- * class DashboardFragment : HostFragment<FragmentHomeBinding>() {
+ * class DashboardFragment : HostFragment<PaneHomeBinding>() {
  *     override fun inflateBinding(inflater, container) =
- *         FragmentHomeBinding.inflate(inflater, container, false)
+ *         PaneHomeBinding.inflate(inflater, container, false)
  * }
  * ```
  */

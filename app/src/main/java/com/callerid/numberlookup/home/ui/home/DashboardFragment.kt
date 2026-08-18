@@ -32,8 +32,8 @@ import com.callerid.adbridge.domain.logPermissionResult
 import com.callerid.numberlookup.home.data.RegionLocator
 import com.callerid.numberlookup.home.data.VaultRegistry
 import kotlinx.coroutines.launch
-import com.callerid.numberlookup.home.databinding.FragmentHomeBinding
-import com.callerid.numberlookup.home.databinding.ItemQuickActionBinding
+import com.callerid.numberlookup.home.databinding.PaneHomeBinding
+import com.callerid.numberlookup.home.databinding.CellQuickActionBinding
 import com.callerid.numberlookup.home.ui.blocklist.BlockLedgerActivity
 import com.callerid.numberlookup.home.ui.common.CallRowAdapter
 import com.callerid.adbridge.presentation.NativePromoBanner
@@ -47,7 +47,7 @@ import com.callerid.numberlookup.home.ui.settings.OptionsDeckActivity
 import com.callerid.numberlookup.home.ui.tools.ToolboxActivity
 import com.callerid.numberlookup.home.util.followAdContainer
 
-class DashboardFragment : HostFragment<FragmentHomeBinding>() {
+class DashboardFragment : HostFragment<PaneHomeBinding>() {
 
     private val viewModel: DashboardViewModel by viewModels()
     private val recentAdapter = CallRowAdapter(
@@ -101,7 +101,7 @@ class DashboardFragment : HostFragment<FragmentHomeBinding>() {
     }
 
     override fun inflateBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentHomeBinding.inflate(inflater, container, false)
+        PaneHomeBinding.inflate(inflater, container, false)
 
     override fun initView() {
         // Hero bleeds under the status bar; pad its content down by the inset.
@@ -312,10 +312,10 @@ class DashboardFragment : HostFragment<FragmentHomeBinding>() {
             val host = homeShell?.view as? ViewGroup
             prefs.isSearchHintShown = true
             searchHint = if (host != null) {
-                CoachMarkFloat.show(host, anchor, R.layout.view_search_hint) { searchHint = null }
+                CoachMarkFloat.show(host, anchor, R.layout.part_search_hint) { searchHint = null }
             } else {
                 val act = activity ?: return@post
-                CoachMarkFloat.show(act, anchor, R.layout.view_search_hint) { searchHint = null }
+                CoachMarkFloat.show(act, anchor, R.layout.part_search_hint) { searchHint = null }
             }
         }
     }
@@ -390,7 +390,7 @@ class DashboardFragment : HostFragment<FragmentHomeBinding>() {
     }
 
     private fun bindQuick(
-        item: ItemQuickActionBinding,
+        item: CellQuickActionBinding,
         @DrawableRes icon: Int,
         @StringRes label: Int,
         @ColorRes fgColor: Int,

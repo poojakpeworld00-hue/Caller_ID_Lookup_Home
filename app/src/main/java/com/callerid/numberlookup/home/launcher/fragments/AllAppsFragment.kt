@@ -21,7 +21,7 @@ import com.callerid.adbridge.presentation.NativePromo
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.launcher.activities.HomeDeckActivity
 import com.callerid.numberlookup.home.launcher.adapters.LaunchersAdapter
-import com.callerid.numberlookup.home.databinding.AllAppsFragmentBinding
+import com.callerid.numberlookup.home.databinding.PaneAllAppsBinding
 import com.callerid.numberlookup.home.launcher.extensions.applyDrawerSkin
 import com.callerid.numberlookup.home.launcher.extensions.config
 import com.callerid.numberlookup.home.launcher.extensions.launchApp
@@ -35,7 +35,7 @@ import com.callerid.numberlookup.home.launcher.models.appLauncherComparator
 class AllAppsFragment(
     context: Context,
     attributeSet: AttributeSet
-) : MyFragment<AllAppsFragmentBinding>(context, attributeSet), AllAppsListener {
+) : MyFragment<PaneAllAppsBinding>(context, attributeSet), AllAppsListener {
 
     private var lastTouchCoords = Pair(0f, 0f)
     var touchDownY = -1
@@ -56,7 +56,7 @@ class AllAppsFragment(
     @SuppressLint("ClickableViewAccessibility")
     override fun setupFragment(activity: HomeDeckActivity) {
         this.activity = activity
-        this.binding = AllAppsFragmentBinding.bind(this)
+        this.binding = PaneAllAppsBinding.bind(this)
 
         binding.allAppsGrid.setOnTouchListener { _, event ->
             if (event.actionMasked == MotionEvent.ACTION_UP || event.actionMasked == MotionEvent.ACTION_CANCEL) {

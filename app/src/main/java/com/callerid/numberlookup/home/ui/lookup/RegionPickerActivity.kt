@@ -8,12 +8,12 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.base.ScreenBaseActivity
-import com.callerid.numberlookup.home.databinding.ActivityCountryPickerBinding
+import com.callerid.numberlookup.home.databinding.ScreenCountryPickerBinding
 
 /** Searchable country list. Returns the chosen country's ISO/dial/name. */
-class RegionPickerActivity : ScreenBaseActivity<ActivityCountryPickerBinding>() {
+class RegionPickerActivity : ScreenBaseActivity<ScreenCountryPickerBinding>() {
 
-    override val layoutId: Int = R.layout.activity_country_picker
+    override val layoutId: Int = R.layout.screen_country_picker
 
     private lateinit var adapter: TerritoryAdapter
 

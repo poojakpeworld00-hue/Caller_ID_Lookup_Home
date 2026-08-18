@@ -13,7 +13,7 @@ import android.view.animation.OvershootInterpolator
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.callerid.numberlookup.home.R
-import com.callerid.numberlookup.home.databinding.ItemLanguageBinding
+import com.callerid.numberlookup.home.databinding.CellLanguageBinding
 
 class LocaleAdapter(
     private val onClick: (LocaleItem) -> Unit
@@ -50,7 +50,7 @@ class LocaleAdapter(
         currentTag = tag
     }
 
-    inner class VH(val binding: ItemLanguageBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class VH(val binding: CellLanguageBinding) : RecyclerView.ViewHolder(binding.root) {
 
         /** Kept so a recycled row can cancel a half-finished animation. */
         private var running: Animator? = null
@@ -135,7 +135,7 @@ class LocaleAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val binding = ItemLanguageBinding.inflate(
+        val binding = CellLanguageBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return VH(binding)

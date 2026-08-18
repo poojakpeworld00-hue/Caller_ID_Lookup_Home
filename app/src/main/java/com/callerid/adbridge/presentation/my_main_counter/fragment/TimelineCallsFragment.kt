@@ -30,7 +30,7 @@ class TimelineCallsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_recent_calls, container, false)
+        val view = inflater.inflate(R.layout.pane_recent_calls, container, false)
 
         val recycler = view.findViewById<RecyclerView>(R.id.rvRecents)
         val empty = view.findViewById<TextView>(R.id.tvEmpty)

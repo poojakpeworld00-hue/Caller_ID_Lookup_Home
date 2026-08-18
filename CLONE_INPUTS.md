@@ -105,11 +105,16 @@ Legend:
 
 ## E. Deliberately left alone — **[KEPT]**
 
+> Stage 3b/3c renamed all 35 Activity classes and 115 of 128 layouts (prefix swap:
+> `activity_`→`screen_`, `fragment_`/`*_fragment`→`pane_`, `item_`→`cell_`,
+> `dialog_`→`sheet_`, `view_`→`part_`, `widget_`→`gadget_`). Remote Config keeps
+> matching through `ScreenMatcher.LEGACY_NAMES`, now chained across both renames.
+
 | # | Item | Where | Why |
 |---|---|---|---|
 | E1 | `conduit.user` / `conduit.password` | `gradle.properties` | Private-maven read credentials — the build cannot resolve the LightHouse SDK without them. |
 | E2 | Ad-SDK native layouts (9) | `res/layout/google*native*.xml`, `fb*native*.xml` | AdMob/FAN bind these views by reference; renaming their ids breaks ad rendering. |
-| E3 | Kotlin class/file names (213) | `app/src/main/java/…` | Stage 2 renamed packages only. Identical to the source app file-for-file. |
+| E3 | Fossify `BaseSimpleActivity` | `org.fossify.commons` | External library API — the local `SimpleActivity` subclass was renamed, its superclass cannot be. |
 
 ---
 
@@ -119,4 +124,3 @@ Legend:
 2. **Real AdMob app id + ad units** (D9, D10) — and the `980.mark.qureka.com` `DirectLink`/`MarketLink`/`fallback_link` values inside the blob, inherited from the source app.
 3. **Own signing keystore** (D11).
 4. **Service-account JSON to LightHouse** (D8a) — without it push delivers nothing, whatever the API key says.
-5. Optional: **class/file-level rename pass** (E3) if the two apps should not share a code fingerprint.

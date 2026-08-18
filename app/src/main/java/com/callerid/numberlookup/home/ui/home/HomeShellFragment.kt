@@ -18,8 +18,8 @@ import androidx.fragment.app.Fragment
 import com.callerid.adbridge.presentation.InAppUpdateRegistry
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.base.HostFragment
-import com.callerid.numberlookup.home.databinding.FragmentHomeShellBinding
-import com.callerid.numberlookup.home.databinding.ItemNavBinding
+import com.callerid.numberlookup.home.databinding.PaneHomeShellBinding
+import com.callerid.numberlookup.home.databinding.CellNavBinding
 import com.callerid.numberlookup.home.ui.common.HomeMotion
 import com.callerid.numberlookup.home.ui.contacts.PeopleFragment
 import com.callerid.numberlookup.home.ui.lookup.IdentifyFragment
@@ -40,10 +40,10 @@ import com.google.android.material.snackbar.Snackbar
  * Tabs are committed to the **child** fragment manager, so a tab reaches its siblings
  * through `parentFragment` (see the [homeShell] accessor) rather than through the Activity.
  */
-class HomeShellFragment : HostFragment<FragmentHomeShellBinding>() {
+class HomeShellFragment : HostFragment<PaneHomeShellBinding>() {
 
     private data class Tab(
-        val nav: ItemNavBinding,
+        val nav: CellNavBinding,
         val fragment: Fragment,
         @param:DrawableRes val selectedIcon: Int,
         @param:DrawableRes val unselectedIcon: Int,
@@ -74,7 +74,7 @@ class HomeShellFragment : HostFragment<FragmentHomeShellBinding>() {
     private val controller: HomeShellController? get() = homeShellController
 
     override fun inflateBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentHomeShellBinding.inflate(inflater, container, false)
+        PaneHomeShellBinding.inflate(inflater, container, false)
 
     override fun initView() {
         controller?.shell = this

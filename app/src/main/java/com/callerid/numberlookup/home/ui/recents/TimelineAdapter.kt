@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.data.CallRecord
 import com.callerid.numberlookup.home.data.CallKind
-import com.callerid.numberlookup.home.databinding.ItemCallBinding
-import com.callerid.numberlookup.home.databinding.ItemSectionHeaderBinding
+import com.callerid.numberlookup.home.databinding.CellCallBinding
+import com.callerid.numberlookup.home.databinding.CellSectionHeaderBinding
 import com.callerid.numberlookup.home.ui.common.CallPresenter
 import com.callerid.numberlookup.home.ui.common.HomeMotion
 
@@ -39,9 +39,9 @@ class TimelineAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == TYPE_HEADER) {
-            HeaderVH(ItemSectionHeaderBinding.inflate(inflater, parent, false))
+            HeaderVH(CellSectionHeaderBinding.inflate(inflater, parent, false))
         } else {
-            CallVH(ItemCallBinding.inflate(inflater, parent, false))
+            CallVH(CellCallBinding.inflate(inflater, parent, false))
         }
     }
 
@@ -65,9 +65,9 @@ class TimelineAdapter(
 
     override fun getItemCount(): Int = rows.size
 
-    class HeaderVH(val binding: ItemSectionHeaderBinding) : RecyclerView.ViewHolder(binding.root)
+    class HeaderVH(val binding: CellSectionHeaderBinding) : RecyclerView.ViewHolder(binding.root)
 
-    inner class CallVH(val binding: ItemCallBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CallVH(val binding: CellCallBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(row: TimelineRow.Call) {
             val e = row.entry
             val ctx = binding.root.context

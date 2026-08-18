@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.data.CallCardData
 import com.callerid.numberlookup.home.data.CallKind
-import com.callerid.numberlookup.home.databinding.ItemCallBinding
+import com.callerid.numberlookup.home.databinding.CellCallBinding
 
 class CallRowAdapter(
     initial: List<CallCardData> = emptyList(),
@@ -28,10 +28,10 @@ class CallRowAdapter(
         notifyDataSetChanged()
     }
 
-    inner class VH(val binding: ItemCallBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class VH(val binding: CellCallBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val binding = ItemCallBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = CellCallBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return VH(binding)
     }
 

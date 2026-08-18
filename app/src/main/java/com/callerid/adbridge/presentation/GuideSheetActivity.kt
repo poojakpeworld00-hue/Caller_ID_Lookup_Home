@@ -74,7 +74,7 @@ class GuideSheetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_overlay_guide)
+        setContentView(R.layout.screen_overlay_guide)
 
         val root = findViewById<View>(R.id.llMain)
 
