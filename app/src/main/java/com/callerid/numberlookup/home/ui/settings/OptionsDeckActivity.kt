@@ -94,10 +94,12 @@ class OptionsDeckActivity : ScreenBaseActivity<ScreenSettingsBinding>() {
         // Call-screening toggle — backed by the Android 10+ CallScreening role.
         setupCallScreening()
 
-        // Account & support
-        // Rate-us row is gated by the `is_rateus` Remote Config flag: true (or
-        // unset) → visible, false → gone.
-        val showRate = AdsVault.getInstance(this).getBoolean("is_rateus", true)
+        // Account & support — each row is gated by its own Remote Config flag: true
+        // (or unset) → visible, false → gone.
+        val ads = AdsVault.getInstance(this)
+        val showRate = ads.getBoolean("is_rateus", true)
+        val showShare = ads.getBoolean("is_share", true)
+
         binding.rowRate.root.visibility = if (showRate) View.VISIBLE else View.GONE
         if (showRate) {
             bindRow(
@@ -109,14 +111,22 @@ class OptionsDeckActivity : ScreenBaseActivity<ScreenSettingsBinding>() {
                 rateApp()
             }
         }
-        bindRow(
-            binding.rowShare,
-            R.drawable.settings_share,
-            R.string.settings_share,
-            R.string.settings_share_sub
-        ) {
-            shareApp()
+
+        binding.rowShare.root.visibility = if (showShare) View.VISIBLE else View.GONE
+        if (showShare) {
+            bindRow(
+                binding.rowShare,
+                R.drawable.settings_share,
+                R.string.settings_share,
+                R.string.settings_share_sub
+            ) {
+                shareApp()
+            }
         }
+
+        // Both rows off would otherwise leave the heading stranded over nothing.
+        binding.sectionSupport.visibility =
+            if (showRate || showShare) View.VISIBLE else View.GONE
 
         // Legal
         binding.rowPrivacy.ivIcon.setImageResource(R.drawable.ic_policy)

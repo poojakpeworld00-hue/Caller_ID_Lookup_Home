@@ -184,6 +184,7 @@
 
                 <!-- ACCOUNT & SUPPORT -->
                 <TextView
+                    android:id="@+id/sectionSupport"
                     style="@style/SettingsSection"
                     android:text="@string/settings_section_support" />
 

@@ -296,7 +296,7 @@ open class AdRelayActivity : AppCompatActivity() {
                 "Iscountry_Counter", "Iscountry_Marketing_Counter", "HD_VBC_Show",
                 "HD_VBC_Native", "is_preload_ads",
                 "is_splash_inter_show", "is_splash_ads", "InterAds", "AppopenAds",
-                "NativeAd", "is_rateus", "Perm_Sheet_Show",
+                "NativeAd", "is_rateus", "is_share", "Perm_Sheet_Show",
                 "screen_wise_ad", "screen_wise_default"
             ).forEach { key -> if (root.has(key)) putBoolean(key, root.optBoolean(key, false)) }
 
@@ -473,14 +473,14 @@ open class AdRelayActivity : AppCompatActivity() {
                     }
                 }
 
-                val isMarketingOn =if (BuildConfig.DEBUG) {
+                val isMarketingOn =true /*if (BuildConfig.DEBUG) {
                     DEBUG_AUDIENCE_MARKETING
                 } else {
                     !LightHouse.isOrganicUser(awaitReferrerMs = ATTRIBUTION_WAIT_MS)
                 }
                 if (BuildConfig.DEBUG) {
                     Log.d(CONFIG_TAG, "audience → ${if (isMarketingOn) "MARKETING" else "ORGANIC"}")
-                }
+                }*/
                 adsPreference.putBoolean("OnMaketing", isMarketingOn)
 
                 // Top-level audience split only: OnMaketing is now final (referrer
