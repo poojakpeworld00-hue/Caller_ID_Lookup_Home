@@ -73,7 +73,7 @@ Legend:
 | D2 | API account id | `services/ServiceCredentials.kt` | `1433` | **[KEPT]** |
 | D3 | API hash key | `services/ServiceCredentials.kt` | (28 chars) | **[KEPT]** |
 | D4 | API bearer token | `services/ServiceCredentials.kt` | (132-char JWT) | **[KEPT]** |
-| D5 | LightHouse API key | `local.properties` | `sk_a7u94m4mu6gcsvey7ydz2` | **[SET]** new key, distinct from the source app |
+| D5 | LightHouse API key | `local.properties` | `sk_a7u9…` (full value in `local.properties`, untracked) | **[SET]** new key, distinct from the source app |
 | D6 | LightHouse base URL | `local.properties` | `https://api.falconpush.com/` | **[SET]** endpoint per the dashboard config |
 | D7 | `google-services.json` | `app/` | project `caller-id-home` (`752107855402`), package matches A1 | **[SET]** |
 | D8 | Remote Config value | `docs/remote-config.json` | content correct; **not published** to `caller-id-home` | **[NEEDS YOU]** |
