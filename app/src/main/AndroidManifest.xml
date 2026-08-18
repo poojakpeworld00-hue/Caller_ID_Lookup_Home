@@ -118,6 +118,19 @@
             android:exported="false"
             android:theme="@style/Theme.OverlayGuide" />
 
+        <!-- The "Default home app" hint. taskAffinity="" is load-bearing: with the default
+             affinity this lands in the app's own task and pulls the whole app forward, hiding
+             the settings list it exists to annotate. excludeFromRecents keeps its private task
+             out of the recents switcher. -->
+        <activity
+            android:name=".launcher.activities.DefaultHomeHintActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/Theme.OverlayGuide" />
+
         <activity
             android:screenOrientation="portrait"
             android:name=".ui.onboarding.TourActivity"

@@ -8,14 +8,12 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.OnBackPressedCallback
 import com.callerid.adbridge.domain.LauncherAdsConfig
-import com.callerid.adbridge.presentation.GuideSheetActivity
-import com.callerid.adbridge.presentation.GuideSheetWindow
-import com.callerid.adbridge.presentation.GuideSheetInline
 import com.callerid.numberlookup.home.databinding.ScreenOnboardingDefaultLauncherBinding
 import com.callerid.numberlookup.home.launcher.extensions.excludeAppFromRecents
 import com.callerid.numberlookup.home.launcher.extensions.isDefaultLauncher
 import com.callerid.numberlookup.home.launcher.extensions.roleManager
 import com.callerid.numberlookup.home.launcher.helpers.LauncherFlow
+import com.callerid.numberlookup.home.launcher.helpers.LauncherHintPrompt
 import com.callerid.numberlookup.home.launcher.helpers.breathe
 import com.callerid.numberlookup.home.launcher.helpers.riseIn
 import com.callerid.numberlookup.home.launcher.helpers.stampIn
@@ -111,24 +109,12 @@ class DefaultHomeStepActivity : CoreDeckActivity() {
     private fun openHomeSettings() {
         if (leaving || requestInFlight) return
 
-        // The card can only be drawn over the system list when this app holds "display
-        // over other apps" — Android permits nothing over the Settings UI without it.
-        // Firing the list and the card together is what the screen recording caught:
-        // the list is hoisted into the Settings task, our card queues behind it, and it
-        // surfaces on the way back with nothing left to point at.
-        if (GuideSheetWindow.canDraw(this)) {
-            launchHomeSettings()
-            // Held back so the full 3s of card time is spent over the home-app list
-            // rather than over this screen while the list is still opening.
-            GuideSheetWindow.show(this, GuideSheetActivity.MODE_HOME, delayMs = 450L)
-            return
-        }
+        launchHomeSettings()
 
-        // No permission: the card cannot be placed on the system list at all, so it is
-        // primed here instead. This step deliberately does not ask for "display over
-        // other apps" — that prompt belongs to the flows that already collect it.
-
-        GuideSheetInline.show(this, GuideSheetActivity.MODE_HOME) { launchHomeSettings() }
+        // The card follows the list rather than racing it — see LauncherHintPrompt. It is a
+        // translucent activity in its own task, so it needs no "display over other apps"
+        // permission, which this app does not hold this early in the flow anyway.
+        LauncherHintPrompt.showAfterSettings(this)
     }
 
     private fun launchHomeSettings() {
@@ -193,6 +179,8 @@ class DefaultHomeStepActivity : CoreDeckActivity() {
 
     override fun onResume() {
         super.onResume()
+        // Back in front: the list is gone and the card has nothing left to annotate.
+        LauncherHintPrompt.dismiss()
         // Covers every way the role can arrive: the settings page, the role dialog, or the
         // user wandering off and setting it somewhere else entirely.
         if (isDefaultLauncher()) {

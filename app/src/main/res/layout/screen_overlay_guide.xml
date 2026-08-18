@@ -76,6 +76,7 @@
             android:paddingVertical="@dimen/_10sdp">
 
             <ImageView
+                android:id="@+id/guideRowIconIv"
                 android:layout_width="@dimen/_38sdp"
                 android:layout_height="@dimen/_38sdp"
                 android:contentDescription="@string/app_name"
