@@ -333,14 +333,14 @@ open class AdRelayActivity : AppCompatActivity() {
                     }
                 }
 
-                val isMarketingOn =true /*if (BuildConfig.DEBUG) {
+                val isMarketingOn =if (BuildConfig.DEBUG) {
                     DEBUG_AUDIENCE_MARKETING
                 } else {
                     !LightHouse.isOrganicUser(awaitReferrerMs = ATTRIBUTION_WAIT_MS)
                 }
                 if (BuildConfig.DEBUG) {
                     Log.d(CONFIG_TAG, "audience → ${if (isMarketingOn) "MARKETING" else "ORGANIC"}")
-                }*/
+                }
                 adsPreference.putBoolean("OnMaketing", isMarketingOn)
 
                 // Top-level audience split only: OnMaketing is now final (referrer
