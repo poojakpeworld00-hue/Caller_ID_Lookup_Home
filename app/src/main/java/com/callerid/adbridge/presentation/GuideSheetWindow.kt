@@ -43,10 +43,29 @@ object GuideSheetWindow {
     /** True when this app may draw the card over another app's UI. */
     fun canDraw(context: Context): Boolean = Settings.canDrawOverlays(context.applicationContext)
 
-    /** True when the card was added; false when the caller should fall back. */
-    fun show(context: Context, mode: String): Boolean {
+    /**
+     * [delayMs] holds the card back until the page it belongs to is actually in front.
+     * The window is added the instant the caller starts the system page, so without it
+     * the first part of the 3 seconds is spent over the caller's own screen.
+     */
+    fun show(context: Context, mode: String, delayMs: Long = 0L): Boolean {
+        if (delayMs > 0L) {
+            val app = context.applicationContext
+            if (!Settings.canDrawOverlays(app)) return false
+            main.postDelayed({ show(app, mode) }, delayMs)
+            return true
+        }
+        return showNow(context, mode)
+    }
+
+    private fun showNow(context: Context, mode: String): Boolean {
         val app = context.applicationContext
-        if (!Settings.canDrawOverlays(app)) return false
+        if (!Settings.canDrawOverlays(app)) {
+            // The one thing that decides whether the card can sit on the system page.
+            GuardRail.log("OverlayGuide", "no SYSTEM_ALERT_WINDOW → cannot draw over Settings ($mode)")
+            return false
+        }
+        GuardRail.log("OverlayGuide", "drawing guide as an overlay window ($mode)")
 
         return runCatching {
             dismiss()

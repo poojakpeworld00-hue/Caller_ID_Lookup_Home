@@ -7,6 +7,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.OnBackPressedCallback
+import com.callerid.numberlookup.home.ui.terms.FloatKit
+import androidx.activity.result.contract.ActivityResultContracts
 import com.callerid.adbridge.domain.LauncherAdsConfig
 import com.callerid.adbridge.presentation.GuideSheetActivity
 import com.callerid.adbridge.presentation.GuideSheetWindow
@@ -55,6 +57,9 @@ class DefaultHomeStepActivity : CoreDeckActivity() {
     private companion object {
         const val REQ_HOME_SETTINGS = 7011
         const val REQ_ROLE_HOME = 7012
+
+        /** Only detour through the overlay page once per install; a user who said no means it. */
+        const val PREF_ASKED_OVERLAY = "asked_overlay_for_home_hint"
     }
 
     private val binding by viewBinding(ScreenOnboardingDefaultLauncherBinding::inflate)
@@ -107,22 +112,58 @@ class DefaultHomeStepActivity : CoreDeckActivity() {
 
     // ===== the two-stage request =====
 
+    /**
+     * Returns from the overlay-permission page. Either way the home-app list is next:
+     * with the permission the hint floats over it, without it we prime instead.
+     */
+    private val overlayLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { openHomeSettings() }
+
+    /**
+     * The hint can only be painted on the system home-app list if this app may draw
+     * over other apps, so that permission is collected first.
+     *
+     * Its own Settings page is the one system screen that stays in our task, which is
+     * why the coach mark works there — see FloatKit.showGuide.
+     */
+    private fun requestOverlayForHint(): Boolean {
+        val prefs = getSharedPreferences("guide_hint", MODE_PRIVATE)
+        if (prefs.getBoolean(PREF_ASKED_OVERLAY, false)) return false
+        prefs.edit().putBoolean(PREF_ASKED_OVERLAY, true).apply()
+
+        // No coach mark stacked on the overlay page here. AgreementActivity documents
+        // why: launching our own activity back-to-back with that page raced it for the
+        // foreground on Android 16 and backed out of Settings before the user could
+        // grant. The page itself is self-explanatory; the card we care about is the
+        // next one.
+        return runCatching {
+            overlayLauncher.launch(FloatKit.buildOverlayIntent(packageName))
+        }.isSuccess
+    }
+
     /** Stage 1 — the settings page listing the installed home apps. */
     private fun openHomeSettings() {
         if (leaving || requestInFlight) return
 
-        // The coach mark can only be drawn over the system list when this app holds
-        // "display over other apps". Without it, prime first: the card is shown here,
-        // over our own screen, and the list opens when it goes away. Firing both at
-        // once is what the screen recording caught — the list is hoisted into the
-        // Settings task, our card queues behind it, and it surfaces on the way back
-        // where there is nothing left to point at.
+        // The card can only be drawn over the system list when this app holds "display
+        // over other apps" — Android permits nothing over the Settings UI without it.
+        // Firing the list and the card together is what the screen recording caught:
+        // the list is hoisted into the Settings task, our card queues behind it, and it
+        // surfaces on the way back with nothing left to point at.
         if (GuideSheetWindow.canDraw(this)) {
             launchHomeSettings()
-            GuideSheetWindow.show(this, GuideSheetActivity.MODE_HOME)
-        } else {
-            GuideSheetInline.show(this, GuideSheetActivity.MODE_HOME) { launchHomeSettings() }
+            // Held back so the full 3s of card time is spent over the home-app list
+            // rather than over this screen while the list is still opening.
+            GuideSheetWindow.show(this, GuideSheetActivity.MODE_HOME, delayMs = 450L)
+            return
         }
+
+        // No permission yet: collect it, then come back through here with the
+        // overlay path available. Declined, or asked once already — prime instead.
+        if (requestOverlayForHint()) return
+
+        GuideSheetInline.show(this, GuideSheetActivity.MODE_HOME) { launchHomeSettings() }
     }
 
     private fun launchHomeSettings() {
