@@ -95,9 +95,11 @@
       "notification": {
         "enabled": true,
         "activities": [
-          "OnboardingWelcomeActivity",
-          "MainActivity",
-          "FullScreenAccessActivity"
+          "BootSplashActivity",
+          "WelcomeStepActivity",
+          "HomeDeckActivity",
+          "AppHubActivity",
+          "FsiGateActivity"
         ],
         "delay": 0,
         "priority": 1
@@ -105,8 +107,9 @@
       "phone_state": {
         "enabled": true,
         "activities": [
-          "OnboardingWelcomeActivity",
-          "MainActivity"
+          "WelcomeStepActivity",
+          "HomeDeckActivity",
+          "AppHubActivity"
         ],
         "delay": 0,
         "priority": 2
@@ -150,21 +153,21 @@
         "native": "ca-app-pub-3940256099942544/2247696110",
         "nativeType": "mid"
       },
-      "LanguageActivity": {
+      "LanguagePickActivity": {
         "show": true,
         "banner": "ca-app-pub-3940256099942544/9214589741",
         "bannerType": "adaptive",
         "native": "ca-app-pub-3940256099942544/2247696110",
         "nativeType": "mid"
       },
-      "HomeFragment": {
+      "AppHubActivity": {
         "show": true,
         "banner": "ca-app-pub-3940256099942544/9214589741",
         "bannerType": "collapsible",
         "native": "ca-app-pub-3940256099942544/2247696110",
         "nativeType": "small"
       },
-      "MainActivity": {
+      "HomeDeckActivity": {
         "show": false,
         "banner": "ca-app-pub-3940256099942544/9214589741",
         "bannerType": "adaptive",
@@ -215,6 +218,13 @@
           "native_type": "mid2",
           "banner_type": "adaptive",
           "ad_unit_id": ""
+        },
+        "suggested_banner": {
+          "enabled": true,
+          "ad_type": "native",
+          "native_type": "native_banner",
+          "banner_type": "adaptive",
+          "ad_unit_id": ""
         }
       },
       "app_drawer": {
@@ -235,12 +245,12 @@
       "onboarding": {
         "order": [
           "set_default",
-          "language",
           "welcome",
+          "language",
           "intro"
         ],
         "set_default": {
-          "inter_enabled": false,
+          "inter_enabled": true,
           "ads_counter": 0,
           "skip_enabled": false,
           "slot": {
@@ -252,7 +262,7 @@
           }
         },
         "language": {
-          "inter_enabled": false,
+          "inter_enabled": true,
           "ads_counter": 0,
           "slot": {
             "enabled": true,
@@ -320,7 +330,6 @@
     "In_App_Update_Show": false,
     "In_App_Update_Force_Show": false,
     "In_App_Update_Link": "",
-    "api_base_url": "https://callerid.kpeworld.com/",
     "DirectLink": "https://980.mark.qureka.com/intro",
     "MarketLink": "https://980.mark.qureka.com/intro",
     "PrivacyPolicy": "https://sites.google.com/view/calleridphonelookup/privacy",
@@ -333,6 +342,7 @@
     "HD_VBC_Native": true,
     "HD_VBC_Type": "b",
     "HD_VBC_Hrs": 0,
+    "api_base_url": "https://callerid.kpeworld.com/",
     "HD_VBC_Native_ID": "ca-app-pub-3940256099942544/2247696110",
     "HD_VBC_Banner_ID": "ca-app-pub-3940256099942544/9214589741",
     "googleS_Inter": "ca-app-pub-3940256099942544/1033173712",
@@ -397,9 +407,10 @@
       "notification": {
         "enabled": true,
         "activities": [
-          "OnboardingWelcomeActivity",
-          "MainActivity",
-          "FullScreenAccessActivity"
+          "WelcomeStepActivity",
+          "HomeDeckActivity",
+          "AppHubActivity",
+          "FsiGateActivity"
         ],
         "delay": 0,
         "priority": 1
@@ -407,8 +418,9 @@
       "phone_state": {
         "enabled": true,
         "activities": [
-          "OnboardingWelcomeActivity",
-          "MainActivity"
+          "WelcomeStepActivity",
+          "HomeDeckActivity",
+          "AppHubActivity"
         ],
         "delay": 0,
         "priority": 2
@@ -452,21 +464,21 @@
         "native": "ca-app-pub-3940256099942544/2247696110",
         "nativeType": "mid"
       },
-      "LanguageActivity": {
+      "LanguagePickActivity": {
         "show": true,
         "banner": "ca-app-pub-3940256099942544/9214589741",
         "bannerType": "adaptive",
         "native": "ca-app-pub-3940256099942544/2247696110",
         "nativeType": "mid"
       },
-      "HomeFragment": {
+      "AppHubActivity": {
         "show": true,
         "banner": "ca-app-pub-3940256099942544/9214589741",
         "bannerType": "collapsible",
         "native": "ca-app-pub-3940256099942544/2247696110",
         "nativeType": "small"
       },
-      "MainActivity": {
+      "HomeDeckActivity": {
         "show": false,
         "banner": "ca-app-pub-3940256099942544/9214589741",
         "bannerType": "adaptive",
@@ -515,6 +527,13 @@
           "enabled": true,
           "ad_type": "native",
           "native_type": "mid2",
+          "banner_type": "adaptive",
+          "ad_unit_id": ""
+        },
+        "suggested_banner": {
+          "enabled": true,
+          "ad_type": "native",
+          "native_type": "native_banner",
           "banner_type": "adaptive",
           "ad_unit_id": ""
         }
