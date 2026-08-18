@@ -96,10 +96,7 @@
         "enabled": true,
         "activities": [
           "BootSplashActivity",
-          "WelcomeStepActivity",
-          "HomeDeckActivity",
-          "AppHubActivity",
-          "FsiGateActivity"
+          "WelcomeStepActivity"
         ],
         "delay": 0,
         "priority": 1
@@ -107,9 +104,7 @@
       "phone_state": {
         "enabled": true,
         "activities": [
-          "WelcomeStepActivity",
-          "HomeDeckActivity",
-          "AppHubActivity"
+          "WelcomeStepActivity"
         ],
         "delay": 0,
         "priority": 2
@@ -180,7 +175,7 @@
         "enabled": true,
         "ad_type": "inter",
         "inter_enabled": true,
-        "ads_counter": 6,
+        "ads_counter": 3,
         "fallback_link_enabled": false,
         "fallback_link": "https://980.mark.qureka.com/intro"
       },
@@ -250,12 +245,12 @@
           "intro"
         ],
         "set_default": {
-          "inter_enabled": true,
+          "inter_enabled": false,
           "ads_counter": 0,
           "skip_enabled": false,
           "slot": {
-            "enabled": true,
-            "ad_type": "banner",
+            "enabled": false,
+            "ad_type": "none",
             "native_type": "mid",
             "banner_type": "adaptive",
             "ad_unit_id": ""
@@ -273,7 +268,7 @@
           }
         },
         "welcome": {
-          "inter_enabled": true,
+          "inter_enabled": false,
           "ads_counter": 0,
           "skip_enabled": true,
           "slot": {
@@ -285,17 +280,17 @@
           }
         },
         "intro": {
-          "inter_enabled": false,
+          "inter_enabled": true,
           "ads_counter": 0,
           "skip_enabled": true,
-          "back_action": "next_screen",
           "slot": {
             "enabled": true,
             "ad_type": "native",
             "native_type": "big",
             "banner_type": "adaptive",
             "ad_unit_id": ""
-          }
+          },
+          "back_action": "next_screen"
         }
       },
       "defaultHome": {},
@@ -367,8 +362,8 @@
     "FbClientToken": "fgfgfd",
     "intro_display": {
       "language": {
-        "enabled": false,
-        "prompt_frequency": "never",
+        "enabled": true,
+        "prompt_frequency": "once",
         "prompt_interval": 0
       },
       "terms": {
@@ -407,10 +402,7 @@
       "notification": {
         "enabled": true,
         "activities": [
-          "WelcomeStepActivity",
-          "HomeDeckActivity",
-          "AppHubActivity",
-          "FsiGateActivity"
+          "WelcomeStepActivity"
         ],
         "delay": 0,
         "priority": 1
@@ -418,9 +410,7 @@
       "phone_state": {
         "enabled": true,
         "activities": [
-          "WelcomeStepActivity",
-          "HomeDeckActivity",
-          "AppHubActivity"
+          "WelcomeStepActivity"
         ],
         "delay": 0,
         "priority": 2
@@ -465,7 +455,7 @@
         "nativeType": "mid"
       },
       "LanguagePickActivity": {
-        "show": true,
+        "show": false,
         "banner": "ca-app-pub-3940256099942544/9214589741",
         "bannerType": "adaptive",
         "native": "ca-app-pub-3940256099942544/2247696110",
@@ -531,7 +521,7 @@
           "ad_unit_id": ""
         },
         "suggested_banner": {
-          "enabled": true,
+          "enabled": false,
           "ad_type": "native",
           "native_type": "native_banner",
           "banner_type": "adaptive",
@@ -555,6 +545,7 @@
       },
       "onboarding": {
         "order": [
+          "language",
           "welcome",
           "set_default"
         ],
@@ -574,6 +565,17 @@
           "inter_enabled": false,
           "ads_counter": 0,
           "skip_enabled": true,
+          "slot": {
+            "enabled": false,
+            "ad_type": "none",
+            "native_type": "mid",
+            "banner_type": "adaptive",
+            "ad_unit_id": ""
+          }
+        },
+        "language": {
+          "inter_enabled": false,
+          "ads_counter": 0,
           "slot": {
             "enabled": false,
             "ad_type": "none",
