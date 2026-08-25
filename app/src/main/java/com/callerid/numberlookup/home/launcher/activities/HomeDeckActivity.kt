@@ -118,6 +118,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.callerid.numberlookup.home.data.LocaleRegistry
 import com.callerid.adbridge.presentation.InAppUpdateRegistry
 import com.google.android.material.snackbar.Snackbar
+import com.callerid.numberlookup.home.util.GuardRail
 import com.callerid.numberlookup.home.ui.home.HomeShellController
 import com.callerid.numberlookup.home.ui.home.HomeShellHost
 import com.callerid.numberlookup.home.util.applyNativeAdTheme
@@ -1053,13 +1054,26 @@ class HomeDeckActivity : CoreDeckActivity(), FlingListener, HomeShellHost {
 
     /** Opens the clock app behind the home screen clock, falling back to the alarm list. */
     fun openClockApp() {
-        val intents = listOf(
+        val intents = listOfNotNull(
             Intent(AlarmClock.ACTION_SHOW_ALARMS),
-            Intent(AlarmClock.ACTION_SET_ALARM)
+            Intent(AlarmClock.ACTION_SET_ALARM),
+            // Last resort, and the only one that always works: both alarm actions are guarded
+            // by com.android.alarm.permission.SET_ALARM on some OEM builds (OnePlus routes
+            // SHOW_ALARMS to a clock activity that requires it), so they resolve and are then
+            // refused. Opening the same app through its launcher entry needs no permission.
+            clockAppLaunchIntent(),
         )
 
         startFirstResolvable(intents)
     }
+
+    /** The clock app's own launcher entry — see [openClockApp]. */
+    private fun clockAppLaunchIntent(): Intent? = runCatching {
+        val pkg = packageManager
+            .resolveActivity(Intent(AlarmClock.ACTION_SHOW_ALARMS), 0)
+            ?.activityInfo?.packageName ?: return null
+        packageManager.getLaunchIntentForPackage(pkg)
+    }.getOrNull()
 
     /** Opens the calendar on today, behind the home screen clock's date line. */
     fun openCalendarApp() {
@@ -1076,12 +1090,24 @@ class HomeDeckActivity : CoreDeckActivity(), FlingListener, HomeShellHost {
         startFirstResolvable(intents)
     }
 
+    /**
+     * Starts the first of [intents] that actually launches.
+     *
+     * SecurityException is caught alongside ActivityNotFoundException, and it is not
+     * theoretical: OnePlus routes ACTION_SHOW_ALARMS to a clock activity guarded by
+     * `com.android.alarm.permission.SET_ALARM`, so the intent resolves, the start is refused,
+     * and an uncaught SecurityException took the whole launcher down from a tap on the clock.
+     * A chooser that will not open is a reason to try the next candidate, never to crash the
+     * home screen.
+     */
     private fun startFirstResolvable(intents: List<Intent>) {
         for (intent in intents) {
             try {
                 startActivity(intent)
                 return
             } catch (_: ActivityNotFoundException) {
+            } catch (e: SecurityException) {
+                GuardRail.error("HomeDeck", "refused: ${intent.action}", e)
             }
         }
     }
