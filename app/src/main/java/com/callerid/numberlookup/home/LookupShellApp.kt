@@ -14,6 +14,7 @@ import androidx.multidex.MultiDex
 import com.google.firebase.FirebaseApp
 import com.callerid.adbridge.data.AdKind
 import com.callerid.adbridge.domain.AdsVault
+import com.callerid.adbridge.presentation.AdRelayActivity
 import com.callerid.adbridge.presentation.AppOpenAdRegistry
 import com.callerid.adbridge.presentation.AppOpenAdRegistry.isAdAvailable
 import com.callerid.adbridge.presentation.my_main_counter.My_Shell_Screen
@@ -73,6 +74,15 @@ class LookupShellApp : Application() , Application.ActivityLifecycleCallbacks,
                 richPushActivity = My_Shell_Screen::class.java,
             ),
         )
+        // Debug builds have no install referrer, so the SDK would classify every sideload
+        // organic while AdRelayActivity runs whichever half DEBUG_AUDIENCE_MARKETING
+        // picks. Force the SDK to the same side so the disclosure screen and the config
+        // under test agree. Release builds never touch this — real attribution stands.
+        if (BuildConfig.DEBUG) {
+            LightHouse.debugForceInstallSource(
+                if (AdRelayActivity.DEBUG_AUDIENCE_MARKETING) "paid" else "organic"
+            )
+        }
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 FirebaseApp.initializeApp(this@LookupShellApp)

@@ -3,7 +3,6 @@ package com.callerid.numberlookup.home.services.onincomming
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.role.RoleManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -20,8 +19,8 @@ import com.callerid.adbridge.presentation.my_main_counter.My_Shell_Screen
 import com.callerid.adbridge.presentation.my_main_counter.service.ShelllJobService.Companion.NOTIFICATION_ID
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.data.BlockRosterRegistry
-import com.callerid.numberlookup.home.launcher.extensions.isDefaultLauncher
 import com.callerid.numberlookup.home.ui.incall.RingScreenActivity
+import com.callerid.numberlookup.home.util.IdentIdRegistry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -65,8 +64,14 @@ class CallStateReceiver : BroadcastReceiver() {
                     return
                 }
 
-                // Caller-ID card needs a number AND the overlay permission.
-                if (!number.isNullOrBlank() && Settings.canDrawOverlays(context)) {
+                // The card needs a number; the overlay permission is no longer required to
+                // reach it — IdentFloatService falls back to the full-screen activity on the
+                // default-role exemption. When we hold the CallScreening role,
+                // [ScreenerService] has already raised the card before this broadcast
+                // arrived and IdentFloatService.start drops this one as a duplicate.
+                if (!number.isNullOrBlank() && (Settings.canDrawOverlays(context) ||
+                        holdsSystemDefaultRole(context))
+                ) {
                     IdentFloatService.start(context, number)
                 } else if (number.isNullOrBlank()) {
                     Log.w(TAG, "ringing without a number — skipping caller-ID card")
@@ -222,25 +227,9 @@ class CallStateReceiver : BroadcastReceiver() {
     private fun canShowOverlay(context: Context): Boolean =
         Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)
 
-    /**
-     * True when this app currently holds a default system role. Each of these makes the app
-     * the user's explicit choice for something, and each carries a background-activity-start
-     * exemption — which is what the post-call screen needs when there is no overlay
-     * permission to lean on.
-     *
-     * ROLE_HOME is checked through [isDefaultLauncher] because it also has to answer on
-     * API 26-28, where RoleManager does not exist.
-     */
-    private fun holdsSystemDefaultRole(context: Context): Boolean {
-        if (runCatching { context.isDefaultLauncher() }.getOrDefault(false)) return true
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return false
-        val rm = context.getSystemService(RoleManager::class.java) ?: return false
-        return runCatching {
-            listOf(RoleManager.ROLE_DIALER, RoleManager.ROLE_CALL_SCREENING).any {
-                rm.isRoleAvailable(it) && rm.isRoleHeld(it)
-            }
-        }.getOrDefault(false)
-    }
+    /** Shared with the ringing-time card — see [IdentIdRegistry.holdsSystemDefaultRole]. */
+    private fun holdsSystemDefaultRole(context: Context): Boolean =
+        IdentIdRegistry.holdsSystemDefaultRole(context)
 
     private fun launchCallbackScreen(
         context: Context, phone: String, start: Date, end: Date, type: String

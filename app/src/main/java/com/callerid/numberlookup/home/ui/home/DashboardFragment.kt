@@ -6,7 +6,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -31,6 +30,7 @@ import com.callerid.numberlookup.home.base.HostFragment
 import com.callerid.adbridge.domain.logPermissionResult
 import com.callerid.numberlookup.home.data.RegionLocator
 import com.callerid.numberlookup.home.data.VaultRegistry
+import com.callerid.numberlookup.home.permission.AccessKit
 import kotlinx.coroutines.launch
 import com.callerid.numberlookup.home.databinding.PaneHomeBinding
 import com.callerid.numberlookup.home.databinding.CellQuickActionBinding
@@ -217,12 +217,20 @@ class DashboardFragment : HostFragment<PaneHomeBinding>() {
     /**
      * Core permissions nudged from the four Quick Action buttons: post-notifications
      * (Android 13+) so call alerts can show, and read-phone-state for call detection.
+     *
+     * Both are engine-managed keys, so each is only nudged while
+     * [AccessKit.isOfferable] holds — same Remote Config / `HD_VBC_Show` gating
+     * the permission sheet uses, so a remotely disabled permission is never
+     * asked from here either.
      */
     private fun corePermissions(): List<String> = buildList {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val ctx = context ?: return@buildList
+        if (AccessKit.isOfferable(ctx, "notification")) {
             add(Manifest.permission.POST_NOTIFICATIONS)
         }
-        add(Manifest.permission.READ_PHONE_STATE)
+        if (AccessKit.isOfferable(ctx, "phone_state")) {
+            add(Manifest.permission.READ_PHONE_STATE)
+        }
     }
 
     /**

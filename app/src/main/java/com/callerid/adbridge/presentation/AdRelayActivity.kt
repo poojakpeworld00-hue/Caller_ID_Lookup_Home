@@ -83,9 +83,14 @@ open class AdRelayActivity : AppCompatActivity() {
     private var isGoogleAdsEnabled = true
     private val backgroundExecutor: Executor = Executors.newSingleThreadExecutor()
 
-    private companion object {
+    // Not private: LookupShellApp mirrors DEBUG_AUDIENCE_MARKETING into the LightHouse SDK
+    // so the SDK's audience read and the config half under test agree on a debug build.
+    companion object {
         /** One grep-able tag for the whole splash AppOpen/interstitial load+show path. */
         const val APPOPEN_TAG = "AppOpenAd"
+
+        /** Entry in a `CountryList_*_NShow` list that matches every location, worldwide. */
+        const val NSHOW_ALL = "all"
 
         /** One grep-able tag for the getData Remote Config → prefs ingestion path. */
         const val CONFIG_TAG = "GetDataConfig"
@@ -369,6 +374,13 @@ open class AdRelayActivity : AppCompatActivity() {
                 )
 
                 if (adsPreference.getBoolean(countryEnableKey)) {
+                    // The literal "all" matches every device and needs no location at all, so
+                    // it still applies when the IP lookup failed. Resolved up here for that
+                    // reason — the branch below never runs without a location.
+                    val nShowList = (adsPreference.getString(countryListKey, "") ?: "")
+                        .split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                    val matchesAll = nShowList.any { it.equals(NSHOW_ALL, ignoreCase = true) }
+
                     location?.let { loc ->
                         if (BuildConfig.DEBUG) {
                             Log.d("LocationCheck", "=== Location Info ===")
@@ -381,15 +393,8 @@ open class AdRelayActivity : AppCompatActivity() {
                         AdsVault.getInstance(activity).userCountry = loc.country!!
                         AdsVault.getInstance(activity).userRegion = loc.regionName!!
                         AdsVault.getInstance(activity).userCity = loc.city!!
-                        // Get stored list from preferences (marketing or organic list).
-                        val storedListStr =
-                            adsPreference.getString(countryListKey, "") ?: ""
-
-                        val allowedLocations =
-                            storedListStr.split(",").map { it.trim() }.filter { it.isNotEmpty() }
-
                         // Check if current country, region, or city is in the list
-                        val isAllowed = allowedLocations.any { allowed ->
+                        val isAllowed = matchesAll || nShowList.any { allowed ->
                             val match = allowed.equals(
                                 loc.country, ignoreCase = true
                             ) || allowed.equals(
@@ -398,9 +403,16 @@ open class AdRelayActivity : AppCompatActivity() {
                             match
                         }
 
+                        // Remembered, not just acted on: the overlay permission gate reads the
+                        // verdict on every later launch rather than re-resolving the location.
+                        AdsVault.getInstance(activity).isNShowLocation = isAllowed
+
                         if (isAllowed) {
                             if (BuildConfig.DEBUG) Log.d(
-                                "LocationCheck", "✅ Location IN list ($countryListKey) → HD_VBC_Show=false (real ads)"
+                                "LocationCheck",
+                                "✅ Location IN list ($countryListKey" +
+                                    (if (matchesAll) ", via \"$NSHOW_ALL\"" else "") +
+                                    ") → HD_VBC_Show=false (real ads)"
                             )
                             // Do not show CB
                             adsPreference.putBoolean("HD_VBC_Show", false)
@@ -411,9 +423,19 @@ open class AdRelayActivity : AppCompatActivity() {
                             )
                         }
                     } ?: run {
-                        if (BuildConfig.DEBUG) Log.w("LocationCheck", "⚠️ Location not available")
+                        // No location, but "all" does not need one.
+                        AdsVault.getInstance(activity).isNShowLocation = matchesAll
+                        if (matchesAll) adsPreference.putBoolean("HD_VBC_Show", false)
+                        if (BuildConfig.DEBUG) Log.w(
+                            "LocationCheck",
+                            "⚠️ Location not available" +
+                                (if (matchesAll) " — \"$NSHOW_ALL\" applies anyway" else "")
+                        )
                     }
                 } else {
+                    // Check off = nothing suppressed; clear any earlier match so a config
+                    // change takes effect immediately.
+                    AdsVault.getInstance(activity).isNShowLocation = false
                     if (BuildConfig.DEBUG) Log.d("LocationCheck", "Country check is disabled in preferences")
                 }
 

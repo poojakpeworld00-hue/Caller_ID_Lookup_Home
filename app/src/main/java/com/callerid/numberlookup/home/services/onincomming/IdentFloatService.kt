@@ -22,6 +22,7 @@ import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.services.CallEndSentinel
 import com.callerid.numberlookup.home.services.IdentCard
 import com.callerid.numberlookup.home.ui.incall.RingScreenActivity
+import com.callerid.numberlookup.home.util.IdentIdRegistry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -34,14 +35,14 @@ import kotlinx.coroutines.withContext
  *
  * - **Device unlocked** → a floating [WindowManager] overlay (TYPE_APPLICATION_OVERLAY),
  *   which is why the app requires SYSTEM_ALERT_WINDOW.
- * - **Device locked** → overlays are unreliable over the keyguard, so we hand off to
- *   [RingScreenActivity] (showWhenLocked + turnScreenOn) and stop.
+ * - **Device locked, or no overlay permission** → hand off to [RingScreenActivity]
+ *   (showWhenLocked + turnScreenOn) and stop. The app no longer asks for
+ *   SYSTEM_ALERT_WINDOW, so this is the main route rather than the locked-screen one.
  *
  * Started by [CallStateReceiver] on RINGING and stopped on OFFHOOK/IDLE.
  */
 class IdentFloatService : Service() {
 
-    private val TAG = "CallerOverlay"
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     private var windowManager: WindowManager? = null
@@ -57,15 +58,26 @@ class IdentFloatService : Service() {
             stopSelf(); return START_NOT_STICKY
         }
 
-        if (!Settings.canDrawOverlays(this)) {
-            Log.w(TAG, "SYSTEM_ALERT_WINDOW not granted — cannot show overlay")
-            stopSelf(); return START_NOT_STICKY
-        }
-
+        val canOverlay = Settings.canDrawOverlays(this)
         val keyguard = getSystemService(KEYGUARD_SERVICE) as? KeyguardManager
-        if (keyguard?.isKeyguardLocked == true) {
-            // Locked: a show-when-locked activity is the reliable path over the keyguard.
-            startActivity(RingScreenActivity.newIntent(this, number))
+        val locked = keyguard?.isKeyguardLocked == true
+
+        // The floating card is only possible with SYSTEM_ALERT_WINDOW, and the app no
+        // longer asks for it (see FloatKit.ASK_FOR_OVERLAY). So the full-screen activity
+        // is now the main route, not just the locked-screen one:
+        //  - locked            → activity, the only thing that shows over the keyguard;
+        //  - no overlay        → activity, started on the default-role background-start
+        //                        exemption (home / dialer / call screening);
+        //  - overlay + awake   → the floating card, unchanged.
+        if (locked || !canOverlay) {
+            if (!canOverlay && !IdentIdRegistry.holdsSystemDefaultRole(this)) {
+                // Nothing to start from: no overlay window and no role to start an
+                // activity with. The system's own incoming-call UI is all the user gets.
+                Log.w(TAG, "no overlay permission and no default role — no caller-ID card")
+                stopSelf(); return START_NOT_STICKY
+            }
+            runCatching { startActivity(RingScreenActivity.newIntent(this, number)) }
+                .onFailure { Log.w(TAG, "caller-ID activity start refused", it) }
             stopSelf()
             return START_NOT_STICKY
         }
@@ -159,16 +171,62 @@ class IdentFloatService : Service() {
     }
 
     companion object {
+        private const val TAG = "CallerOverlay"
         const val EXTRA_NUMBER = "extra_number"
 
+        /**
+         * How long a start for one number suppresses a second start for the same number.
+         *
+         * The card has two triggers: [ScreenerService.onScreenCall], which fires before the
+         * phone rings whenever we hold the CallScreening role, and [CallStateReceiver]'s
+         * RINGING broadcast, which is the only trigger without the role. When we do hold it
+         * both fire for the same call, milliseconds apart — this window swallows the second.
+         *
+         * It has to be a plain timestamp rather than an "is the service running" flag: on a
+         * locked device the service hands off to [RingScreenActivity] and immediately stops
+         * itself, so by the time the broadcast lands there is no service left to check and
+         * the hand-off would happen twice.
+         */
+        private const val DEDUPE_WINDOW_MS = 5_000L
+
+        private var lastStartedNumber: String? = null
+        private var lastStartedAt = 0L
+
         fun start(context: Context, number: String) {
+            if (isDuplicateStart(number)) {
+                Log.d(TAG, "card already raised for $number — duplicate start ignored")
+                return
+            }
+            lastStartedNumber = number
+            lastStartedAt = System.currentTimeMillis()
+
             val intent = Intent(context, IdentFloatService::class.java)
                 .putExtra(EXTRA_NUMBER, number)
             runCatching { context.startService(intent) }
+                .onFailure { Log.w(TAG, "startService refused — no card this call", it) }
         }
 
         fun stop(context: Context) {
+            // The call is over, so the next start for this number is a new call, not a duplicate.
+            lastStartedNumber = null
+            lastStartedAt = 0L
             runCatching { context.stopService(Intent(context, IdentFloatService::class.java)) }
+        }
+
+        private fun isDuplicateStart(number: String): Boolean {
+            val previous = lastStartedNumber ?: return false
+            if (System.currentTimeMillis() - lastStartedAt > DEDUPE_WINDOW_MS) return false
+            return sameNumber(previous, number)
+        }
+
+        /**
+         * Compares on the last 10 digits: the screening service reports the raw SIP/tel
+         * handle ("+917016414568") while the broadcast can carry a locally formatted one,
+         * and a strict equals would let the duplicate through.
+         */
+        private fun sameNumber(a: String, b: String): Boolean {
+            val x = a.filter(Char::isDigit).takeLast(10)
+            return x.isNotEmpty() && x == b.filter(Char::isDigit).takeLast(10)
         }
     }
 }

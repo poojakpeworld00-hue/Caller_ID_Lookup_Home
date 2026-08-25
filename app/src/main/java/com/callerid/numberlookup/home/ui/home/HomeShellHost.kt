@@ -27,11 +27,31 @@ interface HomeShellHost {
     val homeShellController: HomeShellController
 
     /**
+     * Whether the shell is actually the thing the user is looking at right now.
+     *
+     * In [com.callerid.numberlookup.home.ui.AppHubActivity] the shell *is* the screen, so
+     * this is always true. In the launcher it is true only while the swipe-right caller panel
+     * is open — the same Activity also draws the home grid, and anything the shell puts on
+     * screen while the panel is shut lands over that grid instead of over its own content.
+     */
+    val isShellOnScreen: Boolean
+
+    /**
      * Back was pressed on Home with the visited-tab history already empty.
      *
      * AppHubActivity leaves for the launcher home screen; the launcher panel just closes.
      */
     fun onShellBackExhausted()
+
+    /**
+     * Offer the "a new version is downloaded — restart to install" affordance.
+     *
+     * Owned by the host rather than by [HomeShellFragment] because the launcher commits that
+     * fragment at `onCreate` and parks it off screen: a Snackbar anchored inside it while the
+     * caller panel is shut is drawn on a view the user cannot see, so the update sits pending
+     * with nothing on screen to act on. Each host puts it where its user is actually looking.
+     */
+    fun showUpdateReadyPrompt()
 
     /**
      * Pull the host Activity back to the front of its task.
