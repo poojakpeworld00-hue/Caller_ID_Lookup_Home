@@ -146,7 +146,9 @@ class NativePromoBanner {
                         } else {
                             // Google failed → FB fallback or Custom
                             if (adsPref.getBoolean("IsFail_FB")) {
-                                showFBNativeBannerFallback(context, layout)
+                                // With the shimmer: this branch renders the ad itself, so
+                                // without it nothing ever takes the placeholder down.
+                                showFBNativeBannerFallback(context, layout, shimmer)
                             } else {
                                 layout.removeAllViews()
                                 shimmer?.stopShimmer()
@@ -158,12 +160,20 @@ class NativePromoBanner {
                         }
                     } catch (e: Exception) {
                         Log.e("NativePromoBanner", "Google NativeBanner failed: ${e.message}")
+                        // Same reason as NativePromo.clearToEmpty: the ad view is built
+                        // before the shimmer comes down, so a throw here would otherwise
+                        // leave the placeholder running over an empty frame.
+                        runCatching {
+                            shimmer?.stopShimmer()
+                            shimmer?.isVisible = false
+                            layout.removeAllViews()
+                        }
                     }
                 }
             }
 
             AdKind.FACEBOOK -> {
-                showFBNativeBannerFallback(context, layout)
+                showFBNativeBannerFallback(context, layout, shimmer)
             }
 
             AdKind.UNKNOWN, AdKind.CUSTOM -> {

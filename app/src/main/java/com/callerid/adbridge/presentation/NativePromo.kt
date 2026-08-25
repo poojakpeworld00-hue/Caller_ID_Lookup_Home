@@ -82,6 +82,24 @@ class NativePromo() {
         fun hasPreloadedNative(): Boolean = nativeAd != null
     }
 
+    /**
+     * Takes the shimmer down and clears whatever half-built view is in the frame.
+     *
+     * Every render path below builds the ad view FIRST and stops the shimmer only once that
+     * has succeeded — so anything thrown while binding a template (a null asset, a recycled
+     * NativeAd, an inflate failure) used to land in a catch that only logged, leaving the
+     * shimmer running over an empty frame for as long as the screen lived. The launcher's
+     * side panels are where that shows up worst: they are never recreated, so the placeholder
+     * stays until the process dies.
+     */
+    private fun clearToEmpty(layout: FrameLayout, shimmer: ShimmerFrameLayout?) {
+        runCatching {
+            shimmer?.stopShimmer()
+            shimmer?.isVisible = false
+            layout.removeAllViews()
+        }
+    }
+
     private fun Activity.isActivityDestroyedCompat(): Boolean {
         if (isFinishing) return true
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && isDestroyed
@@ -275,6 +293,7 @@ class NativePromo() {
 
                     } catch (e: Exception) {
                         Log.e("NativeAds", "Google BigNative crash", e)
+                        clearToEmpty(layout, shimmer)
                     }
                 }
             }
@@ -618,6 +637,7 @@ class NativePromo() {
                         }
                     } catch (e: Exception) {
                         Log.e("MidNativeAds", "Google MidNative failed: ${e.message}")
+                        clearToEmpty(layout, shimmer)
                     }
                 }
 
@@ -922,6 +942,7 @@ class NativePromo() {
                         )
                     } catch (e: Exception) {
                         Log.e("MidNativeAds", "Google MidNative failed: ${e.message}")
+                        clearToEmpty(layout, shimmer)
                     }
                 }
 
