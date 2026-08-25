@@ -151,8 +151,11 @@ class LeftPanelFragment(
             }
         }
 
-        LauncherAdsConfig.showSlot(activity, adSlot, binding.adNativeFrame, binding.adShimmer)
-        LauncherAdsConfig.showSlot(
+        // refreshSlot, not showSlot: the two frames here share one pooled native, so the
+        // second used to find the pool emptied by the first and fall back to a custom ad on
+        // every open. Each frame now keeps what it has until there is something newer.
+        LauncherAdsConfig.refreshSlot(activity, adSlot, binding.adNativeFrame, binding.adShimmer)
+        LauncherAdsConfig.refreshSlot(
             activity = activity,
             slot = suggestedSlot,
             container = binding.adSuggestedFrame,

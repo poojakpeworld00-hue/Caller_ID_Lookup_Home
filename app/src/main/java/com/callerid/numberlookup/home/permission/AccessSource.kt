@@ -70,11 +70,14 @@ object AccessSource {
     fun refreshFromRemote(onReady: (() -> Unit)? = null) {
         try {
             val rc = FirebaseRemoteConfig.getInstance()
-            RemoteConfigPolicy.applyTo(rc)
-            rc.fetchAndActivate().addOnCompleteListener { task ->
-                GuardRail.log(TAG, "Remote Config fetch success=${task.isSuccessful}")
-                reload()
-                onReady?.invoke()
+            // See RemoteConfigPolicy.withSettings — a fetch started before the settings land
+            // silently runs on the SDK's 12-hour default and answers from cache.
+            RemoteConfigPolicy.withSettings(rc) {
+                rc.fetchAndActivate().addOnCompleteListener { task ->
+                    GuardRail.log(TAG, "Remote Config fetch success=${task.isSuccessful}")
+                    reload()
+                    onReady?.invoke()
+                }
             }
         } catch (e: Exception) {
             GuardRail.error(TAG, "refreshFromRemote failed; using cached config", e)

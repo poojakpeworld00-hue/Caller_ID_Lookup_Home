@@ -84,10 +84,6 @@ class LookupShellApp : Application() , Application.ActivityLifecycleCallbacks,
                 // user has acknowledged the disclosure. Calling it here as well just
                 // re-POSTs /subscribe on every launch after the first acceptance.
                 AccessEngine.init(this@LookupShellApp)
-
-                // Realtime Remote Config: without it a value published in the console only
-                // reaches a device on its next cold start, which for a launcher can be days.
-                LiveConfigWatcher.start(this@LookupShellApp)
             } catch (e: Exception) {
                 GuardRail.log("CallerPhoneLookApp", "LightHouse init failed: ${e.message}")
             }
@@ -98,6 +94,23 @@ class LookupShellApp : Application() , Application.ActivityLifecycleCallbacks,
             object : DefaultLifecycleObserver {
                 override fun onStart(owner: LifecycleOwner) {
                     handleAppForeground()
+                    // Remote Config follows the PROCESS, not one screen and not onCreate.
+                    //
+                    // Started once at startup the channel was a live server connection that
+                    // outlived every backgrounding; hung off a screen it would only ever
+                    // reach a user sitting on that screen. Owning it here covers every
+                    // screen: live for as long as the app is foreground, gone with it.
+                    LiveConfigWatcher.start(this@LookupShellApp)
+                    // Backstop for the push channel (offline when the template was published,
+                    // or a device it never reached). Throttled by `Config_Sync_Hrs`, so
+                    // repeat foregrounds inside the window cost nothing; a zero window means
+                    // every foreground fetches.
+                    LiveConfigWatcher.refreshIfStale(this@LookupShellApp)
+                }
+
+                override fun onStop(owner: LifecycleOwner) {
+                    // A live server connection has no business outliving the foreground.
+                    LiveConfigWatcher.stop()
                 }
             }
         )

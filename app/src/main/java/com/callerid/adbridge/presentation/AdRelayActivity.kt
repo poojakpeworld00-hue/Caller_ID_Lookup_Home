@@ -213,15 +213,19 @@ open class AdRelayActivity : AppCompatActivity() {
         }
 
         val remoteConfig = FirebaseRemoteConfig.getInstance()
-        RemoteConfigPolicy.applyTo(remoteConfig)
-        activity?.let {
-            remoteConfig.fetchAndActivate().addOnCompleteListener(it) { task ->
-                if (task.isSuccessful) {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        setResponceInPref(remoteConfig)
+        activity?.let { host ->
+            // Through withSettings, never straight to fetchAndActivate: the settings call is
+            // async, and a fetch that starts before it lands runs on the SDK's default
+            // 12-hour interval — it answers from cache and still reports success.
+            RemoteConfigPolicy.withSettings(remoteConfig) {
+                remoteConfig.fetchAndActivate().addOnCompleteListener(host) { task ->
+                    if (task.isSuccessful) {
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            setResponceInPref(remoteConfig)
+                        }
+                    } else {
+                        onGetData?.onError()
                     }
-                } else {
-                    onGetData?.onError()
                 }
             }
         }

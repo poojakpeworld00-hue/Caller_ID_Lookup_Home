@@ -72,7 +72,10 @@ object AdConfigIngest {
                 "InterCounter", "InterBackCounter", "MarketInterCounter", "MarketBackCounter",
                 "NativeCounter", "MarketNativeCounter", "MidNativeCounter", "BannerCounter",
                 "MarketBannerCounter", "MarketAppopenCounter", "AppopenCounter",
-                "Perm_Sheet_Interval_Days", "HD_VBC_Hrs"
+                "Perm_Sheet_Interval_Days", "HD_VBC_Hrs",
+                // Backstop-fetch window for LiveConfigWatcher, in hours. 0 = fetch on every
+                // foreground (testing only); absent falls back to its own default.
+                "Config_Sync_Hrs"
             ).forEach { key -> if (root.has(key)) putInt(key, root.optInt(key, 0)) }
 
             applyNativeTheme(context, root) // DEFAULT theme

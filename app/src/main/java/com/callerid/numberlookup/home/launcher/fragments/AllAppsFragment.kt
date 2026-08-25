@@ -86,7 +86,10 @@ class AllAppsFragment(
     fun onDrawerShown() {
         val activity = activity ?: return
         refreshSlot(activity)
-        LauncherAdsConfig.showSlot(activity, adSlot, binding.adNativeFrame, binding.adShimmer)
+        // refreshSlot, not showSlot: the drawer is opened dozens of times a day and the native
+        // pool holds one ad, so an unconditional re-show would wipe the rendered ad for a
+        // fallback whenever the reopen beat the refill.
+        LauncherAdsConfig.refreshSlot(activity, adSlot, binding.adNativeFrame, binding.adShimmer)
     }
 
     /**

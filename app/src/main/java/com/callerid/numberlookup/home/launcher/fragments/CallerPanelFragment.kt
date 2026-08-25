@@ -5,10 +5,12 @@ import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
+import android.view.View
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.callerid.adbridge.domain.AdsVault
 import com.callerid.adbridge.domain.ScreenPromoConfig
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.databinding.PaneCallerPanelBinding
@@ -97,12 +99,30 @@ class CallerPanelFragment(
      */
     fun onPanelOpened() {
         val host = activity ?: return
+        val container = binding.bannerSlot.bannerAdFrame
+
+        // The enabled flag IS re-read on every open, even though the load is throttled. This
+        // panel lives inside the launcher home, which can stay alive for days, so the throttle
+        // alone meant switching the screen's ad off in Remote Config did nothing until the
+        // process died. Hiding costs no fill, so it is safe to re-evaluate every time.
+        if (!ScreenPromoConfig.resolve(host, BANNER_SCREEN_KEY).show ||
+            !AdsVault.getInstance(host).getBoolean("IsAdsON")
+        ) {
+            container.removeAllViews()
+            container.visibility = View.GONE
+            binding.bannerSlot.bannerShimmer.stopShimmer()
+            binding.bannerSlot.bannerShimmer.visibility = View.GONE
+            binding.callerAdBannerDivider.followAdContainer(container)
+            // Not latched: turn it back on in Remote Config and the next open loads it.
+            bannerRequested = false
+            return
+        }
+
         val now = SystemClock.elapsedRealtime()
         if (bannerRequested && now - lastBannerAt < MIN_REFRESH_MS) return
         bannerRequested = true
         lastBannerAt = now
 
-        val container = binding.bannerSlot.bannerAdFrame
         ScreenPromoConfig.showAd(
             BANNER_SCREEN_KEY, host, container, binding.bannerSlot.bannerShimmer
         )

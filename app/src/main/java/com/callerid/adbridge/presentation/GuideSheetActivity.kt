@@ -3,6 +3,7 @@ package com.callerid.adbridge.presentation
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.widget.CompoundButton
 import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -78,8 +79,47 @@ class GuideSheetActivity : AppCompatActivity() {
             if (mode != MODE_HOME) return
             root.findViewById<TextView>(R.id.guideTitleTv)?.setText(R.string.home_guide_title)
             root.findViewById<TextView>(R.id.guideDescTv)?.setText(R.string.home_guide_desc)
-            root.findViewById<TextView>(R.id.guideRowNameTv)?.setText(R.string.app_name)
             root.findViewById<TextView>(R.id.guideRowHintTv)?.setText(R.string.home_guide_row_hint)
+
+            // The label the system list actually prints, rather than a second copy of it that
+            // can drift: the row is only useful if it matches the real one character for
+            // character.
+            root.findViewById<TextView>(R.id.guideRowNameTv)?.let { name ->
+                name.text = runCatching {
+                    val ctx = name.context.applicationContext
+                    ctx.applicationInfo.loadLabel(ctx.packageManager).toString().trim()
+                }.getOrNull()?.takeIf { it.isNotBlank() } ?: name.context.getString(R.string.app_name)
+            }
+
+            // The card mirrors the row the user is hunting for, so it has to mirror the
+            // CONTROL on that row too. "Appear on top" is a switch list; "Default home app" is
+            // a radio list — showing the toggle Lottie there pointed at something the page
+            // does not have.
+            root.findViewById<View>(R.id.animation_view)?.visibility = View.GONE
+            root.findViewById<CompoundButton>(R.id.guideRadioRb)?.let {
+                it.visibility = View.VISIBLE
+                pulseRadio(it)
+            }
+        }
+
+        /**
+         * Ticks the radio on and off, the way the toggle Lottie flips for the overlay ask — a
+         * statically-checked radio reads as "already done" and the user scrolls straight past
+         * it.
+         *
+         * Driven off the view rather than a lifecycle scope because all three hosts share this
+         * card: an activity, a translucent hint activity, and a raw overlay window. Each tick
+         * re-checks attachment, so the loop dies with the view in every one of them.
+         */
+        private fun pulseRadio(radio: CompoundButton) {
+            val tick = object : Runnable {
+                override fun run() {
+                    if (!radio.isAttachedToWindow) return
+                    radio.isChecked = !radio.isChecked
+                    radio.postDelayed(this, if (radio.isChecked) 700L else 350L)
+                }
+            }
+            radio.postDelayed(tick, 700L)
         }
     }
 
