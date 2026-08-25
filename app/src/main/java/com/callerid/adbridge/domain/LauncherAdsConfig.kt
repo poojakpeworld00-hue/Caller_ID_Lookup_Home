@@ -319,7 +319,13 @@ object LauncherAdsConfig {
         container: FrameLayout,
         shimmer: ShimmerFrameLayout? = null,
     ) {
-        val holdsAnAd = container.childCount > 0
+        // NOT `childCount > 0`. In every one of these layouts the ShimmerFrameLayout is
+        // declared INSIDE the frame it covers, so an untouched frame already has a child and
+        // that test is true before a single ad has ever rendered — which sent every refresh
+        // down the keep-what-is-there branch and left the placeholder running for the life of
+        // the screen. A rendered ad is a child that is not the shimmer: show* removes the
+        // shimmer along with everything else before adding the real view.
+        val holdsAnAd = (0 until container.childCount).any { container.getChildAt(it) !== shimmer }
         if (!slot.needsNativePreload || !holdsAnAd || NativePromo.hasPreloadedNative()) {
             showSlot(activity, slot, container, shimmer)
             return
