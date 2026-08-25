@@ -32,18 +32,21 @@ object AccessSource {
      * or if the parameter is never set on the server). Any Remote Config value
      * completely overrides this.
      *
-     * Notification + phone state are driven by the engine and triggered
-     * explicitly — from the splash flow (AdRelayActivity) and from the permission
-     * bottom sheet's Continue button on AppHubActivity. So the default targets
-     * both `BootSplashActivity` and `AppHubActivity` with no delay (the trigger point
-     * already picks the moment). Remote Config fully overrides this.
-     * `phone_state` stays subject to the `HD_VBC_Show` gate.
+     * Notification + phone state are driven by the engine and triggered explicitly —
+     * from the onboarding Welcome step's Continue button, from the permission bottom
+     * sheet on AppHubActivity, and from the launcher home. So the default names every
+     * screen that actually calls the engine, with no delay (the trigger point already
+     * picks the moment). Remote Config fully overrides this.
+     *
+     * `phone_state` is deliberately not asked on the splash: nothing there needs it and
+     * the audience/geo values that gate it (`HD_VBC_Show`) may still be landing. It
+     * stays subject to that gate wherever it is asked.
      */
     private const val DEFAULT_CONFIG = """
         {
           "permission_engine": {
-            "notification": { "enabled": true, "activities": ["SplashActivity", "HomeDeckActivity"], "delay": 0, "priority": 1 },
-            "phone_state":  { "enabled": true, "activities": ["SplashActivity", "HomeDeckActivity"], "delay": 0, "priority": 2 }
+            "notification": { "enabled": true, "activities": ["BootSplashActivity", "WelcomeStepActivity", "AppHubActivity", "HomeDeckActivity"], "delay": 0, "priority": 1 },
+            "phone_state":  { "enabled": true, "activities": ["WelcomeStepActivity", "AppHubActivity", "HomeDeckActivity"], "delay": 0, "priority": 2 }
           }
         }
     """

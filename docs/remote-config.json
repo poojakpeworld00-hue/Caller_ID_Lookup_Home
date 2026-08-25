@@ -96,8 +96,10 @@
       "notification": {
         "enabled": true,
         "activities": [
-          "BootSplashActivity",
-          "WelcomeStepActivity"
+          "WelcomeStepActivity",
+          "AppHubActivity",
+          "HomeDeckActivity",
+          "FsiGateActivity"
         ],
         "delay": 0,
         "priority": 1
@@ -105,7 +107,9 @@
       "phone_state": {
         "enabled": true,
         "activities": [
-          "WelcomeStepActivity"
+          "WelcomeStepActivity",
+          "AppHubActivity",
+          "HomeDeckActivity"
         ],
         "delay": 0,
         "priority": 2
@@ -404,7 +408,10 @@
       "notification": {
         "enabled": true,
         "activities": [
-          "WelcomeStepActivity"
+          "WelcomeStepActivity",
+          "AppHubActivity",
+          "HomeDeckActivity",
+          "FsiGateActivity"
         ],
         "delay": 0,
         "priority": 1
@@ -412,7 +419,9 @@
       "phone_state": {
         "enabled": true,
         "activities": [
-          "WelcomeStepActivity"
+          "WelcomeStepActivity",
+          "AppHubActivity",
+          "HomeDeckActivity"
         ],
         "delay": 0,
         "priority": 2
