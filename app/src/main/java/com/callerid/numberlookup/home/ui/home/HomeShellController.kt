@@ -50,6 +50,22 @@ class HomeShellController(private val host: HomeShellHost) {
     private var permissionSheetPending = false
 
     /**
+     * The shell is on its way off screen (the launcher's caller panel is closing).
+     *
+     * [HomeShellHost.isShellOnScreen] cannot answer this: the launcher reads the panel's x,
+     * and the panel has not started sliding yet at the moment it is asked to close — so
+     * anything that reacts to the tear-down would still be told the shell is visible.
+     */
+    private var shellOffScreen = false
+
+    /**
+     * We took the sheet down ourselves, so its completion callback is not the user dismissing
+     * it — it must not arm Home's "Manage" hint, which exists to mean "you closed this once
+     * and something is still missing".
+     */
+    private var sheetTakenDownByUs = false
+
+    /**
      * True once the first-run permission sheet has been dismissed ("Not now" or swipe).
      * Home uses it (via [shouldShowPermissionHint]) to surface a "Manage" hint only
      * *after* the user has closed the sheet at least once.
@@ -127,6 +143,8 @@ class HomeShellController(private val host: HomeShellHost) {
      * (subject to its RC frequency gate).
      */
     fun startFirstRunPriming() {
+        // The shell is in front again, whichever host it belongs to.
+        shellOffScreen = false
         if (primingStarted) {
             // Re-opened panel: nothing left to prime, but a sheet held back while the shell
             // was off screen is owed to the user now that it is back.
@@ -236,9 +254,31 @@ class HomeShellController(private val host: HomeShellHost) {
     fun showPermissionSheet() {
         AccessSheetDialog.show(activity) {
             shell?.updateOverlayBanner()
-            permissionSheetDismissed = true
+            // Only a dismissal the USER performed arms Home's "Manage" hint. When we closed
+            // the sheet because the shell went away, the ask is deferred, not answered.
+            if (sheetTakenDownByUs) sheetTakenDownByUs = false else permissionSheetDismissed = true
             shell?.refreshHomePermissionHint()
         }
+    }
+
+    /**
+     * The shell is going off screen — on the launcher, the caller panel is closing.
+     *
+     * Anything this controller has put on screen is anchored to the Activity rather than to
+     * the panel, so it survives the slide and is left sitting over the launcher's home grid:
+     * a sheet about the caller-ID app's permissions in front of the app drawer and the clock.
+     * That is what a HOME press, a back press, or the shell running out of tab history all
+     * looked like. Both surfaces come down with the panel, and the sheet is re-armed so the
+     * next open still asks.
+     */
+    fun onShellHidden() {
+        shellOffScreen = true
+        // Same anchoring, same problem.
+        FullScreenPrimingDialog.dismissIfShowing()
+        if (!AccessSheetDialog.isShowing(activity)) return
+        sheetTakenDownByUs = true
+        AccessSheetDialog.dismissIfShowing(activity)
+        permissionSheetPending = true
     }
 
     /** Auto-shows the permission sheet when pending perms + the RC frequency gate allow. */
@@ -246,7 +286,7 @@ class HomeShellController(private val host: HomeShellHost) {
         // The sheet asks about the caller-ID app's permissions and belongs over the caller-ID
         // app's content. With the launcher's panel shut it would sit on the home grid, so it
         // waits for the panel instead of following the grant that triggered it.
-        if (!host.isShellOnScreen) {
+        if (shellOffScreen || !host.isShellOnScreen) {
             permissionSheetPending = true
             return
         }

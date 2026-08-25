@@ -356,6 +356,25 @@ class AccessSheetDialog : BottomSheetDialogFragment() {
     companion object {
         const val TAG = "permission_sheet"
 
+        /** True while the sheet is on screen. */
+        fun isShowing(activity: FragmentActivity): Boolean =
+            activity.supportFragmentManager.findFragmentByTag(TAG) != null
+
+        /**
+         * Takes the sheet down. A no-op when it is not showing.
+         *
+         * The sheet is committed to the **Activity's** fragment manager, not to whatever view
+         * it was raised over, so on the launcher it outlives the caller panel that triggered
+         * it: close the panel and the sheet stays, asking about the caller-ID app's
+         * permissions in front of the launcher's app grid. Callers pair this with re-arming
+         * the sheet so the user is still asked next time the panel opens.
+         */
+        fun dismissIfShowing(activity: FragmentActivity) {
+            val fm = activity.supportFragmentManager
+            (fm.findFragmentByTag(TAG) as? AccessSheetDialog)
+                ?.let { runCatching { it.dismissAllowingStateLoss() } }
+        }
+
         /**
          * True when at least one of the sheet's permissions still needs granting
          * — use it to decide whether to trigger the sheet at all (avoids showing

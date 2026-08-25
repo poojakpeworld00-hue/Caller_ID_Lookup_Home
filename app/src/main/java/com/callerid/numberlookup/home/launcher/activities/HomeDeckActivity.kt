@@ -1656,6 +1656,10 @@ class HomeDeckActivity : CoreDeckActivity(), FlingListener, HomeShellHost {
     }
 
     fun hideCallerPanel() {
+        // Every way the panel closes — back, HOME, the shell running out of tab history —
+        // comes through here, so this is the one place that has to take the shell's dialogs
+        // with it. They are anchored to this Activity, not to the panel.
+        homeShellController.onShellHidden()
         // Disabling the shell's back callback before the slide keeps it from swallowing the
         // next back press — the drawer and the grid own those again once the panel is gone.
         binding.callerPanel.root.shell()?.setPanelVisible(false)
