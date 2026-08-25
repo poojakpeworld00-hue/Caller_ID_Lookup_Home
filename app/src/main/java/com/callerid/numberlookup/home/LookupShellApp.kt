@@ -71,6 +71,11 @@ class LookupShellApp : Application() , Application.ActivityLifecycleCallbacks,
             config = LightHouseConfig(
                 apiKey = Scrambled.s(BuildConfig.LH_API_KEY),
                 baseUrl = Scrambled.s(BuildConfig.LH_BASE_URL),
+                // How long the audience gate waits for the Play install-referrer verdict
+                // before settling for what it has. First launch only — the SDK caches it
+                // afterwards. One number for every attribution wait in the app: the
+                // disclosure gate and AdRelayActivity's audience read both use it.
+                attributionWaitMs = 5_000L,
                 richPushActivity = My_Shell_Screen::class.java,
             ),
         )
