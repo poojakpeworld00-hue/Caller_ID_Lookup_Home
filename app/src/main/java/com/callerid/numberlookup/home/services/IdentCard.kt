@@ -8,9 +8,13 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
 import com.callerid.numberlookup.home.R
+import com.callerid.numberlookup.home.services.RetrofitClient
+import com.callerid.numberlookup.home.services.ServiceCredentials
 import com.callerid.numberlookup.home.data.CallLogSource
 import com.callerid.numberlookup.home.data.PeopleSource
+import com.callerid.numberlookup.home.ui.lookup.DigitInfo
 import com.callerid.numberlookup.home.ui.common.CallPresenter
+import com.callerid.numberlookup.home.util.GuardRail
 
 /**
  * Resolves caller details and renders them into [R.layout.part_caller_id].
@@ -70,6 +74,51 @@ object IdentCard {
         root.findViewById<TextView>(R.id.tvIncallNetwork).text =
             info.network?.takeIf { it.isNotBlank() } ?: "—"
     }
+
+    /**
+     * The name the caller-ID network has for [number], or null when it has none.
+     *
+     * The same `similar-phone-number` endpoint the Lookup screen searches with, so a ringing
+     * stranger is identified exactly as typing that number into search would identify them.
+     *
+     * Deliberately NOT folded into [resolve]: that one is local-only and finishes in
+     * milliseconds, and the card has to be on screen while the phone is still ringing. This
+     * runs after it and upgrades the name in place, so a slow or dead network costs the user
+     * nothing — they just keep the local result.
+     */
+    suspend fun networkName(number: String): String? {
+        if (!ServiceCredentials.isConfigured) return null
+        val query = DigitInfo.normalize(number).takeIf { it.isNotBlank() } ?: return null
+        return runCatching {
+            val response = RetrofitClient.api.checkPhoneNumber(
+                id = ServiceCredentials.API_ID,
+                phone = query,
+                hashKey = ServiceCredentials.API_HASH,
+                token = ServiceCredentials.API_TOKEN,
+            )
+            if (!response.isSuccessful) {
+                GuardRail.log(TAG, "lookup failed (${response.code()}) for $number")
+                null
+            } else {
+                response.body()?.data.orEmpty()
+                    .firstNotNullOfOrNull { it.name?.trim()?.takeIf(String::isNotBlank) }
+            }
+        }.onFailure { GuardRail.error(TAG, "lookup error for $number", it) }.getOrNull()
+    }
+
+    /**
+     * Replaces just the name, its initials and the status pill on an already-bound card.
+     *
+     * Used when [networkName] answers after [bind] has already put the local result on
+     * screen — the rest of the card (call count, network, timing) does not change.
+     */
+    fun bindName(context: Context, root: View, number: String, name: String) {
+        root.findViewById<TextView>(R.id.tvIncallAvatar).text = CallPresenter.initials(name, number)
+        root.findViewById<TextView>(R.id.tvIncallName).text = name
+        bindStatusPill(context, root.findViewById(R.id.tvIncallStatus), known = true)
+    }
+
+    private const val TAG = "IdentCard"
 
     /** Green "Known Contact" vs neutral "Unknown" pill. */
     private fun bindStatusPill(context: Context, pill: TextView, known: Boolean) {

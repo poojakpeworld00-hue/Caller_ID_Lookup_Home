@@ -69,6 +69,16 @@ class RingScreenActivity : AppCompatActivity() {
                 )
             }
             IdentCard.bind(this@RingScreenActivity, card, number, info)
+
+            // Then the caller-ID network, exactly as the Lookup screen would — see
+            // IdentCard.networkName. Local first so the card is up while it rings; the
+            // network only fills a name the device could not supply.
+            if (info.name.isNullOrBlank()) {
+                val networkName = withContext(Dispatchers.IO) { IdentCard.networkName(number) }
+                if (!networkName.isNullOrBlank() && !isFinishing && !isDestroyed) {
+                    IdentCard.bindName(this@RingScreenActivity, card, number, networkName)
+                }
+            }
         }
 
         val filter = IntentFilter(CallStateReceiver.ACTION_CALL_ENDED)

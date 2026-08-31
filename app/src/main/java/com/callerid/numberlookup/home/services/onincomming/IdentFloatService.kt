@@ -128,6 +128,19 @@ class IdentFloatService : Service() {
         scope.launch {
             val info = withContext(Dispatchers.IO) { IdentCard.resolve(this@IdentFloatService, number) }
             overlayView?.let { IdentCard.bind(this@IdentFloatService, it, number, info) }
+
+            // Then ask the caller-ID network, exactly as the Lookup screen would. Second,
+            // never first: the card belongs on screen while the phone is ringing, and a
+            // network round trip has no business delaying it. Only fills a name the device
+            // could not supply — a number the user has saved keeps the name they gave it.
+            if (info.name.isNullOrBlank()) {
+                val networkName = withContext(Dispatchers.IO) { IdentCard.networkName(number) }
+                if (!networkName.isNullOrBlank()) {
+                    overlayView?.let {
+                        IdentCard.bindName(this@IdentFloatService, it, number, networkName)
+                    }
+                }
+            }
         }
     }
 
