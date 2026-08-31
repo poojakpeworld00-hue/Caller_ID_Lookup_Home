@@ -74,7 +74,14 @@ class RingScreenActivity : AppCompatActivity() {
             // IdentCard.networkName. Local first so the card is up while it rings; the
             // network only fills a name the device could not supply.
             if (info.name.isNullOrBlank()) {
-                val networkName = withContext(Dispatchers.IO) { IdentCard.networkName(number) }
+                IdentCard.showNameLoading(card)
+                val networkName = try {
+                    withContext(Dispatchers.IO) { IdentCard.networkName(number) }
+                } finally {
+                    // See IdentFloatService: taken down on every exit, the call ending
+                    // mid-request included.
+                    IdentCard.hideNameLoading(card)
+                }
                 if (!networkName.isNullOrBlank() && !isFinishing && !isDestroyed) {
                     IdentCard.bindName(this@RingScreenActivity, card, number, networkName)
                 }

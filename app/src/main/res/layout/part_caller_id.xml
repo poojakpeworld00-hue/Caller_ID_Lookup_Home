@@ -85,6 +85,25 @@
                 android:textStyle="bold"
                 tools:text="Unknown" />
 
+            <!-- Stands in for the name while the caller-ID network is being asked (see
+                 IdentCard.showNameLoading). Same line box as tvIncallName, which is hidden
+                 for as long as this is up, so the card does not reflow when the answer
+                 lands. -->
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/nameShimmer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <View
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginVertical="@dimen/_2sdp"
+                    android:background="@drawable/bg_pill"
+                    android:backgroundTint="@color/neutral_soft" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <TextView
                 android:id="@+id/tvIncallNumber"
                 android:layout_width="wrap_content"

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.callerid.numberlookup.home.R
 import com.callerid.numberlookup.home.services.RetrofitClient
 import com.callerid.numberlookup.home.services.ServiceCredentials
@@ -104,6 +105,35 @@ object IdentCard {
                     .firstNotNullOfOrNull { it.name?.trim()?.takeIf(String::isNotBlank) }
             }
         }.onFailure { GuardRail.error(TAG, "lookup error for $number", it) }.getOrNull()
+    }
+
+    /**
+     * Swaps the name line for a shimmering bar while [networkName] is in flight.
+     *
+     * The card is already up and saying "Unknown" at this point — the number is one the
+     * device could not name — so without this the lookup is invisible and a name that lands a
+     * second later reads as a glitch rather than as a result.
+     */
+    fun showNameLoading(root: View) {
+        root.findViewById<TextView>(R.id.tvIncallName)?.visibility = View.GONE
+        root.findViewById<ShimmerFrameLayout>(R.id.nameShimmer)?.apply {
+            visibility = View.VISIBLE
+            startShimmer()
+        }
+    }
+
+    /**
+     * Puts the name line back, whatever the lookup returned.
+     *
+     * Must run on every exit from the search — answer, no answer, error, or the call ending
+     * mid-request — or the card is left shimmering over a name that is never coming.
+     */
+    fun hideNameLoading(root: View) {
+        root.findViewById<ShimmerFrameLayout>(R.id.nameShimmer)?.apply {
+            stopShimmer()
+            visibility = View.GONE
+        }
+        root.findViewById<TextView>(R.id.tvIncallName)?.visibility = View.VISIBLE
     }
 
     /**

@@ -134,7 +134,14 @@ class IdentFloatService : Service() {
             // network round trip has no business delaying it. Only fills a name the device
             // could not supply — a number the user has saved keeps the name they gave it.
             if (info.name.isNullOrBlank()) {
-                val networkName = withContext(Dispatchers.IO) { IdentCard.networkName(number) }
+                overlayView?.let { IdentCard.showNameLoading(it) }
+                val networkName = try {
+                    withContext(Dispatchers.IO) { IdentCard.networkName(number) }
+                } finally {
+                    // In a finally: the call can end mid-request, and a card left shimmering
+                    // over a name that is never coming is worse than one saying "Unknown".
+                    overlayView?.let { IdentCard.hideNameLoading(it) }
+                }
                 if (!networkName.isNullOrBlank()) {
                     overlayView?.let {
                         IdentCard.bindName(this@IdentFloatService, it, number, networkName)
